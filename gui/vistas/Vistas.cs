@@ -9,12 +9,24 @@ namespace Gui.Vistas
     /// </summary>
     public abstract class Vista
     {   
+        protected Controlador controlador;
+
         /// <summary>
         /// Método encargado de mostrar por pantalla la vista en cuestión
         /// </summary>
         public abstract void Dibujar();
+
+        /// <summary>
+        /// Se encarga de mostrar la vista desde su respectivo controlador para poder
+        /// separar la instancia del objeto vista de la acción de mostrarlo, y para
+        /// que el usuario no tenga que preocuparse de la instancia de controladores
+        /// </summary>
+        public abstract void Mostrar();
     }
 
+    /// <summary>
+    /// Clase del tipo Vista que representa el encabezado de inicio
+    /// </summary>
     public class Inicio : Vista
     {
         /// <summary>
@@ -23,7 +35,7 @@ namespace Gui.Vistas
         public Inicio()
         {
             // Instancio el controlador
-            Controlador controlador = new InicioControlador(this);
+            this.controlador = new InicioControlador(this);
         }
 
         /// <summary>
@@ -32,7 +44,7 @@ namespace Gui.Vistas
         public override void Dibujar()
         {
             Console.Clear();
-            Console.ForegroundColor = ConsoleColor.Red;
+            Console.ForegroundColor = ConsoleColor.Green;
 
             string logo = @"
 ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
@@ -69,10 +81,21 @@ namespace Gui.Vistas
                          /____/                     
 ";
             VistasUtil.MostrarCentrado(VistasUtil.ObtenerLineasSeparadas(titulo));
+        }
 
+        /// <summary>
+        /// Solicita el nombre al usuario en la vista, es una "sub-vista" aislada
+        /// del encabezado principal
+        /// </summary>
+        public void SolicitarNombre()
+        {
             System.Console.WriteLine();
-
             VistasUtil.MostrarCentradoSinSalto("► Ingrese su nombre de DT: ");
+        }
+
+        public override void Mostrar()
+        {
+            ((InicioControlador) controlador).MostrarEncabezado();
         }
     }
 
@@ -94,16 +117,8 @@ namespace Gui.Vistas
         {
             this.comandos = comandos;
 
-            // Oculto el cursor y muestro el titulo del menú
-            Console.CursorVisible = false;
-            mostrarTitulo();
-
-            // Guardo las coordenadas de inicio del menú
-            this.x = Console.CursorLeft;
-            this.y = Console.CursorTop;
-
             // Instancio el controlador
-            Controlador controlador = new MenuControlador(this);
+            this.controlador = new MenuControlador(this);
         }
 
         /* Propiedades */
@@ -116,10 +131,11 @@ namespace Gui.Vistas
         /// <summary>
         /// Muestra el título del menú separado de las opciones seleccionables
         /// </summary>
-        private void mostrarTitulo()
+        public void mostrarTitulo()
         {
             System.Console.WriteLine();
-            Console.ForegroundColor = ConsoleColor.Black;
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
 
             string[] tituloMenu = {
                 @"╭════════════ *-* ════════════╮",
@@ -148,7 +164,7 @@ namespace Gui.Vistas
             {
                 if (indiceRecorriendo == indiceSeleccionado)
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.ForegroundColor = ConsoleColor.Green;
                     VistasUtil.MostrarCentrado("► " + comando.titulo + " ◄");
                     Console.ForegroundColor = ConsoleColor.White;
                 }
@@ -161,6 +177,20 @@ namespace Gui.Vistas
 
                 indiceRecorriendo++;
             });
+        }
+
+        public override void Mostrar()
+        {
+            // Oculto el cursor y muestro el titulo del menú
+            Console.CursorVisible = false;
+            mostrarTitulo();
+
+            // Guardo las coordenadas de inicio del menú
+            this.x = Console.CursorLeft;
+            this.y = Console.CursorTop;
+
+            // Muestro el menú
+            ((MenuControlador) controlador).MostrarMenu();
         }
     }
 }

@@ -1,4 +1,5 @@
 using Gui.Modelo;
+using Gui.Util;
 using Gui.Vistas;
 
 namespace Gui.Controladores
@@ -24,9 +25,7 @@ namespace Gui.Controladores
     public class InicioControlador : Controlador
     {
         public InicioControlador(Vista vista) : base(vista)
-        {
-            MostrarEncabezado();
-        }
+        {}
 
         /// <summary>
         /// Muestra la vista de inicio y solicita al usuario su nombre de DT
@@ -35,8 +34,42 @@ namespace Gui.Controladores
         {
             ((Inicio) vista).Dibujar();
 
-            // Controles pendientes: largo, null, vacio, clase que lo almacenará
-            string? nombreUsuario = Console.ReadLine();
+            string? nombreUsuario;
+            do
+            {
+                ((Inicio) vista).SolicitarNombre();
+                nombreUsuario = Console.ReadLine();
+
+                if (estaVacio(nombreUsuario))
+                {
+                    VistasUtil.MostrarError("El nombre de usuario no puede estar vacío");
+                }
+                else if (!cumpleLongitud(nombreUsuario))
+                {
+                    VistasUtil.MostrarError("El nombre de usuario debe tener de 3 a 15 caracteres");
+                }
+
+            } while (estaVacio(nombreUsuario) || !cumpleLongitud(nombreUsuario));
+        }
+
+        /// <summary>
+        /// Verifica si un nombre de usuario está vacío
+        /// </summary>
+        /// <param name="nombre">Nombre de usuario a validar</param>
+        /// <returns><c>True</c> si el nombre es NULL o solo espacios, <c>False</c> en caso contrario</returns>
+        private bool estaVacio(string nombre)
+        {
+            return String.IsNullOrEmpty(nombre.Trim());
+        }
+
+        /// <summary>
+        /// Verifica si un nombre cumple con la longitud requerida
+        /// </summary>
+        /// <param name="nombre">Nombre de usuario a validar</param>
+        /// <returns><c>True</c> si el nombre de usuario tiene de 3 a 15 caracteres, <c>False</c> en caso contrario</returns>
+        private bool cumpleLongitud(string nombre)
+        {
+            return nombre.Length >= 3 && nombre.Length <= 15;
         }
     }
 
@@ -50,8 +83,6 @@ namespace Gui.Controladores
         {
             this.indiceSeleccionado = 0;
             this.estaSeleccionando = true;
-
-            MostrarMenu();
         }
 
         /// <summary>

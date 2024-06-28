@@ -55,5 +55,29 @@ namespace Gui.Util
         {
             return linea.Split(new [] {'\n', '\r'}, StringSplitOptions.RemoveEmptyEntries);
         }
+
+        /// <summary>
+        /// Muestra un mensaje de error por pantalla con decoración ascii art
+        /// </summary>
+        /// <param name="mensaje">Mensaje de error a mostrar</param>
+        public static void MostrarError(string mensaje)
+        {
+            System.Console.WriteLine("\n");
+
+            string error = @"
+>>======================================================<<
+|| ______     ______     ______     ______     ______   ||
+||/\  ___\   /\  == \   /\  == \   /\  __ \   /\  == \  ||
+||\ \  __\   \ \  __<   \ \  __<   \ \ \/\ \  \ \  __<  ||
+|| \ \_____\  \ \_\ \_\  \ \_\ \_\  \ \_____\  \ \_\ \_\||
+||  \/_____/   \/_/ /_/   \/_/ /_/   \/_____/   \/_/ /_/||
+>>======================================================<<   
+ 
+";
+            MostrarCentrado(ObtenerLineasSeparadas(error));
+            MostrarCentrado("× " + mensaje + " ×");
+
+            System.Console.WriteLine("\n");
+        }
     }
 }
