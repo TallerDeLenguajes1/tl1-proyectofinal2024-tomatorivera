@@ -1,6 +1,7 @@
 using Gui.Controladores;
 using Gui.Modelo;
 using Gui.Util;
+using Logica;
 
 namespace Gui.Vistas
 {
@@ -9,8 +10,6 @@ namespace Gui.Vistas
     /// </summary>
     public abstract class Vista
     {   
-        protected Controlador controlador;
-
         /// <summary>
         /// Método encargado de mostrar por pantalla la vista en cuestión
         /// </summary>
@@ -29,6 +28,8 @@ namespace Gui.Vistas
     /// </summary>
     public class Inicio : Vista
     {
+        private InicioControlador controlador;
+
         /// <summary>
         /// Constructor de la vista de Inicio
         /// </summary>
@@ -38,9 +39,6 @@ namespace Gui.Vistas
             this.controlador = new InicioControlador(this);
         }
 
-        /// <summary>
-        /// Muestra el logo y el titulo del videojuego
-        /// </summary>
         public override void Dibujar()
         {
             Console.Clear();
@@ -95,7 +93,7 @@ namespace Gui.Vistas
 
         public override void Mostrar()
         {
-            ((InicioControlador) controlador).MostrarEncabezado();
+            controlador.MostrarEncabezado();
         }
     }
 
@@ -104,6 +102,7 @@ namespace Gui.Vistas
     /// </summary>
     public class Menu : Vista
     {
+        private MenuControlador controlador;
         private List<IComando> comandos;
         private int x;
         private int y;
@@ -133,10 +132,16 @@ namespace Gui.Vistas
         /// </summary>
         public void mostrarTitulo()
         {
-            System.Console.WriteLine();
+            Console.Clear();
+
+            string lineasEncabezado = new string('─', Console.WindowWidth - 3);
+            VistasUtil.MostrarCentrado("┌" + lineasEncabezado + "┐");
+            VistasUtil.MostrarCentrado("¡Bienvenido! - Juego desarrollado por: Tomas Rivera");
+            VistasUtil.MostrarCentrado("└" + lineasEncabezado + "┘");
+
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.White;
-
+            
             string[] tituloMenu = {
                 @"╭════════════ *-* ════════════╮",
                 @"・Seleccione una opcion・",
@@ -149,10 +154,6 @@ namespace Gui.Vistas
             System.Console.WriteLine("");
         }
 
-        /// <summary>
-        /// Muestra por pantalla el menú, resaltando con un color distinto la opción que
-        /// esté seleccionada por el usuario
-        /// </summary>
         public override void Dibujar()
         {
             Console.CursorLeft = x;
@@ -190,7 +191,7 @@ namespace Gui.Vistas
             this.y = Console.CursorTop;
 
             // Muestro el menú
-            ((MenuControlador) controlador).MostrarMenu();
+            controlador.MostrarMenu();
         }
     }
 }

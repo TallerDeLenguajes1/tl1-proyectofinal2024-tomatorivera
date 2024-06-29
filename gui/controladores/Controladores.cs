@@ -8,23 +8,23 @@ namespace Gui.Controladores
     /// Representa una clase controladora. Dichas clases
     /// se encargan de controlar el funcionamiento de una vista
     /// </summary>
-    public abstract class Controlador
+    public abstract class Controlador<V> where V : Vista
     {
-        protected Vista vista;
+        protected V vista;
 
         /// <summary>
         /// Constructor de una clase controladora
         /// </summary>
         /// <param name="vista">Instancia de la clase vista a controlar</param>
-        public Controlador(Vista vista)
+        public Controlador(V vista)
         {
             this.vista = vista;
         }
     }
 
-    public class InicioControlador : Controlador
+    public class InicioControlador : Controlador<Inicio>
     {
-        public InicioControlador(Vista vista) : base(vista)
+        public InicioControlador(Inicio vista) : base(vista)
         {}
 
         /// <summary>
@@ -32,13 +32,14 @@ namespace Gui.Controladores
         /// </summary>
         public void MostrarEncabezado()
         {
-            ((Inicio) vista).Dibujar();
+            vista.Dibujar();
 
-            string? nombreUsuario;
+            // Falta persistir el nombre de usuario
+            string nombreUsuario = string.Empty;
             do
             {
-                ((Inicio) vista).SolicitarNombre();
-                nombreUsuario = Console.ReadLine();
+                vista.SolicitarNombre();
+                nombreUsuario = Console.ReadLine() ?? string.Empty;
 
                 if (estaVacio(nombreUsuario))
                 {
@@ -59,7 +60,7 @@ namespace Gui.Controladores
         /// <returns><c>True</c> si el nombre es NULL o solo espacios, <c>False</c> en caso contrario</returns>
         private bool estaVacio(string nombre)
         {
-            return String.IsNullOrEmpty(nombre.Trim());
+            return nombre.Length == 0 || nombre.Trim().Equals("");
         }
 
         /// <summary>
@@ -73,13 +74,13 @@ namespace Gui.Controladores
         }
     }
 
-    public class MenuControlador : Controlador
+    public class MenuControlador : Controlador<Menu>
     {
 
         private bool estaSeleccionando;
         private int indiceSeleccionado;
 
-        public MenuControlador(Vista vista) : base(vista)
+        public MenuControlador(Menu vista) : base(vista)
         {
             this.indiceSeleccionado = 0;
             this.estaSeleccionando = true;
@@ -91,9 +92,8 @@ namespace Gui.Controladores
         public void MostrarMenu()
         {
             ConsoleKeyInfo teclaPresionada;
-            Menu menu = (Menu) vista;
-            menu.IndiceSeleccionado = this.indiceSeleccionado;
-            menu.Dibujar();
+            vista.IndiceSeleccionado = this.indiceSeleccionado;
+            vista.Dibujar();
 
             // El menú se mostrará mientras no se seleccione la opción Salir
             while (estaSeleccionando)
@@ -104,7 +104,7 @@ namespace Gui.Controladores
                     switch (teclaPresionada.Key)
                     {
                         case ConsoleKey.DownArrow:
-                            if (indiceSeleccionado == (menu.Comandos.Count() - 1))
+                            if (indiceSeleccionado == (vista.Comandos.Count() - 1))
                                 continue;
                             indiceSeleccionado++;
                             break;
@@ -120,14 +120,14 @@ namespace Gui.Controladores
                     }
 
                     // Actualizo el indice seleccionado y vuelvo a dibujar el menu
-                    menu.IndiceSeleccionado = this.indiceSeleccionado;
-                    menu.Dibujar();
+                    vista.IndiceSeleccionado = this.indiceSeleccionado;
+                    vista.Dibujar();
                 }
 
                 // Ejecuto el comando seleccionado
-                menu.Comandos.ElementAt(indiceSeleccionado).ejecutar();
+                vista.Comandos.ElementAt(indiceSeleccionado).ejecutar();
 
-                if (menu.Comandos.ElementAt(indiceSeleccionado) is ComandoSalir)
+                if (vista.Comandos.ElementAt(indiceSeleccionado) is ComandoSalir)
                 {
                     this.estaSeleccionando = false;
                 }
