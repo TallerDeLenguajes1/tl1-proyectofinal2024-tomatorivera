@@ -136,7 +136,7 @@ namespace Gui.Vistas
 
             string lineasEncabezado = new string('─', Console.WindowWidth - 3);
             VistasUtil.MostrarCentrado("┌" + lineasEncabezado + "┐");
-            VistasUtil.MostrarCentrado("¡Bienvenido! - Juego desarrollado por: Tomas Rivera");
+            VistasUtil.MostrarCentrado("¡Bienvenido " + controlador.ObtenerNombreUsuario() + "! - Juego desarrollado por: Tomas Rivera");
             VistasUtil.MostrarCentrado("└" + lineasEncabezado + "┘");
 
             Console.BackgroundColor = ConsoleColor.Black;

@@ -1,6 +1,8 @@
 using Gui.Modelo;
 using Gui.Util;
 using Gui.Vistas;
+using Logica.Modelo;
+using Logica.Servicios;
 
 namespace Gui.Controladores
 {
@@ -24,8 +26,12 @@ namespace Gui.Controladores
 
     public class InicioControlador : Controlador<Inicio>
     {
+        private UsuarioServicio servicio;
+
         public InicioControlador(Inicio vista) : base(vista)
-        {}
+        {
+            servicio = new UsuarioServicioImpl();
+        }
 
         /// <summary>
         /// Muestra la vista de inicio y solicita al usuario su nombre de DT
@@ -51,6 +57,9 @@ namespace Gui.Controladores
                 }
 
             } while (estaVacio(nombreUsuario) || !cumpleLongitud(nombreUsuario));
+
+            // Almaceno el usuario
+            servicio.CrearUsuario(nombreUsuario);
         }
 
         /// <summary>
@@ -79,11 +88,13 @@ namespace Gui.Controladores
 
         private bool estaSeleccionando;
         private int indiceSeleccionado;
+        private UsuarioServicio servicio;
 
         public MenuControlador(Menu vista) : base(vista)
         {
             this.indiceSeleccionado = 0;
             this.estaSeleccionando = true;
+            this.servicio = new UsuarioServicioImpl();
         }
 
         /// <summary>
@@ -132,6 +143,15 @@ namespace Gui.Controladores
                     this.estaSeleccionando = false;
                 }
             }
+        }
+
+        /// <summary>
+        /// Solicita a la capa de servicio correspondiente el nombre del jugador
+        /// </summary>
+        /// <returns>El nombre indicado por el jugador o una cadena vacía si dicho nombre fuese nulo</returns>
+        public string ObtenerNombreUsuario()
+        {
+            return servicio.ObtenerDatosUsuario().NombreUsuario ?? string.Empty;
         }
 
     }
