@@ -17,7 +17,7 @@ namespace Logica.Modelo
         }
 
         // Propiedades
-        public string? NombreUsuario { get => nombreUsuario; set => nombreUsuario = value; }
+        public string NombreUsuario { get => nombreUsuario; set => nombreUsuario = value; }
 
         // Métodos
 

@@ -1,4 +1,6 @@
 using Gui.Util;
+using Logica.Modelo;
+using Logica.Servicios;
 
 namespace Gui.Modelo
 {
@@ -29,28 +31,113 @@ namespace Gui.Modelo
 
         public void ejecutar()
         {
-            System.Console.WriteLine("Sistema finalizado");
+            System.Console.WriteLine();
+
+            // Realizo una verificación para salir del menú
+            // Cualquier primer caracter distinto de "s" será tomado como "n" para evitar bugs en la vista del menú
+            string seleccion;
+            
+            VistasUtil.MostrarCentradoSinSalto("¿Está seguro que desea salir? [si/no]: ");
+            seleccion = Console.ReadLine() ?? string.Empty;
+
+            // Si el usuario ingresó una opción afirmativa, se debe cerrar el juego o volver al menú
+            // anterior dependiendo del tipo del menú en el que estemos
+            if (primerCaracter(seleccion).Equals('s'))
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+
+                if (tipoMenu == TipoMenu.PRINCIPAL)
+                {
+                    VistasUtil.MostrarCentrado("Cerrando el juego...");
+                    Environment.Exit(0);
+                }
+                else
+                {
+                    VistasUtil.MostrarCentrado("Volviendo al menu anterior...");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Obtiene el primer caracter de una cadena
+        /// </summary>
+        /// <param name="input">Cadena</param>
+        /// <returns>Primer caracter de <paramref name="input"/></returns>
+        private char primerCaracter(string input) 
+        {
+            return String.IsNullOrWhiteSpace(input) ? ' ' : input.Trim().ToLower()[0];
         }
     }
 
-    // COMANDOS DE EJEMPLO PARA PRUEBAS, SERÁN ELIMINADOS
-    public class prueba1 : IComando
+    public class NuevaPartida : IComando
     {
-        public string titulo => "Prueba 1";
+        public string titulo => "Crear nueva partida";
 
         public void ejecutar()
         {
-            System.Console.WriteLine("Ejecutando prueba 1");
+            // Creo una nueva partida
+            PartidaServicio servicio = new PartidaServicioImpl();
+            servicio.CrearPartida();
+
+            // Inicio la partida creada
+            Partida partidaActual = servicio.ObtenerDatosPartida();
+            partidaActual.Iniciar();
         }
     }
 
-    public class prueba2 : IComando
+    public class CargarPartida : IComando
     {
-        public string titulo => "Prueba 2";
+        public string titulo => "Cargar partida";
 
         public void ejecutar()
         {
-            System.Console.WriteLine("Ejecutando prueba 2");
+            // Obtengo una lista de partidas guardadas
+            PartidaServicio servicio = new PartidaServicioImpl();
+            List<Partida> partidasGuardadas = servicio.ObtenerPartidas();
+
+            Partida? partidaCargar = null;
+            string strOpcion = string.Empty;
+            bool opcionValida = false;
+            do
+            {
+                System.Console.WriteLine();
+
+                // Muestro los datos de las partidas por pantalla
+                VistasUtil.MostrarCentrado(partidasGuardadas.Select(p => p.ToString()).ToArray());
+                VistasUtil.MostrarCentradoSinSalto("► Ingrese el ID de la partida a cargar: ");
+
+                strOpcion = Console.ReadLine() ?? string.Empty;
+                int intOpcion;
+
+                // Verifico si la opción ingresada es un entero válido
+                opcionValida = int.TryParse(strOpcion, out intOpcion);
+                if (!opcionValida)
+                    VistasUtil.MostrarError("Debe ingresar un número entero");
+
+                else
+                {
+                    partidaCargar = obtenerPartida(partidasGuardadas, intOpcion);
+
+                    // Verifico si el ID ingresado corresponde a alguna partida
+                    if (partidaCargar == null)
+                        VistasUtil.MostrarError("El ID ingresado no corresponde a ninguna partida guardada");
+                }
+
+            } while (partidaCargar == null || !opcionValida);
+
+            // Inicio la partida seleccionada
+            partidaCargar.Iniciar();
+        }
+
+        /// <summary>
+        /// Obtiene una partida de una lista de partidas según un ID específico
+        /// </summary>
+        /// <param name="partidas">Lista de partidas</param>
+        /// <param name="id">ID de la partida a filtrar</param>
+        /// <returns>Objeto <c>Partida</c></returns>
+        private Partida obtenerPartida(List<Partida> partidas, int id)
+        {
+            return partidas.Find(p => p.Id == id);
         }
     }
 }

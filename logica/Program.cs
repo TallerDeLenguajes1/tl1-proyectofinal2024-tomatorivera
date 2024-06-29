@@ -18,8 +18,8 @@ namespace Logica
             // Muestro el menú principal
             List<IComando> comandos = new List<IComando>()
             {
-                new prueba1(),
-                new prueba2(),
+                new NuevaPartida(),
+                new CargarPartida(),
                 new ComandoSalir(TipoMenu.PRINCIPAL)
             };
             Vista menuPrincipal = new Menu(comandos);

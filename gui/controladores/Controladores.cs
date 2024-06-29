@@ -135,13 +135,13 @@ namespace Gui.Controladores
                     vista.Dibujar();
                 }
 
+                // Almaceno la posición del cursor para borrar desde ahí los registros visuales del comando
+                int lineaInicio = Console.CursorTop;
+
                 // Ejecuto el comando seleccionado
                 vista.Comandos.ElementAt(indiceSeleccionado).ejecutar();
 
-                if (vista.Comandos.ElementAt(indiceSeleccionado) is ComandoSalir)
-                {
-                    this.estaSeleccionando = false;
-                }
+                borrarDesdeLinea(lineaInicio);
             }
         }
 
@@ -154,5 +154,21 @@ namespace Gui.Controladores
             return servicio.ObtenerDatosUsuario().NombreUsuario ?? string.Empty;
         }
 
+        /// <summary>
+        /// Borra la consola a partir de la linea <paramref name="lineaInicio"/>
+        /// </summary>
+        /// <param name="lineaInicio">Linea desde la cual se borrará la consola</param>
+        private void borrarDesdeLinea(int lineaInicio)
+        {
+            int lineaFin = Console.CursorTop;
+
+            for (int i = lineaInicio ; i < lineaFin ; i++)
+            {
+                Console.SetCursorPosition(0, i);
+                Console.Write(new string(' ', Console.WindowWidth));
+            }
+
+            Console.SetCursorPosition(0, lineaInicio);
+        }
     }
 }
