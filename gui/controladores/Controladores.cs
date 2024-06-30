@@ -95,6 +95,7 @@ namespace Gui.Controladores
             this.indiceSeleccionado = 0;
             this.estaSeleccionando = true;
             this.servicio = new UsuarioServicioImpl();
+            configurarComandoSalida();
         }
 
         /// <summary>
@@ -141,7 +142,8 @@ namespace Gui.Controladores
                 // Ejecuto el comando seleccionado
                 vista.Comandos.ElementAt(indiceSeleccionado).ejecutar();
 
-                borrarDesdeLinea(lineaInicio);
+                // Solo si el menú aún se sigue ejecutando, borro las lineas de lo escrito por los comandos
+                if (estaSeleccionando) borrarDesdeLinea(lineaInicio);
             }
         }
 
@@ -169,6 +171,16 @@ namespace Gui.Controladores
             }
 
             Console.SetCursorPosition(0, lineaInicio);
+        }
+
+        private void configurarComandoSalida() {
+            foreach (IComando cmd in vista.Comandos)
+            {
+                if (cmd is ComandoSalir)
+                {
+                    ((ComandoSalir) cmd).AccionPersonalizada = () => { this.estaSeleccionando = false; };
+                }
+            }
         }
     }
 }

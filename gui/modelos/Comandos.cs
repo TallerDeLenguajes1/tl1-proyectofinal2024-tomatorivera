@@ -22,7 +22,10 @@ namespace Gui.Modelo
     public class ComandoSalir : IComando
     {
         private TipoMenu tipoMenu;
+        private Action? accionPersonalizada;
+
         public string titulo => tipoMenu.Descripcion();
+        public Action? AccionPersonalizada { get => accionPersonalizada; set => accionPersonalizada = value; } 
 
         public ComandoSalir(TipoMenu tipoMenu)
         {
@@ -44,17 +47,35 @@ namespace Gui.Modelo
             // anterior dependiendo del tipo del menú en el que estemos
             if (primerCaracter(seleccion).Equals('s'))
             {
+                System.Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.Green;
 
                 if (tipoMenu == TipoMenu.PRINCIPAL)
                 {
-                    VistasUtil.MostrarCentrado("Cerrando el juego...");
-                    Environment.Exit(0);
+                    Console.Clear();
+
+                    string mensajeDespedida = @"
+    ___       ___            __
+   /   | ____/ (_)___  _____/ /
+  / /| |/ __  / / __ \/ ___/ / 
+ / ___ / /_/ / / /_/ (__  )_/  
+/_/  |_\__,_/_/\____/____(_)   
+-*-
+Espero que te hayas divertido :)
+-*-
+";
+                    VistasUtil.MostrarCentrado(VistasUtil.ObtenerLineasSeparadas(mensajeDespedida));
                 }
                 else
                 {
                     VistasUtil.MostrarCentrado("Volviendo al menu anterior...");
+
+                    // Espero 500 ms antes de borrar este mensaje y mostrar la vista anterior
+                    Thread.Sleep(500);
+                    Console.Clear();
                 }
+
+                if (accionPersonalizada != null) accionPersonalizada.Invoke();
             }
         }
 
