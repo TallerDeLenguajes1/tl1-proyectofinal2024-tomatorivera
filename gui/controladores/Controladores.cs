@@ -173,14 +173,17 @@ namespace Gui.Controladores
             Console.SetCursorPosition(0, lineaInicio);
         }
 
+        /// <summary>
+        /// Agrega la acción de modificar el atributo "estaSeleccionado" en el comando salir
+        /// para que detenga la ejecución del WHILE que mantiene activo el menú
+        /// </summary>
         private void configurarComandoSalida() {
-            foreach (IComando cmd in vista.Comandos)
-            {
+            vista.Comandos.ForEach(cmd => {
                 if (cmd is ComandoSalir)
                 {
                     ((ComandoSalir) cmd).AccionPersonalizada = () => { this.estaSeleccionando = false; };
                 }
-            }
+            });
         }
     }
 }

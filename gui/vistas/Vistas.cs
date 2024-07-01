@@ -133,6 +133,7 @@ namespace Gui.Vistas
         public void mostrarTitulo()
         {
             Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Green;
 
             string lineasEncabezado = new string('─', Console.WindowWidth - 3);
             VistasUtil.MostrarCentrado("┌" + lineasEncabezado + "┐");

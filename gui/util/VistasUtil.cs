@@ -71,13 +71,39 @@ namespace Gui.Util
 ||\ \  __\   \ \  __<   \ \  __<   \ \ \/\ \  \ \  __<  ||
 || \ \_____\  \ \_\ \_\  \ \_\ \_\  \ \_____\  \ \_\ \_\||
 ||  \/_____/   \/_/ /_/   \/_/ /_/   \/_____/   \/_/ /_/||
->>======================================================<<   
+>>======================================================<<
  
 ";
             MostrarCentrado(ObtenerLineasSeparadas(error));
             MostrarCentrado("× " + mensaje + " ×");
 
             System.Console.WriteLine("\n");
+        }
+
+        /// <summary>
+        /// Pausa la vista durante <paramref name="segundos"/> para evitar algún
+        /// barrido de consola rápido en algún momento preciso del código
+        /// </summary>
+        /// <param name="segundos">Cantidad de segundos a pausar la vista</param>
+        public static void PausarVistas(int segundos)
+        {
+            try
+            {
+                // Pauso el hilo
+                Thread.Sleep(segundos * 1000);
+
+                // Limpio el buffer para evitar bugs con las teclas que haya presionado
+                // el usuario durante el período de sleep
+                while (Console.KeyAvailable)
+                {
+                    Console.ReadKey(true);
+                }
+            }
+            catch (Exception e)
+            {
+                // Si por alguna razón la interrupción del thread lanza un error
+                // solo sigue su ejecución sin pausar la vista
+            }
         }
     }
 }

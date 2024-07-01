@@ -1,5 +1,8 @@
 namespace Logica.Modelo
 {
+    /// <summary>
+    /// Clase modelo que almacena información de la partida actual
+    /// </summary>
     public class Partida
     {
         private int id;
@@ -19,6 +22,10 @@ namespace Logica.Modelo
         public Usuario Usuario { get => usuario; set => usuario = value; }
 
         // Métodos
+
+        /// <summary>
+        /// Inicia la lógica de una partida
+        /// </summary>
         public void Iniciar() {
             // Falta implementar la lógica
             System.Console.WriteLine("Iniciando partida...");

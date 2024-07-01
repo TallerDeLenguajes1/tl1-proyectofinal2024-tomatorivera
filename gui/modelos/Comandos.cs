@@ -112,42 +112,44 @@ Espero que te hayas divertido :)
 
         public void ejecutar()
         {
+            System.Console.WriteLine();
+
             // Obtengo una lista de partidas guardadas
             PartidaServicio servicio = new PartidaServicioImpl();
             List<Partida> partidasGuardadas = servicio.ObtenerPartidas();
 
+            // Solicito la partida a cargar al usuario, no la solicito en bucle para evitar bugs visuales del menú
             Partida? partidaCargar = null;
-            string strOpcion = string.Empty;
-            bool opcionValida = false;
-            do
+
+            // Muestro los datos de las partidas por pantalla
+            VistasUtil.MostrarCentrado(partidasGuardadas.Select(p => p.ToString()).ToArray());
+            System.Console.WriteLine();
+            VistasUtil.MostrarCentradoSinSalto("► Ingrese el ID de la partida a cargar: ");
+
+            string strOpcion = Console.ReadLine() ?? string.Empty;
+            int intOpcion;
+
+            // Verifico si la opción ingresada es un entero válido
+            bool opcionValida = int.TryParse(strOpcion, out intOpcion);
+            if (!opcionValida)
             {
-                System.Console.WriteLine();
+                VistasUtil.MostrarError("Debe ingresar un número entero");
+                VistasUtil.PausarVistas(2);
+            }
+            else
+            {
+                partidaCargar = obtenerPartida(partidasGuardadas, intOpcion);
 
-                // Muestro los datos de las partidas por pantalla
-                VistasUtil.MostrarCentrado(partidasGuardadas.Select(p => p.ToString()).ToArray());
-                VistasUtil.MostrarCentradoSinSalto("► Ingrese el ID de la partida a cargar: ");
-
-                strOpcion = Console.ReadLine() ?? string.Empty;
-                int intOpcion;
-
-                // Verifico si la opción ingresada es un entero válido
-                opcionValida = int.TryParse(strOpcion, out intOpcion);
-                if (!opcionValida)
-                    VistasUtil.MostrarError("Debe ingresar un número entero");
-
-                else
+                // Verifico si el ID ingresado corresponde a alguna partida
+                if (partidaCargar == null)
                 {
-                    partidaCargar = obtenerPartida(partidasGuardadas, intOpcion);
-
-                    // Verifico si el ID ingresado corresponde a alguna partida
-                    if (partidaCargar == null)
-                        VistasUtil.MostrarError("El ID ingresado no corresponde a ninguna partida guardada");
+                    VistasUtil.MostrarError("El ID ingresado no corresponde a ninguna partida guardada");
+                    VistasUtil.PausarVistas(2);
                 }
+            }
 
-            } while (partidaCargar == null || !opcionValida);
-
-            // Inicio la partida seleccionada
-            partidaCargar.Iniciar();
+            // Inicio la partida seleccionada solo si se seleccionó una opción válida
+            if (partidaCargar != null) partidaCargar.Iniciar();
         }
 
         /// <summary>
