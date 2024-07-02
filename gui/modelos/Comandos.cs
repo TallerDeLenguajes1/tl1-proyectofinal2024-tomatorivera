@@ -1,4 +1,8 @@
+using System.Text.RegularExpressions;
+using Gui.Controladores;
 using Gui.Util;
+using Gui.Vistas;
+using Logica.Excepciones;
 using Logica.Modelo;
 using Logica.Servicios;
 
@@ -96,14 +100,66 @@ Espero que te hayas divertido :)
 
         public void ejecutar()
         {
-            // Creo una nueva partida
-            PartidaServicio servicio = new PartidaServicioImpl();
-            servicio.CrearPartida();
+            /* EL USERNAME NO SE PIDE EN BUCLE PARA EVITAR BUGS VISUALES EN EL MENÚ */
+            System.Console.WriteLine();
 
-            // Inicio la partida creada
-            Partida partidaActual = servicio.ObtenerDatosPartida();
-            partidaActual.Iniciar();
+            // Solicito los datos al usuario
+            Console.ForegroundColor = ConsoleColor.Green;
+            VistasUtil.MostrarCentrado("+" + new string('=', Console.WindowWidth - 2) + "+");
+
+            Console.ForegroundColor = ConsoleColor.White;
+            VistasUtil.MostrarCentradoSinSalto("Ingrese su nombre de DT: ");
+
+            // Leo el nombre borrando los espacios con el trim
+            string nombreUsuario = (Console.ReadLine() ?? string.Empty).Trim();
+
+            // Verifico si el nombre de usuario es correcto, si no lo fuese lanzo 
+            // una excepción para mostrar el mensaje de error por pantalla
+            try 
+            {
+                if (!cumpleLongitud(nombreUsuario))
+                    throw new UsernameInvalidoException("El nombre de usuario debe tener de 3 a 15 caracteres");
+
+                if (!cumpleCaracteres(nombreUsuario))
+                    throw new UsernameInvalidoException("El nombre de usuario debe tener solo caracteres alfabeticos");
+
+                PartidaServicio servicio = new PartidaServicioImpl();
+
+                int id = servicio.ObtenerNuevoIdPartida();
+                Usuario nuevoUsuario = new Usuario(nombreUsuario);
+                Partida nuevaPartida = new Partida(id, DateTime.Now, nuevoUsuario);
+
+                servicio.CrearPartida(nuevaPartida);
+                nuevaPartida.Iniciar();
+
+            } catch (Exception e) {
+                VistasUtil.MostrarError(e.Message);
+                // Pauso la vista para que se logre ver el mensaje antes del console clear
+                VistasUtil.PausarVistas(2);
+            }
         }
+
+        /// <summary>
+        /// Verifica si un nombre de usuario está vacío
+        /// </summary>
+        /// <param name="nombre">Nombre de usuario a validar</param>
+        /// <returns><c>True</c> si el nombre es NULL o solo espacios, <c>False</c> en caso contrario</returns>
+        private bool cumpleCaracteres(string nombre)
+        {
+            Regex rgx = new Regex("^[a-zA-Z]+$");
+            return rgx.IsMatch(nombre);
+        }
+
+        /// <summary>
+        /// Verifica si un nombre cumple con la longitud requerida
+        /// </summary>
+        /// <param name="nombre">Nombre de usuario a validar</param>
+        /// <returns><c>True</c> si el nombre de usuario tiene de 3 a 15 caracteres, <c>False</c> en caso contrario</returns>
+        private bool cumpleLongitud(string nombre)
+        {
+            return nombre.Length >= 3 && nombre.Length <= 15;
+        }
+
     }
 
     public class CargarPartida : IComando

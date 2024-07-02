@@ -39,7 +39,7 @@ namespace Gui.Controladores
         public void MostrarEncabezado()
         {
             vista.Dibujar();
-
+/*
             // Falta persistir el nombre de usuario
             string nombreUsuario = string.Empty;
             do
@@ -59,7 +59,10 @@ namespace Gui.Controladores
             } while (estaVacio(nombreUsuario) || !cumpleLongitud(nombreUsuario));
 
             // Almaceno el usuario
-            servicio.CrearUsuario(nombreUsuario);
+            servicio.AlmacenarUsuario(nombreUsuario);
+*/
+            // Leo una tecla para iniciar el juego
+            Console.ReadKey();
         }
 
         /// <summary>

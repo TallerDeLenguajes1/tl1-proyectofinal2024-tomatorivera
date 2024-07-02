@@ -42,6 +42,7 @@ namespace Gui.Vistas
         public override void Dibujar()
         {
             Console.Clear();
+            Console.CursorVisible = false;
             Console.ForegroundColor = ConsoleColor.Green;
 
             string logo = @"
@@ -76,9 +77,12 @@ namespace Gui.Vistas
   / /|_/ / __ `/ __ \/ __ `/ __ `/ _ \/ ___/ 
  / /  / / /_/ / / / / /_/ / /_/ /  __/ /     
 /_/  /_/\__,_/_/ /_/\__,_/\__, /\___/_/      
-                         /____/                     
+                         /____/              
 ";
             VistasUtil.MostrarCentrado(VistasUtil.ObtenerLineasSeparadas(titulo));
+
+            System.Console.WriteLine();
+            VistasUtil.MostrarCentrado("* Presione una tecla para iniciar... *");
         }
 
         /// <summary>

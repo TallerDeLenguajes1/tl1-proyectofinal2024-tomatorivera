@@ -1,0 +1,97 @@
+using System.Text.Json;
+using System.Text.RegularExpressions;
+using Logica.Excepciones;
+using Logica.Modelo;
+using Persistencia.Infraestructura;
+
+namespace Persistencia.Repositorios
+{
+    public class PartidaRepositorioImpl : IRepositorio<Partida>
+    {
+        public Partida partidaActual { get; set; }
+
+        /// <summary>
+        /// Crea un nuevo archivo de persistencia para <paramref name="obj"/>
+        /// </summary>
+        /// <param name="obj">Objeto <c>Partida</c></param>
+        /// <exception cref="PartidaDuplicadaException">Excepción lanzada cuando ya existe una carpeta con el mismo nombre de la que se va a crear</exception>
+        public void Crear(Partida obj)
+        {
+            verificarDirectorioPartidas();
+
+            string nuevaPartidaDir = Config.DirectorioPartidas + @"\partida-" + obj.Id + "-" + obj.FechaGuardado.ToString("ddMMyyyy");
+
+            // Verifico si por alguna razón ya existe un directorio con el nombre de la nueva partida
+            if (Directory.Exists(nuevaPartidaDir))
+            {
+                throw new PartidaDuplicadaException("Ya existe una partida con este ID", nuevaPartidaDir);
+            }
+            
+            // Creo el directorio de la nueva partida
+            Directory.CreateDirectory(nuevaPartidaDir);
+
+            // Creo el archivo de la partida
+            using (FileStream partidaJson = new FileStream(nuevaPartidaDir + @"\" + Config.NombreJsonPartida, FileMode.OpenOrCreate))
+            {
+                using (StreamWriter writer = new StreamWriter(partidaJson))
+                {
+                    string partidaSerializada = JsonSerializer.Serialize(obj, new JsonSerializerOptions { WriteIndented = true });
+                    writer.WriteLine(partidaSerializada);
+                }
+            }
+
+            // Actualizo el directorio de la partida actual en el archivo de configuración
+            Config.DirectorioPartidaActual = nuevaPartidaDir;
+            // Actualizo la instancia de la partida actual para manejar los datos desde el programa
+            this.partidaActual = obj;
+        }
+
+        public void Guardar(Partida obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Partida ObtenerActual()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Obtiene una lista de string con los nombres válidos de directorios de partidas
+        /// </summary>
+        /// <returns><c>List</c> de <c>string</c> con los nombres de los directorios</returns>
+        public List<string> ObtenerDirectoriosPartidas()
+        {
+            verificarDirectorioPartidas();
+
+            // Regex para los nombres de carpetas de las partidas
+            string nombreDirectorioRegex = @"^partida-(\d+)-(\d{2}\d{2}\d{4})$";
+            Regex rgx = new Regex(nombreDirectorioRegex);
+
+            // El atributo "DirectorioPartidas" no es null, si lo fuese, la excepción 
+            // sería lanzada desde el método 'verificarDirectorioPartidas'
+            return Directory.GetDirectories(Config.DirectorioPartidas, Config.DirectorioPartidasPrefix + "*")
+                            .Select(dir => Path.GetFileName(dir))
+                            .Where(dir => rgx.IsMatch(dir))
+                            .ToList();
+        }
+
+        /// <summary>
+        /// Verifica si el directorio de partidas existe, si no existiese lo crea
+        /// </summary>
+        /// <exception cref="ConfiguracionInexistenteException">Cuando por alguna razón no se ha cargado el directorio de partidas en la configuración</exception>
+        private void verificarDirectorioPartidas()
+        {
+            // Verifico si se cargó la configuración para poder usar los directorios
+            if (Config.DirectorioPartidas == null)
+            {
+                throw new ConfiguracionInexistenteException("No se ha configurado el directorio de partidas");
+            }
+
+            if (!Directory.Exists(Config.DirectorioPartidas))
+            {
+                Directory.CreateDirectory(Config.DirectorioPartidas);
+            }
+        }
+    }
+}

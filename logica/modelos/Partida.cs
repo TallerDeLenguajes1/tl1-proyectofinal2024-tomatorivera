@@ -1,3 +1,6 @@
+using System.Text.Json.Serialization;
+using Logica.Helpers;
+
 namespace Logica.Modelo
 {
     /// <summary>
@@ -7,6 +10,8 @@ namespace Logica.Modelo
     {
         private int id;
         private DateTime fechaGuardado;
+        
+        [JsonConverter(typeof(UsuarioConverter))]
         private Usuario usuario;
 
         public Partida(int id, DateTime fechaGuardado, Usuario usuario)

@@ -1,5 +1,6 @@
 ﻿using Gui.Modelo;
 using Gui.Vistas;
+using Persistencia.Infraestructura;
 
 namespace Logica
 {
@@ -11,6 +12,9 @@ namespace Logica
         /// <param name="args">Argumentos de consola</param>
         private static void Main(string[] args)
         {
+            // Cargo la configuración general del juego
+            Config.CargarConfiguracion();
+            
             // Muestro el titulo del juego
             Vista encabezado = new Inicio();
             encabezado.Mostrar();
