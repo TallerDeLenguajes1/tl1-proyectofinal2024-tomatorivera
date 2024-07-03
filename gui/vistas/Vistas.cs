@@ -14,13 +14,6 @@ namespace Gui.Vistas
         /// Método encargado de mostrar por pantalla la vista en cuestión
         /// </summary>
         public abstract void Dibujar();
-
-        /// <summary>
-        /// Se encarga de mostrar la vista desde su respectivo controlador para poder
-        /// separar la instancia del objeto vista de la acción de mostrarlo, y para
-        /// que el usuario no tenga que preocuparse de la instancia de controladores
-        /// </summary>
-        public abstract void Mostrar();
     }
 
     /// <summary>
@@ -28,21 +21,17 @@ namespace Gui.Vistas
     /// </summary>
     public class Inicio : Vista
     {
-        private InicioControlador controlador;
 
         /// <summary>
         /// Constructor de la vista de Inicio
         /// </summary>
         public Inicio()
-        {
-            // Instancio el controlador
-            this.controlador = new InicioControlador(this);
-        }
+        {}
 
         public override void Dibujar()
         {
-            Console.Clear();
             Console.CursorVisible = false;
+            Console.Clear();
             Console.ForegroundColor = ConsoleColor.Green;
 
             string logo = @"
@@ -94,11 +83,6 @@ namespace Gui.Vistas
             System.Console.WriteLine();
             VistasUtil.MostrarCentradoSinSalto("► Ingrese su nombre de DT: ");
         }
-
-        public override void Mostrar()
-        {
-            controlador.MostrarEncabezado();
-        }
     }
 
     /// <summary>
@@ -106,7 +90,6 @@ namespace Gui.Vistas
     /// </summary>
     public class Menu : Vista
     {
-        private MenuControlador controlador;
         private List<IComando> comandos;
         private int x;
         private int y;
@@ -119,9 +102,6 @@ namespace Gui.Vistas
         public Menu(List<IComando> comandos)
         {
             this.comandos = comandos;
-
-            // Instancio el controlador
-            this.controlador = new MenuControlador(this);
         }
 
         /* Propiedades */
@@ -134,14 +114,14 @@ namespace Gui.Vistas
         /// <summary>
         /// Muestra el título del menú separado de las opciones seleccionables
         /// </summary>
-        public void mostrarTitulo()
+        public void MostrarTitulo()
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Green;
 
             string lineasEncabezado = new string('─', Console.WindowWidth - 3);
             VistasUtil.MostrarCentrado("┌" + lineasEncabezado + "┐");
-            VistasUtil.MostrarCentrado("¡Bienvenido " + controlador.ObtenerNombreUsuario() + "! - Juego desarrollado por: Tomas Rivera");
+            VistasUtil.MostrarCentrado("¡Bienvenido! - Juego desarrollado por: Tomas Rivera");
             VistasUtil.MostrarCentrado("└" + lineasEncabezado + "┘");
 
             Console.BackgroundColor = ConsoleColor.Black;
@@ -157,6 +137,11 @@ namespace Gui.Vistas
 
             // Espacio en blanco para separar el título de las opciones
             System.Console.WriteLine("");
+
+            // Almaceno las coordenadas del cursor luego de mostrar el titulo para
+            // mostrar las opciones del menú a partir de aquí
+            this.x = Console.CursorLeft;
+            this.y = Console.CursorTop;
         }
 
         public override void Dibujar()
@@ -183,20 +168,6 @@ namespace Gui.Vistas
 
                 indiceRecorriendo++;
             });
-        }
-
-        public override void Mostrar()
-        {
-            // Oculto el cursor y muestro el titulo del menú
-            Console.CursorVisible = false;
-            mostrarTitulo();
-
-            // Guardo las coordenadas de inicio del menú
-            this.x = Console.CursorLeft;
-            this.y = Console.CursorTop;
-
-            // Muestro el menú
-            controlador.MostrarMenu();
         }
     }
 }

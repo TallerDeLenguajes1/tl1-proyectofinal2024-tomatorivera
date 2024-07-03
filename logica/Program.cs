@@ -1,4 +1,5 @@
-﻿using Gui.Modelo;
+﻿using Gui.Controladores;
+using Gui.Modelo;
 using Gui.Vistas;
 using Persistencia.Infraestructura;
 
@@ -15,19 +16,30 @@ namespace Logica
             // Cargo la configuración general del juego
             Config.CargarConfiguracion();
             
+            // Inicio el juego
+            mostrarMenuPrincipal();
+        }
+
+        private static void mostrarMenuPrincipal()
+        {
             // Muestro el titulo del juego
-            Vista encabezado = new Inicio();
-            encabezado.Mostrar();
-            
+            Inicio tituloInicio = new Inicio();
+            Controlador<Inicio> tituloInicioControlador = new InicioControlador(tituloInicio);
+
+            tituloInicioControlador.MostrarVista();
+
             // Muestro el menú principal
-            List<IComando> comandos = new List<IComando>()
+            var opcionesMenuPrincipal = new List<IComando>()
             {
-                new NuevaPartida(),
-                new CargarPartida(),
+                new ComandoNuevaPartida(),
+                new ComandoCargarPartida(),
                 new ComandoSalir(TipoMenu.PRINCIPAL)
             };
-            Vista menuPrincipal = new Menu(comandos);
-            menuPrincipal.Mostrar();
+
+            Menu menuPrincipal = new Menu(opcionesMenuPrincipal);
+            Controlador<Menu> menuPrincipalControlador = new MenuControlador(menuPrincipal);
+
+            menuPrincipalControlador.MostrarVista();
         }
     }
 }

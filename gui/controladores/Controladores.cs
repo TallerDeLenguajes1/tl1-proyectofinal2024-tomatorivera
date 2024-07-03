@@ -22,6 +22,11 @@ namespace Gui.Controladores
         {
             this.vista = vista;
         }
+
+        /// <summary>
+        /// Muestra la vista vinculada al controlador y se encarga de manejar su lógica
+        /// </summary>
+        public abstract void MostrarVista();
     }
 
     public class InicioControlador : Controlador<Inicio>
@@ -36,53 +41,12 @@ namespace Gui.Controladores
         /// <summary>
         /// Muestra la vista de inicio y solicita al usuario su nombre de DT
         /// </summary>
-        public void MostrarEncabezado()
+        public override void MostrarVista()
         {
             vista.Dibujar();
-/*
-            // Falta persistir el nombre de usuario
-            string nombreUsuario = string.Empty;
-            do
-            {
-                vista.SolicitarNombre();
-                nombreUsuario = Console.ReadLine() ?? string.Empty;
 
-                if (estaVacio(nombreUsuario))
-                {
-                    VistasUtil.MostrarError("El nombre de usuario no puede estar vacío");
-                }
-                else if (!cumpleLongitud(nombreUsuario))
-                {
-                    VistasUtil.MostrarError("El nombre de usuario debe tener de 3 a 15 caracteres");
-                }
-
-            } while (estaVacio(nombreUsuario) || !cumpleLongitud(nombreUsuario));
-
-            // Almaceno el usuario
-            servicio.AlmacenarUsuario(nombreUsuario);
-*/
             // Leo una tecla para iniciar el juego
             Console.ReadKey();
-        }
-
-        /// <summary>
-        /// Verifica si un nombre de usuario está vacío
-        /// </summary>
-        /// <param name="nombre">Nombre de usuario a validar</param>
-        /// <returns><c>True</c> si el nombre es NULL o solo espacios, <c>False</c> en caso contrario</returns>
-        private bool estaVacio(string nombre)
-        {
-            return nombre.Length == 0 || nombre.Trim().Equals("");
-        }
-
-        /// <summary>
-        /// Verifica si un nombre cumple con la longitud requerida
-        /// </summary>
-        /// <param name="nombre">Nombre de usuario a validar</param>
-        /// <returns><c>True</c> si el nombre de usuario tiene de 3 a 15 caracteres, <c>False</c> en caso contrario</returns>
-        private bool cumpleLongitud(string nombre)
-        {
-            return nombre.Length >= 3 && nombre.Length <= 15;
         }
     }
 
@@ -104,10 +68,11 @@ namespace Gui.Controladores
         /// <summary>
         /// Muestra lo necesario del menu y controla su funcionamiento
         /// </summary>
-        public void MostrarMenu()
+        public override void MostrarVista()
         {
             ConsoleKeyInfo teclaPresionada;
             vista.IndiceSeleccionado = this.indiceSeleccionado;
+            vista.MostrarTitulo();
             vista.Dibujar();
 
             // El menú se mostrará mientras no se seleccione la opción Salir
@@ -148,15 +113,6 @@ namespace Gui.Controladores
                 // Solo si el menú aún se sigue ejecutando, borro las lineas de lo escrito por los comandos
                 if (estaSeleccionando) borrarDesdeLinea(lineaInicio);
             }
-        }
-
-        /// <summary>
-        /// Solicita a la capa de servicio correspondiente el nombre del jugador
-        /// </summary>
-        /// <returns>El nombre indicado por el jugador o una cadena vacía si dicho nombre fuese nulo</returns>
-        public string ObtenerNombreUsuario()
-        {
-            return servicio.ObtenerDatosUsuario().NombreUsuario ?? string.Empty;
         }
 
         /// <summary>

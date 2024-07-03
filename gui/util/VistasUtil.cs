@@ -99,7 +99,7 @@ namespace Gui.Util
                     Console.ReadKey(true);
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 // Si por alguna razón la interrupción del thread lanza un error
                 // solo sigue su ejecución sin pausar la vista

@@ -94,7 +94,7 @@ Espero que te hayas divertido :)
         }
     }
 
-    public class NuevaPartida : IComando
+    public class ComandoNuevaPartida : IComando
     {
         public string titulo => "Crear nueva partida";
 
@@ -162,7 +162,7 @@ Espero que te hayas divertido :)
 
     }
 
-    public class CargarPartida : IComando
+    public class ComandoCargarPartida : IComando
     {
         public string titulo => "Cargar partida";
 
