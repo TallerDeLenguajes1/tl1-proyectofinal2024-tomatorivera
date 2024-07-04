@@ -2,7 +2,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Logica.Modelo;
 
-namespace Logica.Helpers
+namespace Logica.Util
 {
     public class UsuarioConverter : JsonConverter<Usuario>
     {

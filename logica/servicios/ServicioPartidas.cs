@@ -38,8 +38,8 @@ namespace Logica.Servicios
         {
             try 
             {
-                // Falta implementar la persistencia del usuario
                 repositorio.Crear(partida);
+                usuarioServicio.CrearUsuario(partida.Usuario);
             }
             catch (Exception)
             {

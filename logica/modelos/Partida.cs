@@ -1,5 +1,5 @@
 using System.Text.Json.Serialization;
-using Logica.Helpers;
+using Logica.Util;
 
 namespace Logica.Modelo
 {
@@ -10,8 +10,6 @@ namespace Logica.Modelo
     {
         private int id;
         private DateTime fechaGuardado;
-        
-        [JsonConverter(typeof(UsuarioConverter))]
         private Usuario usuario;
 
         public Partida(int id)
@@ -33,6 +31,8 @@ namespace Logica.Modelo
         // Propiedades
         public int Id { get => id; set => id = value; }
         public DateTime FechaGuardado { get => fechaGuardado; set => fechaGuardado = value; }
+
+        [JsonConverter(typeof(UsuarioConverter))]
         public Usuario Usuario { get => usuario; set => usuario = value; }
 
         // Métodos

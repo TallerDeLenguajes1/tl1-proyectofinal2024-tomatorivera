@@ -1,7 +1,9 @@
 using System.Text.RegularExpressions;
 using Logica.Excepciones;
 using Logica.Modelo;
+using Persistencia;
 using Persistencia.Infraestructura;
+using Persistencia.Repositorios;
 
 namespace Logica.Servicios
 {
@@ -10,7 +12,7 @@ namespace Logica.Servicios
     /// </summary>
     public interface UsuarioServicio
     {
-        void CrearUsuario();
+        void CrearUsuario(Usuario usuario);
         void AlmacenarUsuario(string nombreUsuario);
         Usuario ObtenerDatosUsuario();
         bool ValidarNombreUsuario(string username);
@@ -18,25 +20,22 @@ namespace Logica.Servicios
 
     public class UsuarioServicioImpl : UsuarioServicio
     {
+        private readonly IRepositorio<Usuario> repositorio;
+
+        public UsuarioServicioImpl()
+        {
+            this.repositorio = new UsuarioRepositorioImpl();
+        }
+
         /// <summary>
         /// Crea un nuevo usuario y todos los archivos necesarios
         /// </summary>
         /// <exception cref="UsuarioNoEspecificadoException">Si el usuario de algún modo saltado las verificaciones de nombre o el nombre ingresado no se hubiese guardado en la configuración</exception>
-        public void CrearUsuario()
+        public void CrearUsuario(Usuario usuario)
         {
-            // Falta implementar la persistencia
-            Usuario nuevoUsuario;
-
             try
             {
-                if (Config.NombreUsuarioActual == null)
-                {
-                    throw new UsuarioNoEspecificadoException("No se ha especificado un nombre de usuario");
-                }
-                
-                nuevoUsuario = new Usuario(Config.NombreUsuarioActual);
-                
-                // Falta implementar la persistencia
+                repositorio.Crear(usuario);
             }
             catch (Exception)
             {
