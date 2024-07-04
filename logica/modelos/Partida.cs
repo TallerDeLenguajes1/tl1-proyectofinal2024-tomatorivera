@@ -14,6 +14,15 @@ namespace Logica.Modelo
         [JsonConverter(typeof(UsuarioConverter))]
         private Usuario usuario;
 
+        public Partida(int id)
+        {
+            this.id = id;
+
+            // Valores por defecto
+            this.fechaGuardado = DateTime.Now;
+            this.usuario = new Usuario("No especificado");
+        }
+
         public Partida(int id, DateTime fechaGuardado, Usuario usuario)
         {
             this.id = id;
@@ -28,17 +37,10 @@ namespace Logica.Modelo
 
         // Métodos
 
-        /// <summary>
-        /// Inicia la lógica de una partida
-        /// </summary>
-        public void Iniciar() {
-            // Falta implementar la lógica
-            System.Console.WriteLine("Iniciando partida...");
-        }
-
         public override string ToString()
         {
-            return "Partida ID " + id + " - " + fechaGuardado + " - DT: " + usuario.NombreUsuario;
+            return (usuario != null) ? "Partida ID " + id + " - Creada el: " + fechaGuardado.ToString("dd/MM/yyyy") + " - DT: " + usuario.NombreUsuario 
+                                     : "Partida ID " + id;
         }
     }
 }

@@ -107,8 +107,16 @@ namespace Gui.Controladores
                 // Almaceno la posición del cursor para borrar desde ahí los registros visuales del comando
                 int lineaInicio = Console.CursorTop;
 
-                // Ejecuto el comando seleccionado
-                vista.Comandos.ElementAt(indiceSeleccionado).ejecutar();
+                // Ejecuto el comando seleccionado manejando los posibles errores que pueden lanzar
+                try
+                {
+                    vista.Comandos.ElementAt(indiceSeleccionado).ejecutar();
+                }
+                catch (Exception e)
+                {
+                    VistasUtil.MostrarError(e.Message);
+                    VistasUtil.PausarVistas(2);
+                }
 
                 // Solo si el menú aún se sigue ejecutando, borro las lineas de lo escrito por los comandos
                 if (estaSeleccionando) borrarDesdeLinea(lineaInicio);

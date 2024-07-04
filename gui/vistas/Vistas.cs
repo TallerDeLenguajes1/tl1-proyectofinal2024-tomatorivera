@@ -128,9 +128,9 @@ namespace Gui.Vistas
             Console.ForegroundColor = ConsoleColor.White;
             
             string[] tituloMenu = {
-                @"╭════════════ *-* ════════════╮",
+                @"-════════════ *-* ════════════-",
                 @"・Seleccione una opcion・",
-                @"╰════════════ *-* ════════════╯"
+                @"-════════════ *-* ════════════-"
             };
 
             VistasUtil.MostrarCentrado(tituloMenu);

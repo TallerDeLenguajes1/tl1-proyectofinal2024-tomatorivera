@@ -7,10 +7,6 @@ namespace Logica
 {
     internal class Program
     {
-        /// <summary>
-        /// Hilo de ejecución principal
-        /// </summary>
-        /// <param name="args">Argumentos de consola</param>
         private static void Main(string[] args)
         {
             // Cargo la configuración general del juego

@@ -10,5 +10,6 @@ namespace Persistencia
         void Crear(T obj);
         void Guardar(T obj);
         T ObtenerActual();
+        T Cargar(int id);
     }
 }

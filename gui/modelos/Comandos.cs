@@ -110,54 +110,29 @@ Espero que te hayas divertido :)
             Console.ForegroundColor = ConsoleColor.White;
             VistasUtil.MostrarCentradoSinSalto("Ingrese su nombre de DT: ");
 
+            var usuarioServicio = new UsuarioServicioImpl();
+
             // Leo el nombre borrando los espacios con el trim
             string nombreUsuario = (Console.ReadLine() ?? string.Empty).Trim();
 
-            // Verifico si el nombre de usuario es correcto, si no lo fuese lanzo 
-            // una excepción para mostrar el mensaje de error por pantalla
-            try 
-            {
-                if (!cumpleLongitud(nombreUsuario))
-                    throw new UsernameInvalidoException("El nombre de usuario debe tener de 3 a 15 caracteres");
+            // Verifico si el nombre de usuario es correcto, si no lo fuese se
+            // lanzará una excepción y mostrará el mensaje de error por pantalla
+            usuarioServicio.ValidarNombreUsuario(nombreUsuario);
 
-                if (!cumpleCaracteres(nombreUsuario))
-                    throw new UsernameInvalidoException("El nombre de usuario debe tener solo caracteres alfabeticos");
+            // Creo la nueva partida y la inicio automáticamente
+            var partidaServicio = new PartidaServicioImpl();
+            int id = partidaServicio.ObtenerNuevoIdPartida();
+            Usuario nuevoUsuario = new Usuario(nombreUsuario);
+            Partida nuevaPartida = new Partida(id, DateTime.Now, nuevoUsuario);
 
-                PartidaServicio servicio = new PartidaServicioImpl();
+            partidaServicio.CrearPartida(nuevaPartida);
 
-                int id = servicio.ObtenerNuevoIdPartida();
-                Usuario nuevoUsuario = new Usuario(nombreUsuario);
-                Partida nuevaPartida = new Partida(id, DateTime.Now, nuevoUsuario);
+            // Obtengo la partida desde el repositorio una vez persistida, para asegurarme de que todos su datos hayan sido creados
+            // Si por alguna razón la partida creada no se guarda en el repositorio, el método ObtenerDatosPartida lanzará una excepción
+            var partidaSeleccionada = partidaServicio.ObtenerDatosPartida();
+            var manejadorPartida = partidaServicio.ObtenerManejadorPartida(partidaSeleccionada);
 
-                servicio.CrearPartida(nuevaPartida);
-                nuevaPartida.Iniciar();
-
-            } catch (Exception e) {
-                VistasUtil.MostrarError(e.Message);
-                // Pauso la vista para que se logre ver el mensaje antes del console clear
-                VistasUtil.PausarVistas(2);
-            }
-        }
-
-        /// <summary>
-        /// Verifica si un nombre de usuario está vacío
-        /// </summary>
-        /// <param name="nombre">Nombre de usuario a validar</param>
-        /// <returns><c>True</c> si el nombre es NULL o solo espacios, <c>False</c> en caso contrario</returns>
-        private bool cumpleCaracteres(string nombre)
-        {
-            Regex rgx = new Regex("^[a-zA-Z]+$");
-            return rgx.IsMatch(nombre);
-        }
-
-        /// <summary>
-        /// Verifica si un nombre cumple con la longitud requerida
-        /// </summary>
-        /// <param name="nombre">Nombre de usuario a validar</param>
-        /// <returns><c>True</c> si el nombre de usuario tiene de 3 a 15 caracteres, <c>False</c> en caso contrario</returns>
-        private bool cumpleLongitud(string nombre)
-        {
-            return nombre.Length >= 3 && nombre.Length <= 15;
+            manejadorPartida.IniciarPartida();
         }
 
     }
@@ -174,38 +149,51 @@ Espero que te hayas divertido :)
             PartidaServicio servicio = new PartidaServicioImpl();
             List<Partida> partidasGuardadas = servicio.ObtenerPartidas();
 
-            // Solicito la partida a cargar al usuario, no la solicito en bucle para evitar bugs visuales del menú
-            Partida? partidaCargar = null;
-
-            // Muestro los datos de las partidas por pantalla
-            VistasUtil.MostrarCentrado(partidasGuardadas.Select(p => p.ToString()).ToArray());
-            System.Console.WriteLine();
-            VistasUtil.MostrarCentradoSinSalto("► Ingrese el ID de la partida a cargar: ");
-
-            string strOpcion = Console.ReadLine() ?? string.Empty;
-            int intOpcion;
-
-            // Verifico si la opción ingresada es un entero válido
-            bool opcionValida = int.TryParse(strOpcion, out intOpcion);
-            if (!opcionValida)
+            // Verifico si hay al menos una partida, de lo contrario muestro un mensaje por pantalla
+            if (!partidasGuardadas.Any())
             {
-                VistasUtil.MostrarError("Debe ingresar un número entero");
+                VistasUtil.MostrarError("No hay partidas guardadas");
                 VistasUtil.PausarVistas(2);
             }
             else
             {
-                partidaCargar = obtenerPartida(partidasGuardadas, intOpcion);
+                // Solicito la partida a cargar al usuario, no la solicito en bucle para evitar bugs visuales del menú
 
-                // Verifico si el ID ingresado corresponde a alguna partida
-                if (partidaCargar == null)
+                // Muestro los datos de las partidas por pantalla
+                VistasUtil.MostrarCentrado(partidasGuardadas.Select(p => p.ToString()).ToArray());
+
+                System.Console.WriteLine();
+                VistasUtil.MostrarCentradoSinSalto("► Ingrese el ID de la partida a cargar: ");
+
+                string strOpcion = Console.ReadLine() ?? string.Empty;
+                int intOpcion;
+
+                // Verifico si la opción ingresada es un entero válido
+                bool opcionValida = int.TryParse(strOpcion, out intOpcion);
+                if (!opcionValida)
                 {
-                    VistasUtil.MostrarError("El ID ingresado no corresponde a ninguna partida guardada");
+                    VistasUtil.MostrarError("Debe ingresar un número entero");
                     VistasUtil.PausarVistas(2);
                 }
-            }
+                else
+                {
+                    Partida partidaCargar = obtenerPartida(partidasGuardadas, intOpcion);
 
-            // Inicio la partida seleccionada solo si se seleccionó una opción válida
-            if (partidaCargar != null) partidaCargar.Iniciar();
+                    // Si el ID retornado es -1, quiere decir que no se encontré una partida con el id indicado por el usuario
+                    if (partidaCargar.Id == -1)
+                    {
+                        VistasUtil.MostrarError("El ID ingresado no corresponde a ninguna partida guardada");
+                        VistasUtil.PausarVistas(2);
+                    }
+                    else
+                    {
+                        // Si se seleccionó una partida correcta, se obtienen TODOS sus datos desde el servicio y se crea
+                        // un manejador para dicha partida, desde donde se inicia automáticamente luego de ser cargada
+                        var manejadorPartida = servicio.ObtenerManejadorPartida(servicio.ObtenerDatosPartida(partidaCargar.Id));
+                        manejadorPartida.IniciarPartida();
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -213,10 +201,10 @@ Espero que te hayas divertido :)
         /// </summary>
         /// <param name="partidas">Lista de partidas</param>
         /// <param name="id">ID de la partida a filtrar</param>
-        /// <returns>Objeto <c>Partida</c></returns>
-        private Partida obtenerPartida(List<Partida> partidas, int id)
+        /// <returns>Objeto <c>Partida</c> encontrado u objeto <c>Partida</c> con id -1 en caso de no encontrarse</returns>
+        private Partida obtenerPartida(List<Partida> partidas, int idSeleccionado)
         {
-            return partidas.Find(p => p.Id == id);
+            return partidas.Find(p => p.Id == idSeleccionado) ?? new Partida(-1);
         }
     }
 }

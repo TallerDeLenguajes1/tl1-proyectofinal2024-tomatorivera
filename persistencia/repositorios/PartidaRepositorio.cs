@@ -8,7 +8,7 @@ namespace Persistencia.Repositorios
 {
     public class PartidaRepositorioImpl : IRepositorio<Partida>
     {
-        public Partida partidaActual { get; set; }
+        public Partida? partidaActual { get; set; }
 
         /// <summary>
         /// Crea un nuevo archivo de persistencia para <paramref name="obj"/>
@@ -19,7 +19,7 @@ namespace Persistencia.Repositorios
         {
             verificarDirectorioPartidas();
 
-            string nuevaPartidaDir = Config.DirectorioPartidas + @"\partida-" + obj.Id + "-" + obj.FechaGuardado.ToString("ddMMyyyy");
+            string nuevaPartidaDir = Config.DirectorioPartidas + @"\partida-" + obj.Id + "-" + obj.FechaGuardado.ToString("ddMMyyyy") + "-" + obj.Usuario.NombreUsuario;
 
             // Verifico si por alguna razón ya existe un directorio con el nombre de la nueva partida
             if (Directory.Exists(nuevaPartidaDir))
@@ -51,9 +51,17 @@ namespace Persistencia.Repositorios
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Obtiene la instancia de la partida actual cargada o creada por el usuario
+        /// </summary>
+        /// <returns>Objeto <c>Partida</c> con los datos de la partida actual</returns>
+        /// <exception cref="PartidaInvalidaException">En caso de que se solicite una partida cuando la instancia aún sea null</exception>
         public Partida ObtenerActual()
         {
-            throw new NotImplementedException();
+            if (partidaActual == null) 
+                throw new PartidaInvalidaException("No existe una instancia de la partida actual en el repositorio");
+
+            return partidaActual;
         }
 
         /// <summary>
@@ -65,15 +73,23 @@ namespace Persistencia.Repositorios
             verificarDirectorioPartidas();
 
             // Regex para los nombres de carpetas de las partidas
-            string nombreDirectorioRegex = @"^partida-(\d+)-(\d{2}\d{2}\d{4})$";
+            string nombreDirectorioRegex = @"^partida-(\d+)-(\d{2}\d{2}\d{4})-([a-zA-Z0-9]{3,15})$";
             Regex rgx = new Regex(nombreDirectorioRegex);
 
             // El atributo "DirectorioPartidas" no es null, si lo fuese, la excepción 
-            // sería lanzada desde el método 'verificarDirectorioPartidas'
-            return Directory.GetDirectories(Config.DirectorioPartidas, Config.DirectorioPartidasPrefix + "*")
-                            .Select(dir => Path.GetFileName(dir))
-                            .Where(dir => rgx.IsMatch(dir))
-                            .ToList();
+            // sería lanzada desde el método 'verificarDirectorioPartidas'. Aún así
+            // realizo una doble verificación para no tener advertencias del vs code
+            return (Config.DirectorioPartidas != null) ? Directory.GetDirectories(Config.DirectorioPartidas, Config.DirectorioPartidasPrefix + "*")
+                                                                  .Select(dir => Path.GetFileName(dir))
+                                                                  .Where(dir => rgx.IsMatch(dir))
+                                                                  .ToList()
+
+                                                       : new List<string>();
+        }
+
+        public Partida Cargar(int id)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -83,7 +99,8 @@ namespace Persistencia.Repositorios
         private void verificarDirectorioPartidas()
         {
             // Verifico si se cargó la configuración para poder usar los directorios
-            if (Config.DirectorioPartidas == null)
+            // de no haber sido cargada, lanzo una excepción
+            if (String.IsNullOrWhiteSpace(Config.DirectorioPartidas))
             {
                 throw new ConfiguracionInexistenteException("No se ha configurado el directorio de partidas");
             }
