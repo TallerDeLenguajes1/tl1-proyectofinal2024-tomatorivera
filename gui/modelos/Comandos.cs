@@ -47,11 +47,10 @@ namespace Gui.Modelo
             if (primerCaracter(seleccion).Equals('s'))
             {
                 System.Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.Red;
 
                 if (tipoMenu == TipoMenu.PRINCIPAL)
                 {
-                    Console.Clear();
+                    AnsiConsole.Clear();
 
                     string mensajeDespedida = @"
     ___       ___            __
@@ -59,11 +58,24 @@ namespace Gui.Modelo
   / /| |/ __  / / __ \/ ___/ / 
  / ___ / /_/ / / /_/ (__  )_/  
 /_/  |_\__,_/_/\____/____(_)   
+
 -*-
 Espero que te hayas divertido :)
 -*-
 ";
-                    VistasUtil.MostrarCentrado(VistasUtil.ObtenerLineasSeparadas(mensajeDespedida));
+
+                    // Muestro el msg de salida centrado vertical y horizontalmente usando el componente 'layout' de Spectre.Console
+                    var layout = new Layout("raiz");
+                    layout["raiz"].Update(
+                        new Panel(Align.Center(
+                            new Markup("[red]" + mensajeDespedida + "[/]"), VerticalAlignment.Middle
+                        ))
+                        .Border(BoxBorder.None)
+                        .Expand()
+                    );
+
+                    AnsiConsole.Write(layout);
+                    //VistasUtil.MostrarCentrado(VistasUtil.ObtenerLineasSeparadas(mensajeDespedida));
                 }
                 else
                 {

@@ -3,6 +3,7 @@ using Gui.Util;
 using Gui.Vistas;
 using Logica.Modelo;
 using Logica.Servicios;
+using Spectre.Console;
 
 namespace Gui.Controladores
 {
@@ -43,6 +44,39 @@ namespace Gui.Controladores
         /// </summary>
         public override void MostrarVista()
         {
+            var servicio = new RecursoServicioImpl();
+            
+            try
+            {
+                // El servicio me devuelve el Path de la imagen Logo, si hubiese un 
+                // error con el directorio o el archivo lanza una excepción
+                string logo = servicio.ObtenerLogo();
+                vista.Logo = new CanvasImage(logo) { MaxWidth = 38 };
+            }
+            catch (Exception)
+            {
+                // En caso de no poder cargar la imagen, muestro el logo de respaldo en ASCII art para que quede bonito :)
+                string logoRespaldoAscii = @"░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+                                        ██████████                                    ░░
+                                    ██████▓▓▓▓▓▓▓▓████                                ░░
+░░      ░░    ░░      ░░      ░░  ██▓▓██    ████▓▓▓▓▓▓██  ░░      ░░      ░░    ░░    ░░
+        ░░      ░░    ░░      ░░████▓▓▓▓██      ████▓▓▓▓██  ░░    ░░      ░░      ░░  ░░
+                                ██  ██▓▓▓▓██        ██▓▓██                            ░░
+░░                            ██    ██▓▓▓▓▓▓████      ██▓▓██                          ░░
+░░      ░░    ░░░░    ░░      ██      ████▓▓▓▓▓▓██      ████░░    ░░      ░░    ░░░░  ░░
+        ░░      ░░    ░░      ██    ████▓▓██▓▓▓▓▓▓██    ████      ░░      ░░      ░░  ░░
+                              ██  ██▓▓▓▓▓▓▓▓██▓▓▓▓▓▓████  ██                          ░░
+                              ██  ██▓▓▓▓▓▓▓▓██▓▓▓▓▓▓▓▓██████                          ░░
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░████▓▓▓▓▓▓██  ██▓▓▓▓██  ██░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+░░      ░░      ░░    ░░      ░░██████▓▓██      ████  ████  ░░    ░░      ░░      ░░  ░░
+                                  ████▓▓████        ████                                
+░░                                  ████▓▓██      ████                                  
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░    ██████████      ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+";
+
+                vista.Logo = new Markup("[bold red]" + logoRespaldoAscii + "[/]");
+            }
+
             vista.Dibujar();
 
             // Leo una tecla para iniciar el juego

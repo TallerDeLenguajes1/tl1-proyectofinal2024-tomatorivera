@@ -1,8 +1,7 @@
-using Gui.Controladores;
 using Gui.Modelo;
 using Gui.Util;
-using Logica;
 using Spectre.Console;
+using Spectre.Console.Rendering;
 
 namespace Gui.Vistas
 {
@@ -22,12 +21,7 @@ namespace Gui.Vistas
     /// </summary>
     public class Inicio : Vista
     {
-
-        /// <summary>
-        /// Constructor de la vista de Inicio
-        /// </summary>
-        public Inicio()
-        {}
+        public object? Logo { get; set; }
 
         public override void Dibujar()
         {
@@ -66,7 +60,7 @@ namespace Gui.Vistas
                 new Panel(
                     Align.Center(
                         // falta obtener la ruta mediante una capa de servicio
-                        new CanvasImage("recursos/img/logo.png") { MaxWidth = 38 },
+                        (Logo != null) ? (IRenderable) Logo : new Markup(""),
                         VerticalAlignment.Top
                     )
                 )

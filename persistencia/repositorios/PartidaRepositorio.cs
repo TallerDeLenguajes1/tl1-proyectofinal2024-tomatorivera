@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 using Logica.Excepciones;
 using Logica.Modelo;
 using Persistencia.Infraestructura;
+using Persistencia.Util;
 
 namespace Persistencia.Repositorios
 {
@@ -17,7 +18,9 @@ namespace Persistencia.Repositorios
         /// <exception cref="PartidaDuplicadaException">Excepción lanzada cuando ya existe una carpeta con el mismo nombre de la que se va a crear</exception>
         public void Crear(Partida obj)
         {
-            verificarDirectorioPartidas();
+            // Verifica si el directorio de partidas existe, caso contrario lo crea
+            // Lanza una excepción si por alguna razón no se ha cargado el directorio de partidas en la configuración
+            RecursosUtil.VerificarDirectorio(Config.DirectorioPartidas ?? string.Empty);
 
             string nuevaPartidaDir = Config.DirectorioPartidas + @"\partida-" + obj.Id + "-" + obj.FechaGuardado.ToString("ddMMyyyy") + "-" + obj.Usuario.NombreUsuario;
 
@@ -70,7 +73,7 @@ namespace Persistencia.Repositorios
         /// <returns><c>List</c> de <c>string</c> con los nombres de los directorios</returns>
         public List<string> ObtenerDirectoriosPartidas()
         {
-            verificarDirectorioPartidas();
+            RecursosUtil.VerificarDirectorio(Config.DirectorioPartidas ?? string.Empty);
 
             // Regex para los nombres de carpetas de las partidas
             string nombreDirectorioRegex = @"^partida-(\d+)-(\d{2}\d{2}\d{4})-([a-zA-Z0-9]{3,15})$";
@@ -83,32 +86,12 @@ namespace Persistencia.Repositorios
                                                                   .Select(dir => Path.GetFileName(dir))
                                                                   .Where(dir => rgx.IsMatch(dir))
                                                                   .ToList()
-
                                                        : new List<string>();
         }
 
         public Partida Cargar(int id)
         {
             throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Verifica si el directorio de partidas existe, si no existiese lo crea
-        /// </summary>
-        /// <exception cref="ConfiguracionInexistenteException">Cuando por alguna razón no se ha cargado el directorio de partidas en la configuración</exception>
-        private void verificarDirectorioPartidas()
-        {
-            // Verifico si se cargó la configuración para poder usar los directorios
-            // de no haber sido cargada, lanzo una excepción
-            if (String.IsNullOrWhiteSpace(Config.DirectorioPartidas))
-            {
-                throw new ConfiguracionInexistenteException("No se ha configurado el directorio de partidas");
-            }
-
-            if (!Directory.Exists(Config.DirectorioPartidas))
-            {
-                Directory.CreateDirectory(Config.DirectorioPartidas);
-            }
         }
     }
 }
