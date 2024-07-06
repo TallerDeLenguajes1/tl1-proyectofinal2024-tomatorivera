@@ -1,10 +1,7 @@
-using System.Text.RegularExpressions;
-using Gui.Controladores;
 using Gui.Util;
-using Gui.Vistas;
-using Logica.Excepciones;
 using Logica.Modelo;
 using Logica.Servicios;
+using Spectre.Console;
 
 namespace Gui.Modelo
 {
@@ -41,18 +38,16 @@ namespace Gui.Modelo
             System.Console.WriteLine();
 
             // Realizo una verificación para salir del menú
-            // Cualquier primer caracter distinto de "s" será tomado como "n" para evitar bugs en la vista del menú
-            string seleccion;
-            
+            // Cualquier primer caracter distinto de "s" será tomado como "n" para evitar bugs en la vista del menú  
             VistasUtil.MostrarCentradoSinSalto("¿Está seguro que desea salir? [si/no]: ");
-            seleccion = Console.ReadLine() ?? string.Empty;
+            string seleccion = Console.ReadLine() ?? string.Empty;
 
             // Si el usuario ingresó una opción afirmativa, se debe cerrar el juego o volver al menú
             // anterior dependiendo del tipo del menú en el que estemos
             if (primerCaracter(seleccion).Equals('s'))
             {
                 System.Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.Green;
+                Console.ForegroundColor = ConsoleColor.Red;
 
                 if (tipoMenu == TipoMenu.PRINCIPAL)
                 {

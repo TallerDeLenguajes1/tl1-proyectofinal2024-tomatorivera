@@ -2,6 +2,7 @@ using Gui.Controladores;
 using Gui.Modelo;
 using Gui.Util;
 using Logica;
+using Spectre.Console;
 
 namespace Gui.Vistas
 {
@@ -30,34 +31,7 @@ namespace Gui.Vistas
 
         public override void Dibujar()
         {
-            Console.CursorVisible = false;
-            Console.Clear();
-            Console.ForegroundColor = ConsoleColor.Green;
-
-            string logo = @"
-░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-                                        ██████████                                    ░░
-                                    ██████▓▓▓▓▓▓▓▓████                                ░░
-░░      ░░    ░░      ░░      ░░  ██▓▓██    ████▓▓▓▓▓▓██  ░░      ░░      ░░    ░░    ░░
-        ░░      ░░    ░░      ░░████▓▓▓▓██      ████▓▓▓▓██  ░░    ░░      ░░      ░░  ░░
-                                ██  ██▓▓▓▓██        ██▓▓██                            ░░
-░░                            ██    ██▓▓▓▓▓▓████      ██▓▓██                          ░░
-░░      ░░    ░░░░    ░░      ██      ████▓▓▓▓▓▓██      ████░░    ░░      ░░    ░░░░  ░░
-        ░░      ░░    ░░      ██    ████▓▓██▓▓▓▓▓▓██    ████      ░░      ░░      ░░  ░░
-                              ██  ██▓▓▓▓▓▓▓▓██▓▓▓▓▓▓████  ██                          ░░
-                              ██  ██▓▓▓▓▓▓▓▓██▓▓▓▓▓▓▓▓██████                          ░░
-░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░████▓▓▓▓▓▓██  ██▓▓▓▓██  ██░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-░░      ░░      ░░    ░░      ░░██████▓▓██      ████  ████  ░░    ░░      ░░      ░░  ░░
-                                  ████▓▓████        ████                                
-░░                                  ████▓▓██      ████                                  
-░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░    ██████████      ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-
-";
-
-            VistasUtil.MostrarCentrado(VistasUtil.ObtenerLineasSeparadas(logo));
-
-            string titulo = @"
- _    __      ____           __          ____
+            string titulo = @" _    __      ____           __          ____
 | |  / /___  / / /__  __  __/ /_  ____ _/ / /
 | | / / __ \/ / / _ \/ / / / __ \/ __ `/ / / 
 | |/ / /_/ / / /  __/ /_/ / /_/ / /_/ / / /  
@@ -68,21 +42,105 @@ namespace Gui.Vistas
 /_/  /_/\__,_/_/ /_/\__,_/\__, /\___/_/      
                          /____/              
 ";
-            VistasUtil.MostrarCentrado(VistasUtil.ObtenerLineasSeparadas(titulo));
 
-            System.Console.WriteLine();
-            VistasUtil.MostrarCentrado("* Presione una tecla para iniciar... *");
+            // Creo un layout de tres filas en la vista del cmd
+            var layout = new Layout("raiz")
+                    .SplitRows(
+                        new Layout("arriba"),
+                        new Layout("centro"),
+                        new Layout("abajo")
+                    );
+
+            // Coloco el titulo en el layout de arriba
+            layout["arriba"].Update(
+                new Panel(
+                    Align.Center(
+                        new Markup("[bold red]" + titulo + "[/]")
+                    )
+                )
+                .Border(BoxBorder.Heavy)
+                .BorderColor(Color.Red)
+            );
+            // Coloco la imagen renderizada en el layout del medio
+            layout["centro"].Update(
+                new Panel(
+                    Align.Center(
+                        // falta obtener la ruta mediante una capa de servicio
+                        new CanvasImage("recursos/img/logo.png") { MaxWidth = 38 },
+                        VerticalAlignment.Top
+                    )
+                )
+                .Border(BoxBorder.None) 
+                .Padding(new Padding(0, 2, 0, 0))
+            );
+            // Coloco el mensaje para continuar en el layout de abajo
+            layout["abajo"].Update(
+                new Panel(
+                    Align.Center(
+                        new Markup("[bold underline red]Presione una tecla para continuar...[/]"),
+                        VerticalAlignment.Middle
+                    )
+                )
+                .Border(BoxBorder.None)
+                .Padding(new Padding(0,3))
+            );
+
+            // Configuro los tamaños de cada fila
+            layout["arriba"].Ratio(1);
+            layout["centro"].Ratio(3);
+            layout["abajo"].Ratio(1);
+
+            // Y muestro por pantalla el layout
+            AnsiConsole.Write(layout);
         }
 
-        /// <summary>
-        /// Solicita el nombre al usuario en la vista, es una "sub-vista" aislada
-        /// del encabezado principal
-        /// </summary>
-        public void SolicitarNombre()
-        {
-            System.Console.WriteLine();
-            VistasUtil.MostrarCentradoSinSalto("► Ingrese su nombre de DT: ");
-        }
+        /* Vieja vista de inicio
+                public override void Dibujar()
+                {
+                    Console.CursorVisible = false;
+                    Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Green;
+
+                    string logo = @"
+        ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+                                                ██████████                                    ░░
+                                            ██████▓▓▓▓▓▓▓▓████                                ░░
+        ░░      ░░    ░░      ░░      ░░  ██▓▓██    ████▓▓▓▓▓▓██  ░░      ░░      ░░    ░░    ░░
+                ░░      ░░    ░░      ░░████▓▓▓▓██      ████▓▓▓▓██  ░░    ░░      ░░      ░░  ░░
+                                        ██  ██▓▓▓▓██        ██▓▓██                            ░░
+        ░░                            ██    ██▓▓▓▓▓▓████      ██▓▓██                          ░░
+        ░░      ░░    ░░░░    ░░      ██      ████▓▓▓▓▓▓██      ████░░    ░░      ░░    ░░░░  ░░
+                ░░      ░░    ░░      ██    ████▓▓██▓▓▓▓▓▓██    ████      ░░      ░░      ░░  ░░
+                                      ██  ██▓▓▓▓▓▓▓▓██▓▓▓▓▓▓████  ██                          ░░
+                                      ██  ██▓▓▓▓▓▓▓▓██▓▓▓▓▓▓▓▓██████                          ░░
+        ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░████▓▓▓▓▓▓██  ██▓▓▓▓██  ██░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+        ░░      ░░      ░░    ░░      ░░██████▓▓██      ████  ████  ░░    ░░      ░░      ░░  ░░
+                                          ████▓▓████        ████                                
+        ░░                                  ████▓▓██      ████                                  
+        ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░    ██████████      ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+
+        ";
+
+                    VistasUtil.MostrarCentrado(VistasUtil.ObtenerLineasSeparadas(logo));
+
+                    string titulo = @"
+         _    __      ____           __          ____
+        | |  / /___  / / /__  __  __/ /_  ____ _/ / /
+        | | / / __ \/ / / _ \/ / / / __ \/ __ `/ / / 
+        | |/ / /_/ / / /  __/ /_/ / /_/ / /_/ / / /  
+        |___/\____/_/_/\___/\__, /_.___/\__,_/_/_/   
+           /  |/  /___ ____/____/_ _____ ____  _____ 
+          / /|_/ / __ `/ __ \/ __ `/ __ `/ _ \/ ___/ 
+         / /  / / /_/ / / / / /_/ / /_/ /  __/ /     
+        /_/  /_/\__,_/_/ /_/\__,_/\__, /\___/_/      
+                                 /____/              
+        ";
+                    VistasUtil.MostrarCentrado(VistasUtil.ObtenerLineasSeparadas(titulo));
+
+                    System.Console.WriteLine();
+                    VistasUtil.MostrarCentrado("* Presione una tecla para iniciar... *");
+                }
+        */
     }
 
     /// <summary>
@@ -117,19 +175,29 @@ namespace Gui.Vistas
         public void MostrarTitulo()
         {
             Console.Clear();
-            Console.ForegroundColor = ConsoleColor.Green;
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            AnsiConsole.Write(
+                new Panel(
+                    Align.Center(
+                        new Markup("[red]¡Bienvenido! - Juego desarrollado por: [/][bold red]Tomas Rivera[/]"),
+                        VerticalAlignment.Middle
+                    )
+                )
+                .Expand()
+                .Border(BoxBorder.Rounded)
+                .BorderColor(Color.Red)
+            );
 
-            string lineasEncabezado = new string('─', Console.WindowWidth - 3);
-            VistasUtil.MostrarCentrado("┌" + lineasEncabezado + "┐");
-            VistasUtil.MostrarCentrado("¡Bienvenido! - Juego desarrollado por: Tomas Rivera");
-            VistasUtil.MostrarCentrado("└" + lineasEncabezado + "┘");
+            //string lineasEncabezado = new string('─', Console.WindowWidth - 3);
+            //VistasUtil.MostrarCentrado("┌" + lineasEncabezado + "┐");
+            //VistasUtil.MostrarCentrado("¡Bienvenido! - Juego desarrollado por: Tomas Rivera");
+            //VistasUtil.MostrarCentrado("└" + lineasEncabezado + "┘");
 
-            Console.BackgroundColor = ConsoleColor.Black;
-            Console.ForegroundColor = ConsoleColor.White;
+            Console.ResetColor();
             
             string[] tituloMenu = {
                 @"-════════════ *-* ════════════-",
-                @"・Seleccione una opcion・",
+                @"> Seleccione una opcion <",
                 @"-════════════ *-* ════════════-"
             };
 
@@ -146,8 +214,7 @@ namespace Gui.Vistas
 
         public override void Dibujar()
         {
-            Console.CursorLeft = x;
-            Console.CursorTop = y;
+            Console.SetCursorPosition(x, y);
 
             int indiceRecorriendo = 0;
 
@@ -155,13 +222,13 @@ namespace Gui.Vistas
             {
                 if (indiceRecorriendo == indiceSeleccionado)
                 {
-                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.ForegroundColor = ConsoleColor.Red;
                     VistasUtil.MostrarCentrado("► " + comando.titulo + " ◄");
                     Console.ForegroundColor = ConsoleColor.White;
                 }
                 else
                 {
-                    Console.Write(new string(' ', Console.WindowWidth));
+                    Console.Write(new string(' ', Console.WindowWidth - comando.titulo.Length));
                     Console.CursorLeft = 0;
                     VistasUtil.MostrarCentrado(comando.titulo);
                 }

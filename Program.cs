@@ -2,6 +2,7 @@
 using Gui.Modelo;
 using Gui.Vistas;
 using Persistencia.Infraestructura;
+using Spectre.Console;
 
 namespace Logica
 {
@@ -18,6 +19,9 @@ namespace Logica
 
         private static void mostrarMenuPrincipal()
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            AnsiConsole.Clear();
+
             // Muestro el titulo del juego
             Inicio tituloInicio = new Inicio();
             Controlador<Inicio> tituloInicioControlador = new InicioControlador(tituloInicio);

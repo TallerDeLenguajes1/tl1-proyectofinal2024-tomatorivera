@@ -10,9 +10,12 @@ namespace Persistencia.Infraestructura
         public static string? DirectorioPersistencia { get; set; }
         public static string? DirectorioPartidas { get; set; }
         public static string? DirectorioPartidasPrefix { get; set; }
+        public static string? DirectorioRecursos { get; set; }
+        public static string? DirectorioImagenes { get; set; }
 
         public static string? NombreJsonPartida { get; set; }
         public static string? NombreJsonUsuario { get; set; }
+        public static string? NombreImgLogo { get; set; }
 
         // Datos cargados durante la ejecución
         public static string? DirectorioPartidaActual { get; set; }
@@ -27,9 +30,12 @@ namespace Persistencia.Infraestructura
             DirectorioPersistencia = "archivos";
             DirectorioPartidas = DirectorioPersistencia + @"\partidas";
             DirectorioPartidasPrefix = "partida-";
+            DirectorioRecursos = "recursos";
+            DirectorioImagenes = DirectorioRecursos + @"\img";
 
             NombreJsonPartida = "partida.json";
             NombreJsonUsuario = "usuario.json";
+            NombreImgLogo = "logo.png";
         }
     }
 }
