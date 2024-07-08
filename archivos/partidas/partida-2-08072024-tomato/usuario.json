@@ -1,0 +1,149 @@
+{
+  "Nombre": "tomato",
+  "Equipo": {
+    "Nombre": "cpac",
+    "Jugadores": [
+      {
+        "Nombre": "Christian Vidal",
+        "HabilidadSaque": 0,
+        "HabilidadRemate": 0,
+        "HabilidadRecepcion": 0,
+        "HabilidadColocacion": 0,
+        "HabilidadBloqueo": 0,
+        "Experiencia": 0,
+        "NumeroCamiseta": 29
+      },
+      {
+        "Nombre": "Joan Martin",
+        "HabilidadSaque": 0,
+        "HabilidadRemate": 0,
+        "HabilidadRecepcion": 0,
+        "HabilidadColocacion": 0,
+        "HabilidadBloqueo": 0,
+        "Experiencia": 0,
+        "NumeroCamiseta": 33
+      },
+      {
+        "Nombre": "Mariano Esteban",
+        "HabilidadSaque": 0,
+        "HabilidadRemate": 0,
+        "HabilidadRecepcion": 0,
+        "HabilidadColocacion": 0,
+        "HabilidadBloqueo": 0,
+        "Experiencia": 0,
+        "NumeroCamiseta": 33
+      },
+      {
+        "Nombre": "Alexander Duran",
+        "HabilidadSaque": 0,
+        "HabilidadRemate": 0,
+        "HabilidadRecepcion": 0,
+        "HabilidadColocacion": 0,
+        "HabilidadBloqueo": 0,
+        "Experiencia": 0,
+        "NumeroCamiseta": 38
+      },
+      {
+        "Nombre": "Esteban Sanz",
+        "HabilidadSaque": 0,
+        "HabilidadRemate": 0,
+        "HabilidadRecepcion": 0,
+        "HabilidadColocacion": 0,
+        "HabilidadBloqueo": 0,
+        "Experiencia": 0,
+        "NumeroCamiseta": 10
+      },
+      {
+        "Nombre": "Robert Webb",
+        "HabilidadSaque": 0,
+        "HabilidadRemate": 0,
+        "HabilidadRecepcion": 0,
+        "HabilidadColocacion": 0,
+        "HabilidadBloqueo": 0,
+        "Experiencia": 0,
+        "NumeroCamiseta": 16
+      },
+      {
+        "Nombre": "Antonio Ocampo",
+        "HabilidadSaque": 0,
+        "HabilidadRemate": 0,
+        "HabilidadRecepcion": 0,
+        "HabilidadColocacion": 0,
+        "HabilidadBloqueo": 0,
+        "Experiencia": 0,
+        "NumeroCamiseta": 45
+      },
+      {
+        "Nombre": "Heitor da Cruz",
+        "HabilidadSaque": 0,
+        "HabilidadRemate": 0,
+        "HabilidadRecepcion": 0,
+        "HabilidadColocacion": 0,
+        "HabilidadBloqueo": 0,
+        "Experiencia": 0,
+        "NumeroCamiseta": 6
+      },
+      {
+        "Nombre": "Justin Austin",
+        "HabilidadSaque": 0,
+        "HabilidadRemate": 0,
+        "HabilidadRecepcion": 0,
+        "HabilidadColocacion": 0,
+        "HabilidadBloqueo": 0,
+        "Experiencia": 0,
+        "NumeroCamiseta": 29
+      },
+      {
+        "Nombre": "Christian Vázquez",
+        "HabilidadSaque": 0,
+        "HabilidadRemate": 0,
+        "HabilidadRecepcion": 0,
+        "HabilidadColocacion": 0,
+        "HabilidadBloqueo": 0,
+        "Experiencia": 0,
+        "NumeroCamiseta": 5
+      },
+      {
+        "Nombre": "Josep Santos",
+        "HabilidadSaque": 0,
+        "HabilidadRemate": 0,
+        "HabilidadRecepcion": 0,
+        "HabilidadColocacion": 0,
+        "HabilidadBloqueo": 0,
+        "Experiencia": 0,
+        "NumeroCamiseta": 20
+      },
+      {
+        "Nombre": "Alejandro Castro",
+        "HabilidadSaque": 0,
+        "HabilidadRemate": 0,
+        "HabilidadRecepcion": 0,
+        "HabilidadColocacion": 0,
+        "HabilidadBloqueo": 0,
+        "Experiencia": 0,
+        "NumeroCamiseta": 18
+      },
+      {
+        "Nombre": "Sebastián Santana",
+        "HabilidadSaque": 0,
+        "HabilidadRemate": 0,
+        "HabilidadRecepcion": 0,
+        "HabilidadColocacion": 0,
+        "HabilidadBloqueo": 0,
+        "Experiencia": 0,
+        "NumeroCamiseta": 23
+      },
+      {
+        "Nombre": "Humberto Iglesias",
+        "HabilidadSaque": 0,
+        "HabilidadRemate": 0,
+        "HabilidadRecepcion": 0,
+        "HabilidadColocacion": 0,
+        "HabilidadBloqueo": 0,
+        "Experiencia": 0,
+        "NumeroCamiseta": 11
+      }
+    ]
+  },
+  "Puntos": 0
+}

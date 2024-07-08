@@ -38,7 +38,7 @@ namespace Persistencia.Repositorios
             {
                 using (StreamWriter writer = new StreamWriter(partidaJson))
                 {
-                    string partidaSerializada = JsonSerializer.Serialize(obj, new JsonSerializerOptions { WriteIndented = true });
+                    string partidaSerializada = JsonSerializer.Serialize(obj, new JsonSerializerOptions { Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping, WriteIndented = true });
                     writer.WriteLine(partidaSerializada);
                 }
             }
