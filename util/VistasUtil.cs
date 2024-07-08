@@ -1,3 +1,5 @@
+using Spectre.Console;
+
 namespace Gui.Util
 {
     /// <summary>
@@ -63,7 +65,7 @@ namespace Gui.Util
         public static void MostrarError(string mensaje)
         {
             System.Console.WriteLine("\n");
-
+            
             string error = @"
 >>======================================================<<
 || ______     ______     ______     ______     ______   ||
@@ -71,11 +73,22 @@ namespace Gui.Util
 ||\ \  __\   \ \  __<   \ \  __<   \ \ \/\ \  \ \  __<  ||
 || \ \_____\  \ \_\ \_\  \ \_\ \_\  \ \_____\  \ \_\ \_\||
 ||  \/_____/   \/_/ /_/   \/_/ /_/   \/_____/   \/_/ /_/||
+||                                                      ||
 >>======================================================<<
  
 ";
-            MostrarCentrado(ObtenerLineasSeparadas(error));
-            MostrarCentrado("× " + mensaje + " ×");
+
+            AnsiConsole.Write(new Panel(
+                Align.Center(
+                    new Markup("[bold red]" + error + "[/]")
+                )
+            ).Border(BoxBorder.None));
+
+            AnsiConsole.Write(new Panel(
+                Align.Center(
+                    new Markup("[red]× " + mensaje + " ×[/]")
+                )
+            ).Border(BoxBorder.None));
 
             System.Console.WriteLine("\n");
         }

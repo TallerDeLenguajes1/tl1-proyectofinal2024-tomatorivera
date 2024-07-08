@@ -5,22 +5,32 @@ namespace Logica.Modelo
     /// </summary>
     public class Usuario
     {
-        private string nombreUsuario;
-        private List<Jugador> equipo;
+        private string nombre;
+        private Equipo equipo;
+        private float puntos;
 
         /// <summary>
         /// Constructor de la clase Usuario
         /// </summary>
-        /// <param name="nombreUsuario">Nombre de usuario</param>
-        public Usuario(string nombreUsuario)
+        /// <param name="nombre">Nombre de usuario</param>
+        public Usuario(string nombre)
         {
-            this.nombreUsuario = nombreUsuario;
-            this.equipo = new List<Jugador>();
+            this.nombre = nombre;
+            this.equipo = new Equipo();
+            this.puntos = 0;
+        }
+
+        public Usuario(string nombre, Equipo equipo)
+        {
+            this.nombre = nombre;
+            this.equipo = equipo;
+            this.puntos = 0;
         }
 
         // Propiedades
-        public string NombreUsuario { get => nombreUsuario; set => nombreUsuario = value; }
-        public List<Jugador> Equipo { get => equipo; set => equipo = value; }
+        public string Nombre { get => nombre; set => nombre = value; }
+        public Equipo Equipo { get => equipo; set => equipo = value; }
+        public float Puntos { get => puntos; set => puntos = value; } 
 
         // Métodos
 

@@ -21,7 +21,7 @@ namespace Logica.Servicios
 
     public class PartidaServicioImpl : PartidaServicio
     {
-        private readonly IRepositorio<Partida> repositorio;
+        private readonly IRepositorioNavegable<Partida> repositorio;
         private readonly UsuarioServicio usuarioServicio;
 
         public PartidaServicioImpl()
@@ -93,7 +93,7 @@ namespace Logica.Servicios
                 int nuevoId = 1;
 
                 // Obtengo una lista de directorios
-                var partidasDirs = ((PartidaRepositorioImpl) repositorio).ObtenerDirectoriosPartidas();
+                var partidasDirs = repositorio.ObtenerDirectorios();
                 if (partidasDirs.Any())
                 {
                     // A partir de una lista de strings con nombres de los subdirectorios de la carpeta partidas
@@ -134,9 +134,9 @@ namespace Logica.Servicios
             try
             {
                 // Mapeo la lista de string con directorios a una lista de objetos Partida
-                // Tengo en cuenta que los Parse nunca darán error, ya que 'ObtenerDirectoriosPartidas' se encarga
+                // Tengo en cuenta que los Parse nunca darán error, ya que 'ObtenerDirectorios' se encarga
                 // de obtener solo los directorios correctos utilizando una expresión regular
-                return ((PartidaRepositorioImpl) repositorio).ObtenerDirectoriosPartidas()
+                return repositorio.ObtenerDirectorios()
                     .Select(nombreDirectorio => {
                         string[] datos = nombreDirectorio.Split("-");
 

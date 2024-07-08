@@ -86,7 +86,6 @@ namespace Gui.Controladores
 
     public class MenuControlador : Controlador<Menu>
     {
-
         private bool estaSeleccionando;
         private int indiceSeleccionado;
         private UsuarioServicio servicio;

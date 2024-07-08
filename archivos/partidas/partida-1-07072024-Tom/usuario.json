@@ -1,0 +1,149 @@
+{
+  "Nombre": "Tom",
+  "Equipo": {
+    "Nombre": "Bokita",
+    "Jugadores": [
+      {
+        "Nombre": "Elias Colunga",
+        "HabilidadSaque": 0,
+        "HabilidadRemate": 0,
+        "HabilidadRecepcion": 0,
+        "HabilidadColocacion": 0,
+        "HabilidadBloqueo": 0,
+        "Experiencia": 0,
+        "NumeroCamiseta": 32
+      },
+      {
+        "Nombre": "Isaac Parra",
+        "HabilidadSaque": 0,
+        "HabilidadRemate": 0,
+        "HabilidadRecepcion": 0,
+        "HabilidadColocacion": 0,
+        "HabilidadBloqueo": 0,
+        "Experiencia": 0,
+        "NumeroCamiseta": 40
+      },
+      {
+        "Nombre": "Mario B\u00E1ez",
+        "HabilidadSaque": 0,
+        "HabilidadRemate": 0,
+        "HabilidadRecepcion": 0,
+        "HabilidadColocacion": 0,
+        "HabilidadBloqueo": 0,
+        "Experiencia": 0,
+        "NumeroCamiseta": 25
+      },
+      {
+        "Nombre": "Roberto Zarate",
+        "HabilidadSaque": 0,
+        "HabilidadRemate": 0,
+        "HabilidadRecepcion": 0,
+        "HabilidadColocacion": 0,
+        "HabilidadBloqueo": 0,
+        "Experiencia": 0,
+        "NumeroCamiseta": 1
+      },
+      {
+        "Nombre": "Marcos Fernandes",
+        "HabilidadSaque": 0,
+        "HabilidadRemate": 0,
+        "HabilidadRecepcion": 0,
+        "HabilidadColocacion": 0,
+        "HabilidadBloqueo": 0,
+        "Experiencia": 0,
+        "NumeroCamiseta": 49
+      },
+      {
+        "Nombre": "Eli Sutton",
+        "HabilidadSaque": 0,
+        "HabilidadRemate": 0,
+        "HabilidadRecepcion": 0,
+        "HabilidadColocacion": 0,
+        "HabilidadBloqueo": 0,
+        "Experiencia": 0,
+        "NumeroCamiseta": 31
+      },
+      {
+        "Nombre": "Oswaldo B\u00E1ez",
+        "HabilidadSaque": 0,
+        "HabilidadRemate": 0,
+        "HabilidadRecepcion": 0,
+        "HabilidadColocacion": 0,
+        "HabilidadBloqueo": 0,
+        "Experiencia": 0,
+        "NumeroCamiseta": 25
+      },
+      {
+        "Nombre": "Gualter Castro",
+        "HabilidadSaque": 0,
+        "HabilidadRemate": 0,
+        "HabilidadRecepcion": 0,
+        "HabilidadColocacion": 0,
+        "HabilidadBloqueo": 0,
+        "Experiencia": 0,
+        "NumeroCamiseta": 34
+      },
+      {
+        "Nombre": "Cesar Hern\u00E1ndez",
+        "HabilidadSaque": 0,
+        "HabilidadRemate": 0,
+        "HabilidadRecepcion": 0,
+        "HabilidadColocacion": 0,
+        "HabilidadBloqueo": 0,
+        "Experiencia": 0,
+        "NumeroCamiseta": 21
+      },
+      {
+        "Nombre": "Maur\u00EDlio Rodrigues",
+        "HabilidadSaque": 0,
+        "HabilidadRemate": 0,
+        "HabilidadRecepcion": 0,
+        "HabilidadColocacion": 0,
+        "HabilidadBloqueo": 0,
+        "Experiencia": 0,
+        "NumeroCamiseta": 49
+      },
+      {
+        "Nombre": "Jaime M\u00E1rquez",
+        "HabilidadSaque": 0,
+        "HabilidadRemate": 0,
+        "HabilidadRecepcion": 0,
+        "HabilidadColocacion": 0,
+        "HabilidadBloqueo": 0,
+        "Experiencia": 0,
+        "NumeroCamiseta": 17
+      },
+      {
+        "Nombre": "Tom\u00E1s Palomo",
+        "HabilidadSaque": 0,
+        "HabilidadRemate": 0,
+        "HabilidadRecepcion": 0,
+        "HabilidadColocacion": 0,
+        "HabilidadBloqueo": 0,
+        "Experiencia": 0,
+        "NumeroCamiseta": 45
+      },
+      {
+        "Nombre": "Job da Rocha",
+        "HabilidadSaque": 0,
+        "HabilidadRemate": 0,
+        "HabilidadRecepcion": 0,
+        "HabilidadColocacion": 0,
+        "HabilidadBloqueo": 0,
+        "Experiencia": 0,
+        "NumeroCamiseta": 43
+      },
+      {
+        "Nombre": "Sebastian Barnett",
+        "HabilidadSaque": 0,
+        "HabilidadRemate": 0,
+        "HabilidadRecepcion": 0,
+        "HabilidadColocacion": 0,
+        "HabilidadBloqueo": 0,
+        "Experiencia": 0,
+        "NumeroCamiseta": 37
+      }
+    ]
+  },
+  "Puntos": 0
+}

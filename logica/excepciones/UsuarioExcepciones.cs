@@ -6,9 +6,9 @@ namespace Logica.Excepciones
         {}
     }
 
-    public class UsernameInvalidoException : Exception
+    public class NombreInvalidoException : Exception
     {
-        public UsernameInvalidoException (string message) : base(message)
+        public NombreInvalidoException (string message) : base(message)
         {}
     }
 }

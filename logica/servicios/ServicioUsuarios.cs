@@ -13,7 +13,6 @@ namespace Logica.Servicios
     public interface UsuarioServicio
     {
         void CrearUsuario(Usuario usuario);
-        void AlmacenarUsuario(string nombreUsuario);
         Usuario ObtenerDatosUsuario();
         bool ValidarNombreUsuario(string username);
     }
@@ -21,16 +20,17 @@ namespace Logica.Servicios
     public class UsuarioServicioImpl : UsuarioServicio
     {
         private readonly IRepositorio<Usuario> repositorio;
+        private readonly EquipoJugadoresServicio equipoServicio;
 
         public UsuarioServicioImpl()
         {
             this.repositorio = new UsuarioRepositorioImpl();
+            this.equipoServicio = new EquipoJugadoresServicioImpl();
         }
 
         /// <summary>
         /// Crea un nuevo usuario y todos los archivos necesarios
         /// </summary>
-        /// <exception cref="UsuarioNoEspecificadoException">Si el usuario de algún modo saltado las verificaciones de nombre o el nombre ingresado no se hubiese guardado en la configuración</exception>
         public void CrearUsuario(Usuario usuario)
         {
             try
@@ -41,15 +41,6 @@ namespace Logica.Servicios
             {
                 throw;
             }
-        }
-
-        /// <summary>
-        /// Almacena temporalmente el nombre del usuario en los archivos de configuración
-        /// </summary>
-        /// <param name="nombreUsuario">Nombre del nuevo usuario</param>
-        public void AlmacenarUsuario(string nombreUsuario)
-        {
-            Config.NombreUsuarioActual = nombreUsuario;
         }
 
         /// <summary>
@@ -67,18 +58,18 @@ namespace Logica.Servicios
         /// </summary>
         /// <param name="username">Nombre de usuario a validar</param>
         /// <returns><c>True</c> si el nombre de usuario es válido, <c>False</c> en caso contrario</returns>
-        /// <exception cref="UsernameInvalidoException">Cuando el nombre de usuario no cumpla con los requerimentos</exception>
+        /// <exception cref="NombreInvalidoException">Cuando el nombre de usuario no cumpla con los requerimentos</exception>
         public bool ValidarNombreUsuario(string nombreUsuario)
         {
             // Valido la longitud del nombre
             if (!(nombreUsuario.Length >= 3 && nombreUsuario.Length <= 15))
-                throw new UsernameInvalidoException("El nombre de usuario debe tener de 3 a 15 caracteres");
+                throw new NombreInvalidoException("El nombre de usuario debe tener de 3 a 15 caracteres");
 
             // Regex para validar si contiene solo carácteres alfanuméricos
             Regex rgx = new Regex("^[a-zA-Z]+$");
             
             if (!rgx.IsMatch(nombreUsuario))
-                throw new UsernameInvalidoException("El nombre de usuario debe tener solo caracteres alfabeticos");
+                throw new NombreInvalidoException("El nombre de usuario debe tener solo caracteres alfabeticos");
 
             // Si pasó las validaciones anteriores, el usuario es válido
             return true;

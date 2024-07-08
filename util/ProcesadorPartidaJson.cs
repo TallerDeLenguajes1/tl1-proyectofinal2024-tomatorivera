@@ -18,7 +18,7 @@ namespace Logica.Util
         /// </summary>
         public override void Write(Utf8JsonWriter writer, Usuario value, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(value.NombreUsuario);
+            writer.WriteStringValue(value.Nombre);
         }
     }
 }

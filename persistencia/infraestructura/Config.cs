@@ -17,9 +17,14 @@ namespace Persistencia.Infraestructura
         public static string? NombreJsonUsuario { get; set; }
         public static string? NombreImgLogo { get; set; }
 
+        public static string? ApiSportsKey { get; set; }
+        public static string? ApiSportsUrl { get; set; }
+        public static string? ApiRandomUserUrl { get; set; }
+
         // Datos cargados durante la ejecución
         public static string? DirectorioPartidaActual { get; set; }
         public static string? NombreUsuarioActual { get; set; }
+        public static string? NombreEquipoUsuario { get; set; }
 
         /// <summary>
         /// Carga los datos constantes de la configuración
@@ -36,6 +41,10 @@ namespace Persistencia.Infraestructura
             NombreJsonPartida = "partida.json";
             NombreJsonUsuario = "usuario.json";
             NombreImgLogo = "logo.png";
+            
+            ApiSportsKey = "03028e54f1f00215f6bb821f0b260a6d";
+            ApiSportsUrl = "https://v1.volleyball.api-sports.io";
+            ApiRandomUserUrl = "https://randomuser.me/api/";
         }
     }
 }

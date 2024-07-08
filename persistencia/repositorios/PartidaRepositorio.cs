@@ -7,7 +7,7 @@ using Persistencia.Util;
 
 namespace Persistencia.Repositorios
 {
-    public class PartidaRepositorioImpl : IRepositorio<Partida>
+    public class PartidaRepositorioImpl : IRepositorioNavegable<Partida>
     {
         public Partida? partidaActual { get; set; }
 
@@ -22,7 +22,7 @@ namespace Persistencia.Repositorios
             // Lanza una excepción si por alguna razón no se ha cargado el directorio de partidas en la configuración
             RecursosUtil.VerificarDirectorio(Config.DirectorioPartidas ?? string.Empty);
 
-            string nuevaPartidaDir = Config.DirectorioPartidas + @"\partida-" + obj.Id + "-" + obj.FechaGuardado.ToString("ddMMyyyy") + "-" + obj.Usuario.NombreUsuario;
+            string nuevaPartidaDir = Config.DirectorioPartidas + @"\partida-" + obj.Id + "-" + obj.FechaGuardado.ToString("ddMMyyyy") + "-" + obj.Usuario.Nombre;
 
             // Verifico si por alguna razón ya existe un directorio con el nombre de la nueva partida
             if (Directory.Exists(nuevaPartidaDir))
@@ -67,11 +67,16 @@ namespace Persistencia.Repositorios
             return partidaActual;
         }
 
+        public Partida Cargar(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Obtiene una lista de string con los nombres válidos de directorios de partidas
         /// </summary>
         /// <returns><c>List</c> de <c>string</c> con los nombres de los directorios</returns>
-        public List<string> ObtenerDirectoriosPartidas()
+        public List<string> ObtenerDirectorios()
         {
             RecursosUtil.VerificarDirectorio(Config.DirectorioPartidas ?? string.Empty);
 
@@ -87,11 +92,6 @@ namespace Persistencia.Repositorios
                                                                   .Where(dir => rgx.IsMatch(dir))
                                                                   .ToList()
                                                        : new List<string>();
-        }
-
-        public Partida Cargar(int id)
-        {
-            throw new NotImplementedException();
         }
     }
 }

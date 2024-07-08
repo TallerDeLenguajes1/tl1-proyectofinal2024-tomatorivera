@@ -41,7 +41,7 @@ namespace Logica.Modelo
         {
             if (id == -1) return "Volver al menú anterior";
 
-            return (usuario != null) ? "Partida ID " + id + " - Creada el: " + fechaGuardado.ToString("dd/MM/yyyy") + " - DT: " + usuario.NombreUsuario 
+            return (usuario != null) ? "Partida ID " + id + " - Creada el: " + fechaGuardado.ToString("dd/MM/yyyy") + " - DT: " + usuario.Nombre 
                                      : "Partida ID " + id;
         }
     }

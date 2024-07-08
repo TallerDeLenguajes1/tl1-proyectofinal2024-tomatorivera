@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using Gui.Util;
 using Logica.Modelo;
 using Logica.Servicios;
@@ -118,36 +119,72 @@ Espero que te hayas divertido :)
 
             // Solicito los datos al usuario
             var nombreUsuario = AnsiConsole.Prompt(
-            new TextPrompt<string>("> Ingrese su nombre de DT [gray](o inserte espacios en blanco para salir)[/]:")
-                .PromptStyle("yellow")
-                .AllowEmpty()
+                new TextPrompt<string>("> Ingrese su nombre de DT [gray](o inserte espacios en blanco para salir)[/]:")
+                    .PromptStyle("yellow")
+                    .AllowEmpty()
+                    .Validate(nombreInput => {
+                        return ValidarNombre(nombreInput.Trim());
+                    })
             ).Trim();
 
             // Solo si el usuario NO ingresó una cadena vacía continúo con la ejecución
             // Caso contrario, volverá al menú principal
-            if (!string.IsNullOrWhiteSpace(nombreUsuario))
-            {
-                var usuarioServicio = new UsuarioServicioImpl();
+            if (string.IsNullOrWhiteSpace(nombreUsuario)) return; 
 
-                // Verifico si el nombre de usuario es correcto, si no lo fuese se
-                // lanzará una excepción y mostrará el mensaje de error por pantalla
-                usuarioServicio.ValidarNombreUsuario(nombreUsuario);
+            // Solicito los datos del equipo
+            var nombreEquipo = AnsiConsole.Prompt(
+                new TextPrompt<string>("> Ingrese el nombre de su equipo [gray](o inserte espacios en blanco para salir)[/]:")
+                    .PromptStyle("yellow")
+                    .AllowEmpty()
+                    .Validate(nombreInput => {
+                        return ValidarNombre(nombreInput.Trim());
+                    })
+            ).Trim();
 
-                // Creo la nueva partida y la inicio automáticamente
-                var partidaServicio = new PartidaServicioImpl();
-                int id = partidaServicio.ObtenerNuevoIdPartida();
-                Usuario nuevoUsuario = new Usuario(nombreUsuario);
-                Partida nuevaPartida = new Partida(id, DateTime.Now, nuevoUsuario);
+            // Solo si el usuario NO ingresó un nombre de equipo vacío, continúo 
+            // la ejecución, caso contrario vuelve al menú anterior
+            if (string.IsNullOrWhiteSpace(nombreEquipo)) return;
 
-                partidaServicio.CrearPartida(nuevaPartida);
+            // Creo la nueva partida y la inicio automáticamente
+            var equipoServicio = new EquipoJugadoresServicioImpl();
+            var partidaServicio = new PartidaServicioImpl();
 
-                // Obtengo la partida desde el repositorio una vez persistida, para asegurarme de que todos su datos hayan sido creados
-                // Si por alguna razón la partida creada no se guarda en el repositorio, el método ObtenerDatosPartida lanzará una excepción
-                var partidaSeleccionada = partidaServicio.ObtenerDatosPartida();
-                var manejadorPartida = partidaServicio.ObtenerManejadorPartida(partidaSeleccionada);
+            int id = partidaServicio.ObtenerNuevoIdPartida();
 
-                manejadorPartida.IniciarPartida();
-            }
+            Equipo nuevoEquipo = equipoServicio.GenerarEquipo(nombreEquipo);
+            Usuario nuevoUsuario = new Usuario(nombreUsuario, nuevoEquipo);
+            Partida nuevaPartida = new Partida(id, DateTime.Now, nuevoUsuario);
+
+            partidaServicio.CrearPartida(nuevaPartida);
+
+            // Obtengo la partida desde el repositorio una vez persistida, para asegurarme de que todos su datos hayan sido creados
+            // Si por alguna razón la partida creada no se guarda en el repositorio, el método ObtenerDatosPartida lanzará una excepción
+            var partidaSeleccionada = partidaServicio.ObtenerDatosPartida();
+            var manejadorPartida = partidaServicio.ObtenerManejadorPartida(partidaSeleccionada);
+
+            manejadorPartida.IniciarPartida();
+        }
+
+        /// <summary>
+        /// Valida si un nombre es correcto
+        /// </summary>
+        /// <param name="nombre">Nombre a validar</param>
+        /// <returns>Objeto <c>ValidationResult</c> que indica el estado de la validación para los prompts</returns>
+        private ValidationResult ValidarNombre(string nombre)
+        {
+            if (nombre.Length == 0) return ValidationResult.Success();
+
+            // Verifico si el nombre de usuario cumple con la longitud establecida
+            if (nombre.Length < 3 || nombre.Length > 15)
+                return ValidationResult.Error("[red]El nombre de usuario debe tener de 3 a 15 caracteres[/]");
+            
+            // Regex para validar si contiene solo carácteres alfanuméricos
+            Regex rgx = new Regex("^[a-zA-Z]+$");
+            
+            if (!rgx.IsMatch(nombre))
+                return ValidationResult.Error("[red]El nombre de usuario debe tener solo caracteres alfabeticos[/]");
+
+            return ValidationResult.Success();
         }
 
     }
