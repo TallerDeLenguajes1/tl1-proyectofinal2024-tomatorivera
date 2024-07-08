@@ -15,11 +15,15 @@ namespace Logica.Servicios
         string GenerarNombreEquipo();
 
         Jugador GenerarJugador();
+        List<Jugador> GenerarJugadores(int nJugadores);
         string GenerarNombreJugador();
     }
 
     public class EquipoJugadoresServicioImpl : EquipoJugadoresServicio
     {
+        private const int nCamisetaMin = 1;
+        private const int nCamisetaMax = 30;
+
         /// <summary>
         /// Genera un nuevo equipo
         /// </summary>
@@ -32,11 +36,7 @@ namespace Logica.Servicios
             {
                 Equipo nuevoEquipo = new Equipo();
                 nuevoEquipo.Nombre = nombreEquipo;
-                
-                for (int i=0 ; i<nJugadores ; i++)
-                {
-                    nuevoEquipo.Jugadores.Add(GenerarJugador());
-                }
+                nuevoEquipo.Jugadores = GenerarJugadores(nJugadores);
 
                 return nuevoEquipo;
             }
@@ -98,12 +98,18 @@ namespace Logica.Servicios
             return nuevoNombre;
         }
 
+        /// <summary>
+        /// Genera un nuevo jugador
+        /// </summary>
+        /// <returns>Objeto <c>Jugador</c></returns>
         public Jugador GenerarJugador()
         {
-            Random rnd = new Random();
+            var rnd = new Random();
+
             try
-            {
-                int numeroCamiseta = rnd.Next(1, 50);
+            {   
+                // Genero el numero de camiseta
+                int numeroCamiseta = rnd.Next(nCamisetaMin, nCamisetaMax);
                 string nombre = GenerarNombreJugador();
 
                 // Si el nombre del jugador es el genérico, quiere decir que hubo un error con la api
@@ -137,6 +143,51 @@ namespace Logica.Servicios
             }
         }
 
+        /// <summary>
+        /// Genera una lista de jugadores evitando que se repitan sus numeros de camisetas
+        /// </summary>
+        /// <param name="nJugadores">Numero de jugadores a generar</param>
+        /// <returns><c>List</c> de <c>Jugador</c></returns>
+        public List<Jugador> GenerarJugadores(int nJugadores)
+        {
+            try
+            {
+                var rnd = new Random();
+                var listaJugadores = new List<Jugador>();
+                var numerosOcupados = new HashSet<int>();
+                var nombresOcupados = new HashSet<string>();
+
+                // Genero nJugadores
+                for (int i=0 ; i<nJugadores ; i++)
+                {
+                    Jugador nuevoJugador = GenerarJugador();
+
+                    // Reviso si el jugador tiene un numero de camiseta duplicado
+                    // en dicho caso, se lo modifico
+                    while (numerosOcupados.Contains(nuevoJugador.NumeroCamiseta))
+                        nuevoJugador.NumeroCamiseta = rnd.Next(nCamisetaMin, nCamisetaMax);
+
+                    while (nombresOcupados.Contains(nuevoJugador.Nombre ?? "Jugador " + nuevoJugador.NumeroCamiseta))
+                        nuevoJugador.Nombre = GenerarNombreJugador();
+
+                    numerosOcupados.Add(nuevoJugador.NumeroCamiseta);
+                    nombresOcupados.Add(nuevoJugador.Nombre ?? "Jugador " + nuevoJugador.NumeroCamiseta);
+                    listaJugadores.Add(nuevoJugador);
+                }
+
+                return listaJugadores;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Genera el nombre para un jugador desde una API, en caso de no poder traer un
+        /// dato de allí, devuelve un nombre genérico
+        /// </summary>
+        /// <returns>Nombre generado para un jugador</returns>
         public string GenerarNombreJugador()
         {
             string nombreJugador = "Jugador";
@@ -148,9 +199,9 @@ namespace Logica.Servicios
 
                 var consumidor = new Consumidor<NameRaiz>(Config.ApiRandomUserUrl);
                 consumidor.AgregarParametro("inc", "name,nat");
-                consumidor.AgregarParametro("nat", "es,br,us,mx");
+                consumidor.AgregarParametro("nat", "es,us,mx");
                 consumidor.AgregarParametro("gender", "male");
-                consumidor.AgregarParametro("results", "12");
+                consumidor.AgregarParametro("results", "1");
                 consumidor.AgregarParametro("noinfo");
 
                 var tareaConsumir = Task.Run(consumidor.ConsumirAsync);
@@ -166,6 +217,7 @@ namespace Logica.Servicios
                     return nombreJugador;
 
                 var nombreAleatorio = listaNombres.Results.ElementAt(new Random().Next(listaNombres.Results.Count()));
+
                 nombreJugador = (nombreAleatorio.Name != null) ? nombreAleatorio.Name.First + " " + nombreAleatorio.Name.Last
                                                                : nombreJugador;
             }
