@@ -1,6 +1,6 @@
-using System.Text.Json;
 using Logica.Excepciones;
 using Logica.Modelo;
+using Newtonsoft.Json;
 using Persistencia.Infraestructura;
 
 namespace Persistencia.Repositorios
@@ -24,7 +24,7 @@ namespace Persistencia.Repositorios
             {
                 using (StreamWriter writer = new StreamWriter(usuarioJson))
                 {
-                    string usuarioSerializado = JsonSerializer.Serialize(obj, new JsonSerializerOptions { Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping, WriteIndented = true });
+                    string usuarioSerializado = JsonConvert.SerializeObject(obj, new JsonSerializerSettings { StringEscapeHandling = StringEscapeHandling.EscapeHtml, Formatting = Formatting.Indented });
                     writer.WriteLine(usuarioSerializado);
                 }
             }

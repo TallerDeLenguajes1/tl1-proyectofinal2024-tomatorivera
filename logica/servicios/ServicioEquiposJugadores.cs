@@ -7,16 +7,17 @@ using Persistencia.Infraestructura;
 namespace Logica.Servicios
 {
     /// <summary>
-    /// Servicio para la gestión de tareas relacionadas a un Equipo
+    /// Servicio para la gestión de tareas relacionadas a un Equipo y sus jugadores
     /// </summary>
     public interface EquipoJugadoresServicio
     {
-        Equipo GenerarEquipo(string nombreEquipo, int nJugadores = 14);
+        Equipo GenerarEquipo(string nombreEquipo = "", int nJugadores = 14);
         string GenerarNombreEquipo();
 
         Jugador GenerarJugador();
         List<Jugador> GenerarJugadores(int nJugadores);
         string GenerarNombreJugador();
+        Dictionary<int, string> GenerarIdentificadoresJugadores(int nIdentificadores = 1);
     }
 
     public class EquipoJugadoresServicioImpl : EquipoJugadoresServicio
@@ -30,13 +31,15 @@ namespace Logica.Servicios
         /// <param name="nombreEquipo">Nombre del equipo a generar</param>
         /// <param name="nJugadores">Número de jugadores a generar (por defecto 14, el nro inicial de jugadores)</param>
         /// <returns>Objeto <c>Equipo</c></returns>
-        public Equipo GenerarEquipo(string nombreEquipo, int nJugadores = 14)
+        public Equipo GenerarEquipo(string nombreEquipo = "", int nJugadores = 14)
         {   
             try
             {
-                Equipo nuevoEquipo = new Equipo();
-                nuevoEquipo.Nombre = nombreEquipo;
-                nuevoEquipo.Jugadores = GenerarJugadores(nJugadores);
+                Equipo nuevoEquipo = new Equipo
+                {
+                    Nombre = string.IsNullOrWhiteSpace(nombreEquipo) ? GenerarNombreEquipo() : nombreEquipo,
+                    Jugadores = GenerarJugadores(nJugadores)
+                };
 
                 return nuevoEquipo;
             }
@@ -92,7 +95,7 @@ namespace Logica.Servicios
             catch (Exception ex)
             {
                 // Disperso el problema para poder ser mostrado por pantalla
-                new ErroresIgnorablesHandler().ManejarError($"{ex.Message}. Se creará un nombre genérico para el nuevo equipo");
+                ErroresIgnorablesHandler.ObtenerInstancia().Errores.TryAdd("Generar nombre equipo", new Exception("Se creará un nombre genérico para el nuevo equipo", ex));
             }
 
             return nuevoNombre;
@@ -109,16 +112,11 @@ namespace Logica.Servicios
             try
             {   
                 // Genero el numero de camiseta
-                int numeroCamiseta = rnd.Next(nCamisetaMin, nCamisetaMax);
-                string nombre = GenerarNombreJugador();
+                var numeroCamiseta = rnd.Next(nCamisetaMin, nCamisetaMax);
 
-                // Si el nombre del jugador es el genérico, quiere decir que hubo un error con la api
-                // En dicho caso le agrego el número de camiseta al nombre para distinguirlo
-                if (nombre.Equals("Jugador"))
-                    nombre += " " + numeroCamiseta;
-
-                var tipoJugadores = Enum.GetValues(typeof(TipoJugador));
-                var tipoJugador = tipoJugadores.GetValue(rnd.Next(tipoJugadores.Length));
+                // Selecciono el tipo de jugador aleatoriamente desde el Enum
+                var nTipoJugadores = Enum.GetValues(typeof(TipoJugador));
+                var tipoJugador = nTipoJugadores.GetValue(rnd.Next(nTipoJugadores.Length));
 
                 JugadorFabrica fabricaJugador = tipoJugador switch
                 {
@@ -130,9 +128,9 @@ namespace Logica.Servicios
                     _ => new JugadorCentralFabrica() // Default
                 };
 
+                // Genero los atributos del jugador
                 Jugador nuevoJugador = fabricaJugador.CrearJugador();
                 nuevoJugador.NumeroCamiseta = numeroCamiseta;
-                nuevoJugador.Nombre = nombre;
                 nuevoJugador.Experiencia = 0.00f;
 
                 return nuevoJugador;
@@ -146,32 +144,38 @@ namespace Logica.Servicios
         /// <summary>
         /// Genera una lista de jugadores evitando que se repitan sus numeros de camisetas
         /// </summary>
-        /// <param name="nJugadores">Numero de jugadores a generar</param>
+        /// <param name="nJugadores">Numero de jugadores a generar (por defecto 1)</param>
         /// <returns><c>List</c> de <c>Jugador</c></returns>
-        public List<Jugador> GenerarJugadores(int nJugadores)
+        public List<Jugador> GenerarJugadores(int nJugadores = 1)
         {
             try
             {
                 var rnd = new Random();
                 var listaJugadores = new List<Jugador>();
-                var numerosOcupados = new HashSet<int>();
-                var nombresOcupados = new HashSet<string>();
+                var listaIdentificadores = GenerarIdentificadoresJugadores(nJugadores);
+                var tipoJugadores = Enum.GetValues(typeof(TipoJugador));
 
-                // Genero nJugadores
-                for (int i=0 ; i<nJugadores ; i++)
+                for (int i=0 ; i < nJugadores ; i++)
                 {
-                    Jugador nuevoJugador = GenerarJugador();
+                    var tipoJugador = (TipoJugador) tipoJugadores.GetValue(rnd.Next(tipoJugadores.Length))!;
 
-                    // Reviso si el jugador tiene un numero de camiseta duplicado
-                    // en dicho caso, se lo modifico
-                    while (numerosOcupados.Contains(nuevoJugador.NumeroCamiseta))
-                        nuevoJugador.NumeroCamiseta = rnd.Next(nCamisetaMin, nCamisetaMax);
+                    JugadorFabrica fabricaJugador = tipoJugador switch
+                    {
+                        TipoJugador.LIBERO => new JugadorLiberoFabrica(),
+                        TipoJugador.ARMADOR => new JugadorArmadorFabrica(),
+                        TipoJugador.CENTRAL => new JugadorCentralFabrica(),
+                        TipoJugador.REMATADOR => new JugadorRematadorFabrica(),
+                        TipoJugador.SERVIDOR => new JugadorServidorFabrica(),
+                        _ => new JugadorCentralFabrica() // Default
+                    };
 
-                    while (nombresOcupados.Contains(nuevoJugador.Nombre ?? "Jugador " + nuevoJugador.NumeroCamiseta))
-                        nuevoJugador.Nombre = GenerarNombreJugador();
+                    // Genero los atributos del jugador
+                    Jugador nuevoJugador = fabricaJugador.CrearJugador();
+                    nuevoJugador.NumeroCamiseta = listaIdentificadores.ElementAt(i).Key;
+                    nuevoJugador.Nombre = listaIdentificadores.ElementAt(i).Value;
+                    nuevoJugador.TipoJugador = tipoJugador;
+                    nuevoJugador.Experiencia = 0.00f;
 
-                    numerosOcupados.Add(nuevoJugador.NumeroCamiseta);
-                    nombresOcupados.Add(nuevoJugador.Nombre ?? "Jugador " + nuevoJugador.NumeroCamiseta);
                     listaJugadores.Add(nuevoJugador);
                 }
 
@@ -184,7 +188,7 @@ namespace Logica.Servicios
         }
 
         /// <summary>
-        /// Genera el nombre para un jugador desde una API, en caso de no poder traer un
+        /// Genera un nombre para un jugador desde una API, en caso de no poder traer un
         /// dato de allí, devuelve un nombre genérico
         /// </summary>
         /// <returns>Nombre generado para un jugador</returns>
@@ -211,10 +215,10 @@ namespace Logica.Servicios
 
                 // Si la respuesta es nula, lanzo la excepción porque puede tratarse de un error
                 if (listaNombres.Results == null)
-                    throw new ApiInaccesibleException("La respuesta de Api Sports es nula", listaNombres);
+                    throw new ApiInaccesibleException("La respuesta de Random User API es nula", listaNombres);
                 
                 if (!listaNombres.Results.Any()) 
-                    return nombreJugador;
+                    throw new ApiInaccesibleException("La respuesta de Random User API está vacía");
 
                 var nombreAleatorio = listaNombres.Results.ElementAt(new Random().Next(listaNombres.Results.Count()));
 
@@ -224,10 +228,100 @@ namespace Logica.Servicios
             catch (Exception ex)
             {
                 // Disperso el problema para poder ser mostrado por pantalla
-                new ErroresIgnorablesHandler().ManejarError($"{ex.Message}. Se creará un nombre genérico para el jugador");
+                ErroresIgnorablesHandler.ObtenerInstancia().Errores.TryAdd("Generar nombre jugador", new Exception("Se creará un nombre genérico para los jugadores", ex));
             }
 
             return nombreJugador;
+        }
+
+        /// <summary>
+        /// Genera un par clave valor para identificar a los jugadores de manera única, que contiene
+        /// su número de camiseta y su nombre obtenido a partir de una api
+        /// </summary>
+        /// <param name="nIdentificadores">Números de identificadores a generar (por defecto, uno)</param>
+        /// <returns>Diccionario de valores: <c>número de camiseta, nombre de jugador</c></returns>
+        public Dictionary<int, string> GenerarIdentificadoresJugadores(int nIdentificadores = 1)
+        {
+            var listaIdentificadores = new Dictionary<int, string>();
+            var numerosOcupados = new HashSet<int>();
+            var nombresOcupados = new HashSet<string>();
+            var random = new Random();
+
+            try
+            {
+                if (string.IsNullOrWhiteSpace(Config.ApiRandomUserUrl))
+                    throw new ApiInaccesibleException("La url de Api Random User es nula o está vacía");
+
+                var consumidor = new Consumidor<NameRaiz>(Config.ApiRandomUserUrl);
+                consumidor.AgregarParametro("inc", "name");
+                consumidor.AgregarParametro("nat", "es,us,mx");
+                consumidor.AgregarParametro("gender", "male");
+                consumidor.AgregarParametro("results", nIdentificadores.ToString());
+                consumidor.AgregarParametro("noinfo");
+
+                var tareaConsumir = Task.Run(consumidor.ConsumirAsync);
+                tareaConsumir.Wait();
+
+                var respuestaNombres = tareaConsumir.Result;
+
+                // Si la respuesta es nula o vacía, lanzo la excepción porque puede tratarse de un error
+                if (respuestaNombres.Results == null)
+                    throw new ApiInaccesibleException("La respuesta de Random User API es nula", consumidor.ApiFullUrl);
+
+                if (!respuestaNombres.Results.Any()) 
+                    throw new ApiInaccesibleException("La respuesta de Random User API está vacía");
+
+                // Mapeo la lista de resultados a una lista de strings con los nombres, o el nombre "Jugador" en caso de que Name sea null
+                var listaNombres = respuestaNombres.Results.Select(x => $"{x.Name?.First ?? "Jugador"} {x.Name?.Last ?? string.Empty}").ToList();
+
+                // Genero n identificadores
+                for (int i=0 ; i<nIdentificadores ; i++)
+                {
+                    // Genero el numero de camiseta controlando que no sea duplicada
+                    var numeroCamiseta = random.Next(nCamisetaMin, nCamisetaMax);
+                    while (!numerosOcupados.Add(numeroCamiseta))
+                    {
+                        numeroCamiseta = random.Next(nCamisetaMin, nCamisetaMax);
+                    }
+                    
+                    // Obtengo un nombre random de la lista controlando que no sea duplicado
+                    var nombreJugador = listaNombres.ElementAt(random.Next(listaNombres.Count()));
+                    while (!nombresOcupados.Add(nombreJugador))
+                    {
+                        nombreJugador = GenerarNombreJugador();
+
+                        // En caso de que se devuelva "Jugador", quiere decir que hubo problemas conectándose con la API
+                        // y en dicho caso se crea un nombre genérico
+                        if (nombreJugador.Contains("Jugador"))
+                            nombreJugador += $" {numeroCamiseta}";
+                    }
+
+                    listaIdentificadores.Add(numeroCamiseta, nombreJugador);
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                // Si hubieron errores comunicándose con la API, genero n identificadores genéricos
+                for (int i=0 ; i<nIdentificadores ; i++)
+                {
+                    // Genero el numero de camiseta controlando que no sea duplicada
+                    var numeroCamiseta = random.Next(nCamisetaMin, nCamisetaMax);
+                    while (!numerosOcupados.Add(numeroCamiseta))
+                    {
+                        numeroCamiseta = random.Next(nCamisetaMin, nCamisetaMax);
+                    }
+                    
+                    // Agrego a la lista un nombre genérico
+                    listaIdentificadores.Add(numeroCamiseta, $"Jugador {numeroCamiseta}");
+                }
+
+                
+                // Disperso el problema para poder ser mostrado por pantalla
+                ErroresIgnorablesHandler.ObtenerInstancia().Errores.TryAdd("Generar nombres jugadores", new Exception("Se crearán nombres genéricos para los jugadores", ex));
+            }
+
+            return listaIdentificadores;
         }
     }
 }

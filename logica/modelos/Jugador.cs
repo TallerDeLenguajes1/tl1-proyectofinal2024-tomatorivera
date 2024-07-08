@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Persistencia.Infraestructura;
 
 namespace Logica.Modelo
@@ -10,22 +11,28 @@ namespace Logica.Modelo
     {
         private string? nombre;
         private int numeroCamiseta;
+        [JsonConverter(typeof(StringEnumConverter))]
+        private TipoJugador tipoJugador;
+        private float experiencia;
         private float habilidadSaque;
         private float habilidadRemate;
         private float habilidadRecepcion;
         private float habilidadColocacion;
         private float habilidadBloqueo;
-        private float experiencia;
 
         // Propiedades
         public string? Nombre { get => nombre; set => nombre = value; }
+        public int NumeroCamiseta { get => numeroCamiseta; set => numeroCamiseta = value; }
+
+        [JsonConverter(typeof(StringEnumConverter))] // Para guardar el ENUM en json con su nombre y no su ID
+        public TipoJugador TipoJugador { get => tipoJugador; set => tipoJugador = value; }
+
+        public float Experiencia { get => experiencia; set => experiencia = value; }
         public float HabilidadSaque { get => habilidadSaque; set => habilidadSaque = value; }
         public float HabilidadRemate { get => habilidadRemate; set => habilidadRemate = value; }
         public float HabilidadRecepcion { get => habilidadRecepcion; set => habilidadRecepcion = value; }
         public float HabilidadColocacion { get => habilidadColocacion; set => habilidadColocacion = value; }
         public float HabilidadBloqueo { get => habilidadBloqueo; set => habilidadBloqueo = value; }
-        public float Experiencia { get => experiencia; set => experiencia = value; }
-        public int NumeroCamiseta { get => numeroCamiseta; set => numeroCamiseta = value; }
     }
     
     public enum TipoJugador
@@ -51,9 +58,6 @@ namespace Logica.Modelo
     {
         [JsonProperty("name", NullValueHandling = NullValueHandling.Ignore)]
         public Name? Name { get; set; }
-
-        [JsonProperty("nat", NullValueHandling = NullValueHandling.Ignore)]
-        public string? Nat { get; set; }
     }
 
     public class NameRaiz : IConsumido

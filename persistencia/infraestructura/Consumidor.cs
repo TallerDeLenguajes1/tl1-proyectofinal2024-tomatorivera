@@ -14,6 +14,7 @@ namespace Persistencia.Infraestructura
         private string parametros;
         private int nParametros;
         private Dictionary<string, string> cabeceras;
+        public string ApiFullUrl { get => apiUrl + subUrl + parametros; }
 
         public Consumidor(string apiUrl)
         {

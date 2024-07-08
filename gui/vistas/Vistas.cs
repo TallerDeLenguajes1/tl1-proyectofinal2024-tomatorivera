@@ -1,5 +1,6 @@
 using Gui.Modelo;
 using Gui.Util;
+using Logica.Handlers;
 using Spectre.Console;
 using Spectre.Console.Rendering;
 

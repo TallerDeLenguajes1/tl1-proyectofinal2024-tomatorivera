@@ -1,5 +1,6 @@
 using System.Text.RegularExpressions;
 using Gui.Util;
+using Logica.Handlers;
 using Logica.Modelo;
 using Logica.Servicios;
 using Spectre.Console;
@@ -145,24 +146,45 @@ Espero que te hayas divertido :)
             // la ejecución, caso contrario vuelve al menú anterior
             if (string.IsNullOrWhiteSpace(nombreEquipo)) return;
 
-            // Creo la nueva partida y la inicio automáticamente
-            var equipoServicio = new EquipoJugadoresServicioImpl();
+            Partida? partidaSeleccionada = null;
+            PartidaHandler? manejadorPartida = null;
             var partidaServicio = new PartidaServicioImpl();
 
-            int id = partidaServicio.ObtenerNuevoIdPartida();
+            AnsiConsole.Status()
+                .Spinner(Spinner.Known.BouncingBall)
+                .SpinnerStyle(Style.Parse("yellow bold"))
+                .Start("Thinking...", ctx => 
+                {
+                    ctx.Status("[yellow]Creando nueva partida...[/]");
 
-            Equipo nuevoEquipo = equipoServicio.GenerarEquipo(nombreEquipo);
-            Usuario nuevoUsuario = new Usuario(nombreUsuario, nuevoEquipo);
-            Partida nuevaPartida = new Partida(id, DateTime.Now, nuevoUsuario);
+                    // Creo la nueva partida y la inicio automáticamente
+                    var equipoServicio = new EquipoJugadoresServicioImpl();
 
-            partidaServicio.CrearPartida(nuevaPartida);
+                    int id = partidaServicio.ObtenerNuevoIdPartida();
 
-            // Obtengo la partida desde el repositorio una vez persistida, para asegurarme de que todos su datos hayan sido creados
-            // Si por alguna razón la partida creada no se guarda en el repositorio, el método ObtenerDatosPartida lanzará una excepción
-            var partidaSeleccionada = partidaServicio.ObtenerDatosPartida();
-            var manejadorPartida = partidaServicio.ObtenerManejadorPartida(partidaSeleccionada);
+                    Equipo nuevoEquipo = equipoServicio.GenerarEquipo(nombreEquipo);
+                    Usuario nuevoUsuario = new Usuario(nombreUsuario, nuevoEquipo);
+                    Partida nuevaPartida = new Partida(id, DateTime.Now, nuevoUsuario);
 
-            manejadorPartida.IniciarPartida();
+                    partidaServicio.CrearPartida(nuevaPartida);
+
+                    ctx.Status("[green]Iniciando partida...[/]");
+
+                    // Obtengo la partida desde el repositorio una vez persistida, para asegurarme de que todos su datos hayan sido creados
+                    // Si por alguna razón la partida creada no se guarda en el repositorio, el método ObtenerDatosPartida lanzará una excepción
+                    partidaSeleccionada = partidaServicio.ObtenerDatosPartida();
+                    manejadorPartida = partidaServicio.ObtenerManejadorPartida(partidaSeleccionada);
+                }
+            );
+
+            // Muestro aquellos errores que se pueden haber producido pero que se puedan ignorar
+            MostrarErroresIgnorables();
+
+            // Si se ha cargado una partida y su manejador correctamente, inicio la partida
+            if (partidaSeleccionada != null && manejadorPartida != null)
+            {
+                manejadorPartida.IniciarPartida();
+            }
         }
 
         /// <summary>
@@ -187,6 +209,29 @@ Espero que te hayas divertido :)
             return ValidationResult.Success();
         }
 
+        private void MostrarErroresIgnorables()
+        {   
+            System.Console.WriteLine();
+
+            if (ErroresIgnorablesHandler.ObtenerInstancia().Errores.Any())
+            {  
+                var titulo = new Rule("[yellow] Se han producido uno o más errores [/]");
+                titulo.LeftJustified();
+                titulo.Style = Style.Parse("yellow");
+                AnsiConsole.Write(titulo);
+                
+                foreach (var error in ErroresIgnorablesHandler.ObtenerInstancia().Errores)
+                {
+                    AnsiConsole.Write(new Markup($"Durante la operación: [gray]{error.Key}[/] - {error.Value.InnerException?.Message}. {error.Value.Message}"));
+                }
+
+                ErroresIgnorablesHandler.ObtenerInstancia().LimpiarErrores();
+
+                System.Console.WriteLine("\n");
+                AnsiConsole.Write(new Markup("[yellow]Presione una tecla para continuar el juego...[/]"));
+                Console.ReadKey();
+            }
+        }
     }
 
     public class ComandoCargarPartida : IComando
