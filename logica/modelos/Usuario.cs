@@ -6,8 +6,8 @@ namespace Logica.Modelo
     public class Usuario
     {
         private string nombre;
-        private Equipo equipo;
         private float puntos;
+        private Equipo equipo;
 
         /// <summary>
         /// Constructor de la clase Usuario
@@ -29,8 +29,8 @@ namespace Logica.Modelo
 
         // Propiedades
         public string Nombre { get => nombre; set => nombre = value; }
-        public Equipo Equipo { get => equipo; set => equipo = value; }
         public float Puntos { get => puntos; set => puntos = value; } 
+        public Equipo Equipo { get => equipo; set => equipo = value; }
 
         // Métodos
 

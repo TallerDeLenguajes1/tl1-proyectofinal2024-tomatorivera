@@ -1,5 +1,5 @@
-using System.Text.Json.Serialization;
 using Logica.Util;
+using Newtonsoft.Json;
 
 namespace Logica.Modelo
 {
@@ -32,7 +32,10 @@ namespace Logica.Modelo
         public int Id { get => id; set => id = value; }
         public DateTime FechaGuardado { get => fechaGuardado; set => fechaGuardado = value; }
 
-        [JsonConverter(typeof(UsuarioConverter))]
+        [JsonProperty("NombreDT")] // En el json de la partida solo mostraré el nombre del usuario
+        public string NombreUsuario => Usuario.Nombre;
+
+        [JsonIgnore] // El usuario será mostrado en otro JSON
         public Usuario Usuario { get => usuario; set => usuario = value; }
 
         // Métodos

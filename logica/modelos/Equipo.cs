@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using Persistencia.Infraestructura;
 
 namespace Logica.Modelo
@@ -22,6 +23,8 @@ namespace Logica.Modelo
         }
 
         // Propiedades
+        
+        [JsonProperty("NombreEquipo")]
         public string Nombre { get => nombre; set => nombre = value; }
         public int TotalJugadores { get => nJugadores; set => nJugadores = value; }
         public List<Jugador> Jugadores 
