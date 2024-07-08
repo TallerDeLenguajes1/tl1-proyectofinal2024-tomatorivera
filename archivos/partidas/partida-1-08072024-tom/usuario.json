@@ -1,0 +1,164 @@
+{
+  "Nombre": "tom",
+  "Equipo": {
+    "Nombre": "bokita",
+    "TotalJugadores": 14,
+    "Jugadores": [
+      {
+        "Nombre": "Zacarías Collazo",
+        "NumeroCamiseta": 29,
+        "TipoJugador": "PUNTA",
+        "Experiencia": 0.0,
+        "HabilidadSaque": 3.56,
+        "HabilidadRemate": 5.59,
+        "HabilidadRecepcion": 5.91,
+        "HabilidadColocacion": 2.47,
+        "HabilidadBloqueo": 2.85
+      },
+      {
+        "Nombre": "Agustín Romero",
+        "NumeroCamiseta": 13,
+        "TipoJugador": "LIBERO",
+        "Experiencia": 0.0,
+        "HabilidadSaque": 3.17,
+        "HabilidadRemate": 1.63,
+        "HabilidadRecepcion": 6.89,
+        "HabilidadColocacion": 2.06,
+        "HabilidadBloqueo": 1.91
+      },
+      {
+        "Nombre": "Mariano Echeverría",
+        "NumeroCamiseta": 8,
+        "TipoJugador": "OPUESTO",
+        "Experiencia": 0.0,
+        "HabilidadSaque": 3.74,
+        "HabilidadRemate": 6.71,
+        "HabilidadRecepcion": 2.42,
+        "HabilidadColocacion": 2.81,
+        "HabilidadBloqueo": 3.6
+      },
+      {
+        "Nombre": "Maximino Véliz",
+        "NumeroCamiseta": 12,
+        "TipoJugador": "CENTRAL",
+        "Experiencia": 0.0,
+        "HabilidadSaque": 2.18,
+        "HabilidadRemate": 3.42,
+        "HabilidadRecepcion": 0.57,
+        "HabilidadColocacion": 3.2,
+        "HabilidadBloqueo": 5.03
+      },
+      {
+        "Nombre": "Adolfo Muñoz",
+        "NumeroCamiseta": 14,
+        "TipoJugador": "PUNTA",
+        "Experiencia": 0.0,
+        "HabilidadSaque": 3.06,
+        "HabilidadRemate": 4.18,
+        "HabilidadRecepcion": 4.07,
+        "HabilidadColocacion": 2.7,
+        "HabilidadBloqueo": 2.5
+      },
+      {
+        "Nombre": "Arturo Esquivel",
+        "NumeroCamiseta": 7,
+        "TipoJugador": "ARMADOR",
+        "Experiencia": 0.0,
+        "HabilidadSaque": 3.02,
+        "HabilidadRemate": 4.25,
+        "HabilidadRecepcion": 3.74,
+        "HabilidadColocacion": 6.29,
+        "HabilidadBloqueo": 3.58
+      },
+      {
+        "Nombre": "Calvin Wade",
+        "NumeroCamiseta": 16,
+        "TipoJugador": "ARMADOR",
+        "Experiencia": 0.0,
+        "HabilidadSaque": 3.13,
+        "HabilidadRemate": 3.71,
+        "HabilidadRecepcion": 2.1,
+        "HabilidadColocacion": 5.68,
+        "HabilidadBloqueo": 2.26
+      },
+      {
+        "Nombre": "Same Ramirez",
+        "NumeroCamiseta": 5,
+        "TipoJugador": "CENTRAL",
+        "Experiencia": 0.0,
+        "HabilidadSaque": 2.05,
+        "HabilidadRemate": 3.44,
+        "HabilidadRecepcion": 1.94,
+        "HabilidadColocacion": 3.17,
+        "HabilidadBloqueo": 6.11
+      },
+      {
+        "Nombre": "Marcos Ruiz",
+        "NumeroCamiseta": 2,
+        "TipoJugador": "LIBERO",
+        "Experiencia": 0.0,
+        "HabilidadSaque": 3.1,
+        "HabilidadRemate": 0.71,
+        "HabilidadRecepcion": 6.32,
+        "HabilidadColocacion": 1.4,
+        "HabilidadBloqueo": 0.79
+      },
+      {
+        "Nombre": "Kevin Hamilton",
+        "NumeroCamiseta": 23,
+        "TipoJugador": "CENTRAL",
+        "Experiencia": 0.0,
+        "HabilidadSaque": 2.71,
+        "HabilidadRemate": 3.99,
+        "HabilidadRecepcion": 2.13,
+        "HabilidadColocacion": 3.85,
+        "HabilidadBloqueo": 5.4
+      },
+      {
+        "Nombre": "Alfonso Parra",
+        "NumeroCamiseta": 3,
+        "TipoJugador": "CENTRAL",
+        "Experiencia": 0.0,
+        "HabilidadSaque": 2.45,
+        "HabilidadRemate": 3.31,
+        "HabilidadRecepcion": 1.71,
+        "HabilidadColocacion": 3.96,
+        "HabilidadBloqueo": 5.89
+      },
+      {
+        "Nombre": "Isabel Vázquez",
+        "NumeroCamiseta": 22,
+        "TipoJugador": "CENTRAL",
+        "Experiencia": 0.0,
+        "HabilidadSaque": 1.22,
+        "HabilidadRemate": 4.72,
+        "HabilidadRecepcion": 2.03,
+        "HabilidadColocacion": 2.52,
+        "HabilidadBloqueo": 5.33
+      },
+      {
+        "Nombre": "Xavier Cruz",
+        "NumeroCamiseta": 25,
+        "TipoJugador": "CENTRAL",
+        "Experiencia": 0.0,
+        "HabilidadSaque": 2.48,
+        "HabilidadRemate": 3.31,
+        "HabilidadRecepcion": 1.77,
+        "HabilidadColocacion": 2.41,
+        "HabilidadBloqueo": 5.65
+      },
+      {
+        "Nombre": "Porfirio Yáñez",
+        "NumeroCamiseta": 17,
+        "TipoJugador": "ARMADOR",
+        "Experiencia": 0.0,
+        "HabilidadSaque": 4.34,
+        "HabilidadRemate": 4.41,
+        "HabilidadRecepcion": 3.53,
+        "HabilidadColocacion": 5.06,
+        "HabilidadBloqueo": 2.67
+      }
+    ]
+  },
+  "Puntos": 0.0
+}

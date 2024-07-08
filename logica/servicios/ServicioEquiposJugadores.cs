@@ -123,9 +123,8 @@ namespace Logica.Servicios
                     TipoJugador.LIBERO => new JugadorLiberoFabrica(),
                     TipoJugador.ARMADOR => new JugadorArmadorFabrica(),
                     TipoJugador.CENTRAL => new JugadorCentralFabrica(),
-                    TipoJugador.REMATADOR => new JugadorRematadorFabrica(),
-                    TipoJugador.SERVIDOR => new JugadorServidorFabrica(),
-                    _ => new JugadorCentralFabrica() // Default
+                    TipoJugador.OPUESTO => new JugadorOpuestoFabrica(),
+                    _ => new JugadorPuntaFabrica()
                 };
 
                 // Genero los atributos del jugador
@@ -164,9 +163,8 @@ namespace Logica.Servicios
                         TipoJugador.LIBERO => new JugadorLiberoFabrica(),
                         TipoJugador.ARMADOR => new JugadorArmadorFabrica(),
                         TipoJugador.CENTRAL => new JugadorCentralFabrica(),
-                        TipoJugador.REMATADOR => new JugadorRematadorFabrica(),
-                        TipoJugador.SERVIDOR => new JugadorServidorFabrica(),
-                        _ => new JugadorCentralFabrica() // Default
+                        TipoJugador.OPUESTO => new JugadorOpuestoFabrica(),
+                        _ => new JugadorPuntaFabrica()
                     };
 
                     // Genero los atributos del jugador

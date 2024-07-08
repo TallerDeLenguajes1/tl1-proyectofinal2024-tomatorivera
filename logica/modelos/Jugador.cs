@@ -37,11 +37,11 @@ namespace Logica.Modelo
     
     public enum TipoJugador
     {
-        LIBERO,
+        PUNTA,
+        OPUESTO,
         ARMADOR,
-        REMATADOR,
-        CENTRAL,
-        SERVIDOR
+        LIBERO,
+        CENTRAL
     }
 
     // Modelos para API's relacionadas al jugador
