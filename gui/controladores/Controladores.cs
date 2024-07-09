@@ -152,25 +152,8 @@ namespace Gui.Controladores
                 }
 
                 // Solo si el menú aún se sigue ejecutando, borro las lineas de lo escrito por los comandos
-                if (estaSeleccionando) borrarDesdeLinea(lineaInicio);
+                if (estaSeleccionando) VistasUtil.BorrarDesdeLinea(lineaInicio);
             }
-        }
-
-        /// <summary>
-        /// Borra la consola a partir de la linea <paramref name="lineaInicio"/>
-        /// </summary>
-        /// <param name="lineaInicio">Linea desde la cual se borrará la consola</param>
-        private void borrarDesdeLinea(int lineaInicio)
-        {
-            int lineaFin = Console.CursorTop;
-
-            for (int i = lineaInicio ; i < lineaFin ; i++)
-            {
-                Console.SetCursorPosition(0, i);
-                Console.Write(new string(' ', Console.WindowWidth));
-            }
-
-            Console.SetCursorPosition(0, lineaInicio);
         }
 
         /// <summary>
@@ -178,12 +161,8 @@ namespace Gui.Controladores
         /// para que detenga la ejecución del WHILE que mantiene activo el menú
         /// </summary>
         private void configurarComandoSalida() {
-            vista.Comandos.ForEach(cmd => {
-                if (cmd is ComandoSalir)
-                {
-                    ((ComandoSalir) cmd).AccionPersonalizada = () => { this.estaSeleccionando = false; };
-                }
-            });
+            var cmdSalir = (ComandoSalir) vista.Comandos.Where(cmd => cmd is ComandoSalir).First();
+            cmdSalir.AccionPersonalizada = () => { this.estaSeleccionando = false; };
         }
     }
 }

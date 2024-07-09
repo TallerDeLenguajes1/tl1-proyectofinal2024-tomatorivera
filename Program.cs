@@ -19,11 +19,12 @@ namespace Logica
 
         private static void mostrarMenuPrincipal()
         {
+            // Configuro el UTF de la consola y la limpio para mostrar las vistas
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             AnsiConsole.Clear();
 
             // Muestro el titulo del juego
-            Inicio tituloInicio = new Inicio();
+            var tituloInicio = new Inicio();
             Controlador<Inicio> tituloInicioControlador = new InicioControlador(tituloInicio);
 
             tituloInicioControlador.MostrarVista();
@@ -36,7 +37,7 @@ namespace Logica
                 new ComandoSalir(TipoMenu.PRINCIPAL)
             };
 
-            Menu menuPrincipal = new Menu(opcionesMenuPrincipal);
+            var menuPrincipal = new Menu(opcionesMenuPrincipal);
             Controlador<Menu> menuPrincipalControlador = new MenuControlador(menuPrincipal);
 
             menuPrincipalControlador.MostrarVista();

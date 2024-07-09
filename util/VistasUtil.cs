@@ -118,5 +118,22 @@ namespace Gui.Util
                 // solo sigue su ejecución sin pausar la vista
             }
         }
+
+        /// <summary>
+        /// Borra la consola a partir de la linea <paramref name="lineaInicio"/>
+        /// </summary>
+        /// <param name="lineaInicio">Linea desde la cual se borrará la consola</param>
+        public static void BorrarDesdeLinea(int lineaInicio)
+        {
+            int lineaFin = Console.CursorTop;
+
+            for (int i = lineaInicio ; i < lineaFin ; i++)
+            {
+                Console.SetCursorPosition(0, i);
+                Console.Write(new string(' ', Console.WindowWidth));
+            }
+
+            Console.SetCursorPosition(0, lineaInicio);
+        }
     }
 }

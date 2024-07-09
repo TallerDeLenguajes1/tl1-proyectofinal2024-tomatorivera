@@ -134,17 +134,13 @@ Espero que te hayas divertido :)
 
             // Solicito los datos del equipo
             var nombreEquipo = AnsiConsole.Prompt(
-                new TextPrompt<string>("> Ingrese el nombre de su equipo [gray](o inserte espacios en blanco para salir)[/]:")
+                new TextPrompt<string>("> Ingrese el nombre de su equipo [gray](o inserte espacios en blanco para generarlo automáticamente)[/]:")
                     .PromptStyle("yellow")
                     .AllowEmpty()
                     .Validate(nombreInput => {
                         return ValidarNombre(nombreInput.Trim());
                     })
             ).Trim();
-
-            // Solo si el usuario NO ingresó un nombre de equipo vacío, continúo 
-            // la ejecución, caso contrario vuelve al menú anterior
-            if (string.IsNullOrWhiteSpace(nombreEquipo)) return;
 
             Partida? partidaSeleccionada = null;
             PartidaHandler? manejadorPartida = null;
