@@ -49,106 +49,106 @@ namespace Logica.Fabricas
 
     public class JugadorLiberoFabrica() : JugadorFabrica
     {
-        private static readonly Dictionary<string, (float min, float max)> habilidades = new Dictionary<string, (float min, float max)>()
-        {
-            { "saque", (2, 4) },
-            { "remate", (0.5f, 2) },
-            { "recepcion", (5, 7) },
-            { "colocacion", (1, 3) },
-            { "bloqueo", (0.5f, 2) }
-        };
-
         /// <summary>
         /// Crea un jugador
         /// </summary>
         /// <returns>Objeto <c>Jugador</c> con atributos de Líbero</returns>
         public override Jugador CrearJugador()
         {
-            return generarJugador(habilidades);
+            return generarJugador(
+                new Dictionary<string, (float min, float max)>()
+                    {
+                        { "saque", (2, 4) },
+                        { "remate", (0.5f, 2) },
+                        { "recepcion", (5, 7) },
+                        { "colocacion", (1, 3) },
+                        { "bloqueo", (0.5f, 2) }
+                    }
+                );
         }
     }
 
     public class JugadorPuntaFabrica() : JugadorFabrica
     {
-        private static readonly Dictionary<string, (float min, float max)> habilidades = new Dictionary<string, (float min, float max)>()
-        {
-            { "saque", (2, 4) },
-            { "remate", (4, 6) },
-            { "recepcion", (4, 6) },
-            { "colocacion", (1, 3) },
-            { "bloqueo", (2, 4) }
-        };
-
         /// <summary>
         /// Crea un jugador
         /// </summary>
         /// <returns>Objeto <c>Jugador</c> con atributos de Punta</returns>
         public override Jugador CrearJugador()
         {
-            return generarJugador(habilidades);
+            return generarJugador(
+                new Dictionary<string, (float min, float max)>()
+                {
+                    { "saque", (2.5f, 4.5f) },
+                    { "remate", (4.5f, 6.5f) },
+                    { "recepcion", (2, 4) },
+                    { "colocacion", (1, 3) },
+                    { "bloqueo", (3, 5) }
+                }
+            );
         }
     }
 
     public class JugadorOpuestoFabrica() : JugadorFabrica
     {
-        private static readonly Dictionary<string, (float min, float max)> habilidades = new Dictionary<string, (float min, float max)>()
-        {
-            { "saque", (3, 5) },
-            { "remate", (5, 7) },
-            { "recepcion", (1, 3) },
-            { "colocacion", (1.5f, 3.5f) },
-            { "bloqueo", (2, 4) }
-        };
-
         /// <summary>
         /// Crea un jugador
         /// </summary>
         /// <returns>Objeto <c>Jugador</c> con atributos de Opuesto</returns>
         public override Jugador CrearJugador()
         {
-            return generarJugador(habilidades);
+            return generarJugador(
+                new Dictionary<string, (float min, float max)>()
+                {
+                    { "saque", (3, 5) },
+                    { "remate", (5, 7) },
+                    { "recepcion", (1, 3) },
+                    { "colocacion", (1.5f, 3.5f) },
+                    { "bloqueo", (2, 4) }
+                }
+            );
         }
     }
 
     public class JugadorArmadorFabrica() : JugadorFabrica
     {
-        private static readonly Dictionary<string, (float min, float max)> habilidades = new Dictionary<string, (float min, float max)>()
-        {
-            { "saque", (2.5f, 5.5f) },
-            { "remate", (3, 6) },
-            { "recepcion", (1, 4) },
-            { "colocacion", (5, 7) },
-            { "bloqueo", (2, 4) }
-        };
-
         /// <summary>
         /// Crea un jugador
         /// </summary>
         /// <returns>Objeto <c>Jugador</c> con atributos de Armador</returns>
         public override Jugador CrearJugador()
         {
-            return generarJugador(habilidades);
+            return generarJugador(
+                new Dictionary<string, (float min, float max)>()
+                {
+                    { "saque", (2.5f, 5.5f) },
+                    { "remate", (3, 6) },
+                    { "recepcion", (1, 4) },
+                    { "colocacion", (5, 7) },
+                    { "bloqueo", (2, 4) }
+                }
+            );
         }
     }
 
     public class JugadorCentralFabrica() : JugadorFabrica
     {
-        private static readonly Dictionary<string, (float min, float max)> habilidades = new Dictionary<string, (float min, float max)>()
-        {
-            { "saque", (1, 3) },
-            { "remate", (3, 5) },
-            { "recepcion", (0.5f, 2.5f) },
-            { "colocacion", (2, 4) },
-            { "bloqueo", (5, 7) }
-        };
-
         /// <summary>
         /// Crea un jugador
         /// </summary>
         /// <returns>Objeto <c>Jugador</c> con atributos de Central</returns>
         public override Jugador CrearJugador()
         {
-            return generarJugador(habilidades);
+            return generarJugador(
+                new Dictionary<string, (float min, float max)>()
+                {
+                    { "saque", (1, 3) },
+                    { "remate", (3, 5) },
+                    { "recepcion", (0.5f, 2.5f) },
+                    { "colocacion", (2, 4) },
+                    { "bloqueo", (5, 7) }
+                }
+            );
         }
     }
 }

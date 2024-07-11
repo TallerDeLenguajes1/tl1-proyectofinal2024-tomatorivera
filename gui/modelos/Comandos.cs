@@ -149,20 +149,21 @@ Espero que te hayas divertido :)
             AnsiConsole.Status()
                 .Spinner(Spinner.Known.BouncingBall)
                 .SpinnerStyle(Style.Parse("yellow bold"))
-                .Start("Thinking...", ctx => 
+                .Start("[yellow]Creando nueva partida...[/]", ctx => 
                 {
-                    ctx.Status("[yellow]Creando nueva partida...[/]");
-
                     // Creo la nueva partida y la inicio automáticamente
                     var equipoServicio = new EquipoJugadoresServicioImpl();
 
+                    // Genero los datos necesarios para crear una nueva partida
                     int id = partidaServicio.ObtenerNuevoIdPartida();
-
-                    Equipo nuevoEquipo = equipoServicio.GenerarEquipo(nombreEquipo);
+                    Equipo nuevoEquipo = equipoServicio.GenerarEquipoAsync(nombreEquipo).GetAwaiter().GetResult();
                     Usuario nuevoUsuario = new Usuario(nombreUsuario, nuevoEquipo);
                     Partida nuevaPartida = new Partida(id, DateTime.Now, nuevoUsuario);
 
+                    // Creo la partida
                     partidaServicio.CrearPartida(nuevaPartida);
+                    // Guardo el nombre del equipo del usuario
+                    equipoServicio.AlmacenarNombreEquipoUsuario(nuevoEquipo.Nombre);
 
                     ctx.Status("[green]Iniciando partida...[/]");
 

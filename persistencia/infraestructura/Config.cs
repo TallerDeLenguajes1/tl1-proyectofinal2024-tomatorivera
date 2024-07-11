@@ -1,3 +1,5 @@
+using Logica.Modelo;
+
 namespace Persistencia.Infraestructura
 {
     /// <summary>
@@ -25,6 +27,7 @@ namespace Persistencia.Infraestructura
         public static string? DirectorioPartidaActual { get; set; }
         public static string? NombreUsuarioActual { get; set; }
         public static string? NombreEquipoUsuario { get; set; }
+        public static List<Team>? EquiposArgentinos { get; set; }
 
         /// <summary>
         /// Carga los datos constantes de la configuración

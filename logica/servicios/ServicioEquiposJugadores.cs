@@ -11,34 +11,34 @@ namespace Logica.Servicios
     /// </summary>
     public interface EquipoJugadoresServicio
     {
-        Equipo GenerarEquipo(string nombreEquipo = "", int nJugadores = 14);
-        string GenerarNombreEquipo();
+        Task<Equipo> GenerarEquipoAsync(string nombreEquipo = "", int nJugadores = 14);
+        Task<string> GenerarNombreEquipoAsync();
+        void AlmacenarNombreEquipoUsuario(string nombreEquipo);
 
-        Jugador GenerarJugador();
-        List<Jugador> GenerarJugadores(int nJugadores);
-        string GenerarNombreJugador();
-        Dictionary<int, string> GenerarIdentificadoresJugadores(int nIdentificadores = 1);
+        Task<List<Jugador>> GenerarJugadoresAsync(int nJugadores);
+        Task<string> GenerarNombreJugadorAsync();
+        Task<Dictionary<int, string>> GenerarIdentificadoresJugadoresAsync(int nIdentificadores = 1);
     }
 
     public class EquipoJugadoresServicioImpl : EquipoJugadoresServicio
     {
         private const int nCamisetaMin = 1;
-        private const int nCamisetaMax = 30;
+        private const int nCamisetaMax = 50;
 
         /// <summary>
         /// Genera un nuevo equipo
         /// </summary>
-        /// <param name="nombreEquipo">Nombre del equipo a generar</param>
+        /// <param name="nombreEquipo">Nombre del equipo a generar (por defecto vacío, en cuyo caso se genera automáticamente desde una API)</param>
         /// <param name="nJugadores">Número de jugadores a generar (por defecto 14, el nro inicial de jugadores)</param>
         /// <returns>Objeto <c>Equipo</c></returns>
-        public Equipo GenerarEquipo(string nombreEquipo = "", int nJugadores = 14)
+        public async Task<Equipo> GenerarEquipoAsync(string nombreEquipo = "", int nJugadores = 14)
         {   
             try
             {
                 Equipo nuevoEquipo = new Equipo
                 {
-                    Nombre = string.IsNullOrWhiteSpace(nombreEquipo) ? GenerarNombreEquipo() : nombreEquipo,
-                    Jugadores = GenerarJugadores(nJugadores)
+                    Nombre = string.IsNullOrWhiteSpace(nombreEquipo) ? await GenerarNombreEquipoAsync() : nombreEquipo,
+                    Jugadores = await GenerarJugadoresAsync(nJugadores)
                 };
 
                 return nuevoEquipo;
@@ -54,9 +54,9 @@ namespace Logica.Servicios
         /// de comunicación o parámetros enviados a la API, devuelve "Equipo Rival"
         /// </summary>
         /// <returns><c>string</c> con el nombre del equipo generado</returns>
-        public string GenerarNombreEquipo()
+        public async Task<string> GenerarNombreEquipoAsync()
         {
-            string nuevoNombre = "Equipo rival";
+            string nuevoNombre = "Nuevo equipo";
 
             try
             {
@@ -64,7 +64,7 @@ namespace Logica.Servicios
                 if (string.IsNullOrWhiteSpace(Config.ApiSportsUrl))
                     throw new ApiInaccesibleException("La URL de Api Sports es nula o está vacía");
                 if (string.IsNullOrWhiteSpace(Config.ApiSportsKey))
-                    throw new ApiInaccesibleException("La key de Api Sports es nula o está vacía");
+                    throw new ApiInaccesibleException("No se pudo cargar la KEY de Api Sports, revise la configuración");
 
                 // Instancio un consumidor y le agrego los parámetros necesarios
                 var consumidor = new Consumidor<TeamsRaiz>(Config.ApiSportsUrl);
@@ -73,15 +73,16 @@ namespace Logica.Servicios
                 consumidor.AgregarCabecera("x-apisports-key", Config.ApiSportsKey);
 
                 // Consumo la api de forma asincrónica
-                var tareaConsumir = Task.Run(consumidor.ConsumirAsync);
-                tareaConsumir.Wait();
+                var tareaConsumir = await consumidor.ConsumirAsync();
 
                 // Obtengo el resultado de la API
-                var listaEquipos = tareaConsumir.Result;
+                var listaEquipos = tareaConsumir;
 
                 // Si la respuesta es nula, lanzo la excepción porque puede tratarse de un error
                 if (listaEquipos.response == null)
                     throw new ApiInaccesibleException("La respuesta de Api Sports es nula", listaEquipos);
+                if (!listaEquipos.response.Any())
+                    throw new ApiInaccesibleException("La respuesta de Api Sports está vacía");
 
                 // Filtro equipos no nacionales y que no tengan el mismo nombre que el equipo del usuario (por las dudas)
                 var equiposFiltrados = listaEquipos.response.Where(equipo => !equipo.national)
@@ -89,8 +90,8 @@ namespace Logica.Servicios
 
                 // Devuelvo el nombre del equipo random filtrado, si el nombre fuese null o la filtración hubiese dado
                 // como resultado una lista vacía, entonces retorno simplemente "Equipo rival" para continuar con el juego
-                nuevoNombre = equiposFiltrados.Any() ? equiposFiltrados.ElementAt(new Random().Next(equiposFiltrados.Count())).name ?? "Equipo rival"
-                                                     : "Equipo rival";
+                nuevoNombre = equiposFiltrados.Any() ? equiposFiltrados.ElementAt(new Random().Next(equiposFiltrados.Count())).name ?? nuevoNombre
+                                                     : nuevoNombre;
             }
             catch (Exception ex)
             {
@@ -102,42 +103,12 @@ namespace Logica.Servicios
         }
 
         /// <summary>
-        /// Genera un nuevo jugador
+        /// Guarda en los archivos de configuracion el nombre del equipo del usuario
         /// </summary>
-        /// <returns>Objeto <c>Jugador</c></returns>
-        public Jugador GenerarJugador()
+        /// <param name="nombreEquipo">Nombre de equipo del usuario</param>
+        public void AlmacenarNombreEquipoUsuario(string nombreEquipo)
         {
-            var rnd = new Random();
-
-            try
-            {   
-                // Genero el numero de camiseta
-                var numeroCamiseta = rnd.Next(nCamisetaMin, nCamisetaMax);
-
-                // Selecciono el tipo de jugador aleatoriamente desde el Enum
-                var nTipoJugadores = Enum.GetValues(typeof(TipoJugador));
-                var tipoJugador = nTipoJugadores.GetValue(rnd.Next(nTipoJugadores.Length));
-
-                JugadorFabrica fabricaJugador = tipoJugador switch
-                {
-                    TipoJugador.LIBERO => new JugadorLiberoFabrica(),
-                    TipoJugador.ARMADOR => new JugadorArmadorFabrica(),
-                    TipoJugador.CENTRAL => new JugadorCentralFabrica(),
-                    TipoJugador.OPUESTO => new JugadorOpuestoFabrica(),
-                    _ => new JugadorPuntaFabrica()
-                };
-
-                // Genero los atributos del jugador
-                Jugador nuevoJugador = fabricaJugador.CrearJugador();
-                nuevoJugador.NumeroCamiseta = numeroCamiseta;
-                nuevoJugador.Experiencia = 0.00f;
-
-                return nuevoJugador;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            Config.NombreEquipoUsuario = nombreEquipo;
         }
 
         /// <summary>
@@ -145,20 +116,23 @@ namespace Logica.Servicios
         /// </summary>
         /// <param name="nJugadores">Numero de jugadores a generar (por defecto 1)</param>
         /// <returns><c>List</c> de <c>Jugador</c></returns>
-        public List<Jugador> GenerarJugadores(int nJugadores = 1)
+        public async Task<List<Jugador>> GenerarJugadoresAsync(int nJugadores = 1)
         {
             try
             {
                 var rnd = new Random();
                 var listaJugadores = new List<Jugador>();
-                var listaIdentificadores = GenerarIdentificadoresJugadores(nJugadores);
+                var listaIdentificadores = await GenerarIdentificadoresJugadoresAsync(nJugadores);
                 var tipoJugadores = Enum.GetValues(typeof(TipoJugador));
+                
+                TipoJugador tipoJugador;
+                JugadorFabrica fabricaJugador;
 
                 for (int i=0 ; i < nJugadores ; i++)
                 {
-                    var tipoJugador = (TipoJugador) tipoJugadores.GetValue(rnd.Next(tipoJugadores.Length))!;
+                    tipoJugador = (TipoJugador) tipoJugadores.GetValue(rnd.Next(tipoJugadores.Length))!;
 
-                    JugadorFabrica fabricaJugador = tipoJugador switch
+                    fabricaJugador = tipoJugador switch
                     {
                         TipoJugador.LIBERO => new JugadorLiberoFabrica(),
                         TipoJugador.ARMADOR => new JugadorArmadorFabrica(),
@@ -190,7 +164,7 @@ namespace Logica.Servicios
         /// dato de allí, devuelve un nombre genérico
         /// </summary>
         /// <returns>Nombre generado para un jugador</returns>
-        public string GenerarNombreJugador()
+        public async Task<string> GenerarNombreJugadorAsync()
         {
             string nombreJugador = "Jugador";
 
@@ -206,10 +180,9 @@ namespace Logica.Servicios
                 consumidor.AgregarParametro("results", "1");
                 consumidor.AgregarParametro("noinfo");
 
-                var tareaConsumir = Task.Run(consumidor.ConsumirAsync);
-                tareaConsumir.Wait();
+                var tareaConsumir = await consumidor.ConsumirAsync();
 
-                var listaNombres = tareaConsumir.Result;
+                var listaNombres = tareaConsumir;
 
                 // Si la respuesta es nula, lanzo la excepción porque puede tratarse de un error
                 if (listaNombres.Results == null)
@@ -238,7 +211,7 @@ namespace Logica.Servicios
         /// </summary>
         /// <param name="nIdentificadores">Números de identificadores a generar (por defecto, uno)</param>
         /// <returns>Diccionario de valores: <c>número de camiseta, nombre de jugador</c></returns>
-        public Dictionary<int, string> GenerarIdentificadoresJugadores(int nIdentificadores = 1)
+        public async Task<Dictionary<int, string>> GenerarIdentificadoresJugadoresAsync(int nIdentificadores = 1)
         {
             var listaIdentificadores = new Dictionary<int, string>();
             var numerosOcupados = new HashSet<int>();
@@ -257,10 +230,9 @@ namespace Logica.Servicios
                 consumidor.AgregarParametro("results", nIdentificadores.ToString());
                 consumidor.AgregarParametro("noinfo");
 
-                var tareaConsumir = Task.Run(consumidor.ConsumirAsync);
-                tareaConsumir.Wait();
+                var tareaConsumir = await consumidor.ConsumirAsync();
 
-                var respuestaNombres = tareaConsumir.Result;
+                var respuestaNombres = tareaConsumir;
 
                 // Si la respuesta es nula o vacía, lanzo la excepción porque puede tratarse de un error
                 if (respuestaNombres.Results == null)
@@ -273,6 +245,24 @@ namespace Logica.Servicios
                 var listaNombres = respuestaNombres.Results.Select(x => $"{x.Name?.First ?? "Jugador"} {x.Name?.Last ?? string.Empty}").ToList();
 
                 // Genero n identificadores
+                while (listaIdentificadores.Count() < nIdentificadores)
+                {
+                    var numeroCamiseta = random.Next(nCamisetaMin, nCamisetaMax);
+
+                    if (!numerosOcupados.Add(numeroCamiseta)) 
+                        continue;
+
+                    var nombreJugador = listaNombres.First();
+                    listaNombres.RemoveAt(0);
+
+                    // En caso de que se devuelva "Jugador", quiere decir que hubo problemas conectándose con la API
+                    // y en dicho caso se crea un nombre genérico
+                    if (nombreJugador.Contains("Jugador"))
+                        nombreJugador = $"Jugador {numeroCamiseta}";
+
+                    listaIdentificadores.Add(numeroCamiseta, nombreJugador);
+                }
+                /*
                 for (int i=0 ; i<nIdentificadores ; i++)
                 {
                     // Genero el numero de camiseta controlando que no sea duplicada
@@ -296,19 +286,17 @@ namespace Logica.Servicios
 
                     listaIdentificadores.Add(numeroCamiseta, nombreJugador);
                 }
+                */
                 
             }
             catch (Exception ex)
             {
                 // Si hubieron errores comunicándose con la API, genero n identificadores genéricos
-                for (int i=0 ; i<nIdentificadores ; i++)
+                while (listaIdentificadores.Count() < nIdentificadores)
                 {
                     // Genero el numero de camiseta controlando que no sea duplicada
                     var numeroCamiseta = random.Next(nCamisetaMin, nCamisetaMax);
-                    while (!numerosOcupados.Add(numeroCamiseta))
-                    {
-                        numeroCamiseta = random.Next(nCamisetaMin, nCamisetaMax);
-                    }
+                    if (!numerosOcupados.Add(numeroCamiseta)) continue;
                     
                     // Agrego a la lista un nombre genérico
                     listaIdentificadores.Add(numeroCamiseta, $"Jugador {numeroCamiseta}");
