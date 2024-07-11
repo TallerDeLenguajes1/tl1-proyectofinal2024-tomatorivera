@@ -1,3 +1,5 @@
+using Gui.Controladores;
+using Gui.Vistas;
 using Logica.Modelo;
 
 namespace Logica.Handlers
@@ -16,7 +18,12 @@ namespace Logica.Handlers
         /// </summary>
         public void IniciarPartida() {
             // Falta implementar la lógica
-            System.Console.WriteLine("Iniciando partida...");
+            
+            // Muestro el dashboard
+            var vistaDashboard = new Dashboard(partidaActual);
+            var controladorDashboard = new DashboardControlador(vistaDashboard);
+
+            controladorDashboard.MostrarVista();
         }
     }
 }

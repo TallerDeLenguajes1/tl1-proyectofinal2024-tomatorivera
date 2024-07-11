@@ -142,35 +142,13 @@ Espero que te hayas divertido :)
                     })
             ).Trim();
 
-            Partida? partidaSeleccionada = null;
             PartidaHandler? manejadorPartida = null;
-            var partidaServicio = new PartidaServicioImpl();
-
             AnsiConsole.Status()
                 .Spinner(Spinner.Known.BouncingBall)
                 .SpinnerStyle(Style.Parse("yellow bold"))
                 .Start("[yellow]Creando nueva partida...[/]", ctx => 
                 {
-                    // Creo la nueva partida y la inicio automáticamente
-                    var equipoServicio = new EquipoJugadoresServicioImpl();
-
-                    // Genero los datos necesarios para crear una nueva partida
-                    int id = partidaServicio.ObtenerNuevoIdPartida();
-                    Equipo nuevoEquipo = equipoServicio.GenerarEquipoAsync(nombreEquipo).GetAwaiter().GetResult();
-                    Usuario nuevoUsuario = new Usuario(nombreUsuario, nuevoEquipo);
-                    Partida nuevaPartida = new Partida(id, DateTime.Now, nuevoUsuario);
-
-                    // Creo la partida
-                    partidaServicio.CrearPartida(nuevaPartida);
-                    // Guardo el nombre del equipo del usuario
-                    equipoServicio.AlmacenarNombreEquipoUsuario(nuevoEquipo.Nombre);
-
-                    ctx.Status("[green]Iniciando partida...[/]");
-
-                    // Obtengo la partida desde el repositorio una vez persistida, para asegurarme de que todos su datos hayan sido creados
-                    // Si por alguna razón la partida creada no se guarda en el repositorio, el método ObtenerDatosPartida lanzará una excepción
-                    partidaSeleccionada = partidaServicio.ObtenerDatosPartida();
-                    manejadorPartida = partidaServicio.ObtenerManejadorPartida(partidaSeleccionada);
+                    manejadorPartida = crearPartida(nombreUsuario, nombreEquipo).GetAwaiter().GetResult();
                 }
             );
 
@@ -178,11 +156,34 @@ Espero que te hayas divertido :)
             MostrarErroresIgnorables();
 
             // Si se ha cargado una partida y su manejador correctamente, inicio la partida
-            if (partidaSeleccionada != null && manejadorPartida != null)
+            if (manejadorPartida != null)
             {
                 manejadorPartida.IniciarPartida();
             }
         }
+
+        private async Task<PartidaHandler> crearPartida(string nombreUsuario, string nombreEquipo)
+        {
+            // Creo la nueva partida y la inicio automáticamente
+            var partidaServicio = new PartidaServicioImpl();
+            var equipoServicio = new EquipoJugadoresServicioImpl();
+
+            // Genero los datos necesarios para crear una nueva partida
+            int id = partidaServicio.ObtenerNuevoIdPartida();
+            Equipo nuevoEquipo = await equipoServicio.GenerarEquipoAsync(nombreEquipo);
+            Usuario nuevoUsuario = new Usuario(nombreUsuario, nuevoEquipo);
+            Partida nuevaPartida = new Partida(id, DateTime.Now, nuevoUsuario);
+
+            // Creo la partida
+            partidaServicio.CrearPartida(nuevaPartida);
+            // Guardo el nombre del equipo del usuario
+            equipoServicio.AlmacenarNombreEquipoUsuario(nuevoEquipo.Nombre);
+
+            // Obtengo la partida desde el repositorio una vez persistida, para asegurarme de que todos su datos hayan sido creados
+            // Si por alguna razón la partida creada no se guarda en el repositorio, el método ObtenerDatosPartida lanzará una excepción
+            var partidaCreada = partidaServicio.ObtenerDatosPartida();
+            return partidaServicio.ObtenerManejadorPartida(partidaCreada);
+    }
 
         /// <summary>
         /// Valida si un nombre es correcto

@@ -165,4 +165,19 @@ namespace Gui.Controladores
             cmdSalir.AccionPersonalizada = () => { this.estaSeleccionando = false; };
         }
     }
+
+    public class DashboardControlador : Controlador<Dashboard>
+    {
+        public DashboardControlador(Dashboard vista) : base(vista)
+        {
+        }
+
+        public override void MostrarVista()
+        {
+            vista.Dibujar();
+
+            // Para que no se cierre el programa
+            Console.ReadKey();
+        }
+    }
 }

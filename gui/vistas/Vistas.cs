@@ -1,6 +1,7 @@
 using Gui.Modelo;
 using Gui.Util;
 using Logica.Handlers;
+using Logica.Modelo;
 using Spectre.Console;
 using Spectre.Console.Rendering;
 
@@ -230,6 +231,166 @@ namespace Gui.Vistas
 
                 indiceRecorriendo++;
             });
+        }
+    }
+
+    /// <summary>
+    /// Clase Vista que representa un dashboard con información
+    /// </summary>
+    public class Dashboard : Vista
+    {
+        private Partida informacionPartida;
+
+        public Dashboard(Partida informacionPartida)
+        {
+            this.informacionPartida = informacionPartida;
+        }
+
+        public override void Dibujar()
+        {
+            // Limpio la consola
+            AnsiConsole.Clear();
+            
+            // Layout del dashboard
+            // -------------
+            // |     1     |
+            // -------------
+            // |     |  3  |
+            // |  2  |-----|
+            // |     |  4  |
+            // -------------
+
+            var layout = new Layout("raiz")
+                .SplitRows(
+                    new Layout("arriba"),
+                    new Layout("centro"),
+                    new Layout("abajo")
+                        .SplitColumns(
+                            new Layout("abajo_izq"),
+                            new Layout("abajo_der")
+                                .SplitRows(
+                                    new Layout("abajo_der_arr"),
+                                    new Layout("abajo_der_aba")
+                                )
+                        )
+                );
+
+            layout["arriba"].Ratio = 1;
+            layout["centro"].Ratio = 1;
+            layout["abajo"].Ratio = 3;
+
+            /******************
+             * SECCION TITULO *
+             ******************/
+
+            var titulo = @"
+██╗   ██╗██████╗ ███╗   ███╗
+██║   ██║██╔══██╗████╗ ████║
+██║   ██║██████╔╝██╔████╔██║
+╚██╗ ██╔╝██╔══██╗██║╚██╔╝██║
+ ╚████╔╝ ██████╔╝██║ ╚═╝ ██║
+  ╚═══╝  ╚═════╝ ╚═╝     ╚═╝
+";
+            var subtitulo = ":backhand_index_pointing_right: [yellow]By:[/][bold yellow1] Ramiro Tomas Rivera Octtaviano[/] :backhand_index_pointing_left:";
+
+            // Uso el componente Rows para mostrar el titulo justo arriba del subtitulo
+            var filasCabecera = new Rows(
+                Align.Center(new Markup($"[yellow]{titulo}[/]")),
+                Align.Center(new Markup(subtitulo))
+            );
+            
+            // Agrego y alineo las filas layout
+            layout["arriba"].Update(
+                new Panel(Align.Center(
+                        filasCabecera,
+                        VerticalAlignment.Middle
+                    )
+                )
+                .Border(BoxBorder.Rounded)
+                .BorderColor(Color.Yellow)
+                .Expand()
+            );
+
+            /******************
+             * SECCION HEADER * 
+             ******************/
+
+            var mensajeHeader = $":volleyball: [orange1]¡Bienvenido DT [/][yellow]{informacionPartida.Usuario.Nombre}[/][orange1]! Suerte dirigiendo a [/][yellow]{informacionPartida.Usuario.Equipo.Nombre}[/] :volleyball:";
+
+            // Muestro el mensaje del header centrado en el layout
+            layout["centro"].Update(
+                new Panel(Align.Center(
+                        new Markup(mensajeHeader), 
+                        VerticalAlignment.Middle
+                    )
+                )
+                .Border(BoxBorder.Rounded)
+                .BorderColor(Color.Orange3)
+            ).Size(3);
+
+            /************************
+             * SECCION INFO. EQUIPO *
+             ************************/
+
+            // Información del equipo del jugador
+            var nombreEquipoTxt = new Markup($"\n:small_orange_diamond: [orange1]Nombre del equipo: [/][yellow]{informacionPartida.Usuario.Equipo.Nombre}[/]");
+            var nJugadoresTxt = new Markup($":small_orange_diamond: [orange1]Cantidad de jugadores actuales: [/][yellow]{informacionPartida.Usuario.Equipo.TotalJugadores}[/]");
+
+            // Arbol que desplegará la información de la plantilla indexada a una tabla
+            var arbolPlantilla = new Tree(":small_orange_diamond: [orange1]Plantilla actual del equipo:[/]")
+            {
+                Style = Style.Parse("orange3")
+            };
+
+            // En esta tabla voy a mostrar los datos de los jugadores
+            var tablaJugadores = new Table()
+            {
+                Caption = new TableTitle("[grey italic](( Puede consultar su plantilla detallada más abajo ))[/]")
+            }
+            .Border(TableBorder.Rounded)
+            .BorderColor(Color.Orange3);
+
+            tablaJugadores.AddColumn(new TableColumn(new Markup("[orange3]Nombre[/]")).Centered());
+            tablaJugadores.AddColumn(new TableColumn(new Markup("[orange3]Nro. :t_shirt:[/]")).Centered());
+            tablaJugadores.AddColumn(new TableColumn(new Markup("[orange3]Posición de juego :volleyball:[/]")).Centered());
+            tablaJugadores.AddColumn(new TableColumn(new Markup("[orange3]Experiencia :timer_clock:[/]")).Centered());
+
+            var columnas = new List<Markup>();
+            var nJugadoresMostrar = informacionPartida.Usuario.Equipo.Jugadores.Count();
+            var equipoJugador = informacionPartida.Usuario.Equipo.Jugadores;
+
+            for (int i=0 ; i<nJugadoresMostrar ; i++)
+            {
+                columnas.Add(new Markup($"[yellow]{equipoJugador[i].Nombre}[/]"));
+                columnas.Add(new Markup($"[yellow]{equipoJugador[i].NumeroCamiseta}[/]"));
+                columnas.Add(new Markup($"[yellow]{equipoJugador[i].TipoJugador}[/]"));
+                columnas.Add(new Markup($"[yellow]{equipoJugador[i].Experiencia} pts.[/]"));
+
+                tablaJugadores.AddRow(columnas);
+                columnas.Clear();
+            }
+            arbolPlantilla.AddNode(tablaJugadores);
+
+            // Uso el componente rows para mostrar la información del equipo una arriba de otra
+            var filasInformacionEquipo = new Rows(
+                nombreEquipoTxt,
+                nJugadoresTxt,
+                arbolPlantilla
+            );
+
+            // Muestro la info anterior en el layout del dashboard
+            layout["abajo_izq"].Update(
+                new Panel(Align.Left(filasInformacionEquipo))
+                {
+                    Header = new PanelHeader("[dim] [/][orange1 underline bold]Información del equipo[/][dim] [/]").LeftJustified()
+                }
+                .Border(BoxBorder.Rounded)
+                .BorderColor(Color.Orange3)
+                .Expand()
+            );
+
+            /**** Muestro el dashboard ****/
+            AnsiConsole.Write(layout);
         }
     }
 }
