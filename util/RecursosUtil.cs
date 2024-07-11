@@ -12,7 +12,7 @@ namespace Persistencia.Util
         public static void VerificarDirectorio(string path)
         {
             // Verifico si el path enviado por parámetro es válido
-            if (String.IsNullOrWhiteSpace(path))
+            if (string.IsNullOrWhiteSpace(path))
                 throw new PathInvalidoException("El path '"+path+"' no puede ser nulo o estar vacio");
 
             // Si el directorio no existe, lo creo

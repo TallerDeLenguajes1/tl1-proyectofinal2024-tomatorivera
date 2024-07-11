@@ -1,7 +1,6 @@
 using Gui.Modelo;
 using Gui.Util;
 using Gui.Vistas;
-using Logica.Modelo;
 using Logica.Servicios;
 using Spectre.Console;
 
@@ -148,7 +147,12 @@ namespace Gui.Controladores
                 catch (Exception e)
                 {
                     VistasUtil.MostrarError(e.Message);
-                    VistasUtil.PausarVistas(2);
+
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    VistasUtil.MostrarCentrado("-*- Presione una tecla para volver al menú -*-");
+                    Console.ResetColor();
+
+                    Console.ReadKey();
                 }
 
                 // Solo si el menú aún se sigue ejecutando, borro las lineas de lo escrito por los comandos

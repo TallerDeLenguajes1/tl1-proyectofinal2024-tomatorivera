@@ -11,4 +11,10 @@ namespace Logica.Excepciones
         public NombreInvalidoException (string message) : base(message)
         {}
     }
+
+    public class UsuarioInvalidoException : Exception
+    {
+        public UsuarioInvalidoException (string message) : base(message)
+        {}
+    }
 }

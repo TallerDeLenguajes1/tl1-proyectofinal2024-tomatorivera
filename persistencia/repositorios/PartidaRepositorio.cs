@@ -67,9 +67,71 @@ namespace Persistencia.Repositorios
             return partidaActual;
         }
 
+        /// <summary>
+        /// Carga los datos de una partida desde los archivos de persistencia
+        /// </summary>
+        /// <param name="id">ID de la partida a cargar</param>
+        /// <returns>Objeto <c>Partida</c> con los datos de la partida de ID <paramref name="id"/></returns>
+        /// <exception cref="PartidaInvalidaException">En caso de que la deserealización del archivo partida sea NULL</exception>
+        /// <exception cref="UsuarioInvalidoException">En caso de que la deserealización del archivo usuario sea NULL</exception>
         public Partida Cargar(int id)
         {
-            throw new NotImplementedException();
+            // Verifica si el directorio de partidas existe, caso contrario lo crea
+            // Lanza una excepción si por alguna razón no se ha cargado el directorio de partidas en la configuración
+            RecursosUtil.VerificarDirectorio(Config.DirectorioPartidas ?? string.Empty);
+
+            var coincidenciasDirPartida = Directory.GetDirectories(Config.DirectorioPartidas!)
+                                                   .Select(dir => Path.GetFileName(dir))
+                                                   .Where(dir => dir.StartsWith($"partida-{id}-"))
+                                                   .ToList();
+            
+            if (!coincidenciasDirPartida.Any())
+                throw new PartidaInvalidaException($"No se ha encontrado el directorio de una partida con el ID {id}");
+            
+            var dirPartida = coincidenciasDirPartida.First();
+
+            // Verifico que los archivos de la partida existan, en caso de que no, el método 'VerificarArchivo()' lanzará una excepción
+            var partidaJsonPath = @$"{Config.DirectorioPartidas}\{dirPartida}\{Config.NombreJsonPartida}";
+            var usuarioJsonPath = @$"{Config.DirectorioPartidas}\{dirPartida}\{Config.NombreJsonUsuario}";
+
+            RecursosUtil.VerificarArchivo(partidaJsonPath);
+            RecursosUtil.VerificarArchivo(usuarioJsonPath);
+
+            // Leo el archivo del usuario, si no se pudiese deserealizar se lanzará una excepción
+            Usuario? usuario;
+            using (FileStream lectorArchivos = new FileStream(usuarioJsonPath, FileMode.Open, FileAccess.Read))
+            {
+                using (StreamReader reader = new StreamReader(usuarioJsonPath))
+                {
+                    string usuarioJsonTxt = reader.ReadToEnd();
+                    usuario = JsonConvert.DeserializeObject<Usuario>(usuarioJsonTxt);
+
+                    if (usuario == null)
+                        throw new UsuarioInvalidoException($"No se pudieron leer del JSON los datos del usuario de la partida solicitada");
+                }
+            }
+
+            // Leo el archivo de la partida, si no se pudiese deserealizar se lanzará una excepción
+            Partida? partida;
+            using (FileStream lectorArchivos = new FileStream(partidaJsonPath, FileMode.Open, FileAccess.Read))
+            {
+                using (StreamReader reader = new StreamReader(partidaJsonPath))
+                {
+                    string partidaJsonTxt = reader.ReadToEnd();
+                    partida = JsonConvert.DeserializeObject<Partida>(partidaJsonTxt);
+
+                    if (partida == null)
+                        throw new PartidaInvalidaException($"No se pudieron leer del JSON los datos de la partida de ID {id}");
+                }
+            }
+
+            // Vinculo el usuario leído a la partida
+            partida.Usuario = usuario;
+            // Actualizo la instancia de la partida actual en este repositorio
+            this.partidaActual = partida;
+
+            // Retorno la partida obtenida
+            return partida;
         }
 
         /// <summary>

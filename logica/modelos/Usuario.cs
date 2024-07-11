@@ -8,6 +8,8 @@ namespace Logica.Modelo
         private string nombre;
         private float puntos;
         private Equipo equipo;
+        
+        public Usuario() {}
 
         /// <summary>
         /// Constructor de la clase Usuario

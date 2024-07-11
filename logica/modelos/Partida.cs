@@ -12,6 +12,9 @@ namespace Logica.Modelo
         private DateTime fechaGuardado;
         private Usuario usuario;
 
+        public Partida()
+        {}
+
         public Partida(int id)
         {
             this.id = id;
