@@ -14,6 +14,7 @@ namespace Logica.Servicios
     {
         void CrearUsuario(Usuario usuario);
         Usuario ObtenerDatosUsuario();
+        Usuario ObtenerDatosUsuario(int id);
     }
 
     public class UsuarioServicioImpl : IUsuarioServicio
@@ -48,6 +49,23 @@ namespace Logica.Servicios
         {
             // Falta implementar la obtención de datos de la persistencia
             return new Usuario("Usuario");
+        }
+
+        /// <summary>
+        /// Obtiene los datos del usuario perteneciente a la partida de ID: <paramref name="id"/>
+        /// </summary>
+        /// <param name="id">ID de la partida donde buscaré al usuario</param>
+        /// <returns>Objeto <c>Usuario</c></returns>
+        public Usuario ObtenerDatosUsuario(int id)
+        {
+            try
+            {
+                return repositorio.Cargar(id);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

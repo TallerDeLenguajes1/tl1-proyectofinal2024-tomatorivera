@@ -6,6 +6,7 @@ namespace Logica.Servicios
     public interface IHistorialServicio
     {
         void CrearHistorial(Historial historial);
+        Historial ObtenerDatosHistorial(int id);
     }
 
     public class HistorialServicioImpl : IHistorialServicio
@@ -22,6 +23,18 @@ namespace Logica.Servicios
             try 
             {
                 repositorio.Crear(historial);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public Historial ObtenerDatosHistorial(int id)
+        {
+            try
+            {
+                return repositorio.Cargar(id);
             }
             catch (Exception)
             {

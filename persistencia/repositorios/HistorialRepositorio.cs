@@ -2,6 +2,7 @@ using Logica.Excepciones;
 using Logica.Modelo;
 using Newtonsoft.Json;
 using Persistencia.Infraestructura;
+using Persistencia.Util;
 
 namespace Persistencia.Repositorios
 {
@@ -9,10 +10,6 @@ namespace Persistencia.Repositorios
     {
         public Historial? HistorialActual { get; set; }
 
-        public Historial Cargar(int id)
-        {
-            throw new NotImplementedException();
-        }
 
         public void Crear(Historial obj)
         {
@@ -35,6 +32,32 @@ namespace Persistencia.Repositorios
 
             // Actualizo la instancia del historial actual
             this.HistorialActual = obj;
+        }
+
+        public Historial Cargar(int id)
+        {
+            if (string.IsNullOrWhiteSpace(Config.DirectorioPartidaActual))
+                throw new PartidaInvalidaException("No se pudieron cargar los datos del historial. El directorio de la partida a cargar es nulo o está vacío");
+
+            var historialJsonPath = @$"{Config.DirectorioPartidaActual}\{Config.NombreJsonHistorial}";
+
+            RecursosUtil.VerificarArchivo(historialJsonPath);
+
+            // Leo y deserealizo el archivo del historial
+            Historial? historial;
+            using (FileStream fileHistorial = new FileStream(historialJsonPath, FileMode.Open, FileAccess.Read))
+            {
+                using (StreamReader readerHistorial = new StreamReader(fileHistorial))
+                {
+                    string historialJsonTxt = readerHistorial.ReadToEnd();
+                    historial = JsonConvert.DeserializeObject<Historial>(historialJsonTxt);
+
+                    if (historial == null)
+                        throw new HistorialInvalidoException("No se pudo deserealizar el archivo JSON del historial, la respuesta ha sido nula");
+                }
+            }
+
+            return historial;
         }
 
         public void Guardar(Historial obj)

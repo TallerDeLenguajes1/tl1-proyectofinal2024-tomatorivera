@@ -3,6 +3,7 @@ using Logica.Handlers;
 using Logica.Modelo;
 using Persistencia;
 using Persistencia.Repositorios;
+using SixLabors.ImageSharp.ColorSpaces;
 
 namespace Logica.Servicios
 {
@@ -75,7 +76,16 @@ namespace Logica.Servicios
         {
             try
             {
-                return repositorio.Cargar(id);
+                // Cargo los datos de la partida
+                var partida = repositorio.Cargar(id);
+                var usuario = usuarioServicio.ObtenerDatosUsuario(id);
+                var historial = historialServicio.ObtenerDatosHistorial(id);
+
+                // Vinculo los datos a la partida
+                partida.Usuario = usuario;
+                partida.Historial = historial;
+
+                return partida;
             }
             catch (Exception)
             {

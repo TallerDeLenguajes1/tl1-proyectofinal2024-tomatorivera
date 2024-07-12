@@ -92,24 +92,8 @@ namespace Persistencia.Repositorios
 
             // Verifico que los archivos de la partida existan, en caso de que no, el método 'VerificarArchivo()' lanzará una excepción
             var partidaJsonPath = @$"{Config.DirectorioPartidas}\{dirPartida}\{Config.NombreJsonPartida}";
-            var usuarioJsonPath = @$"{Config.DirectorioPartidas}\{dirPartida}\{Config.NombreJsonUsuario}";
 
             RecursosUtil.VerificarArchivo(partidaJsonPath);
-            RecursosUtil.VerificarArchivo(usuarioJsonPath);
-
-            // Leo el archivo del usuario, si no se pudiese deserealizar se lanzará una excepción
-            Usuario? usuario;
-            using (FileStream lectorArchivos = new FileStream(usuarioJsonPath, FileMode.Open, FileAccess.Read))
-            {
-                using (StreamReader reader = new StreamReader(usuarioJsonPath))
-                {
-                    string usuarioJsonTxt = reader.ReadToEnd();
-                    usuario = JsonConvert.DeserializeObject<Usuario>(usuarioJsonTxt);
-
-                    if (usuario == null)
-                        throw new UsuarioInvalidoException($"No se pudieron leer del JSON los datos del usuario de la partida solicitada");
-                }
-            }
 
             // Leo el archivo de la partida, si no se pudiese deserealizar se lanzará una excepción
             Partida? partida;
@@ -125,10 +109,10 @@ namespace Persistencia.Repositorios
                 }
             }
 
-            // Vinculo el usuario leído a la partida
-            partida.Usuario = usuario;
             // Actualizo la instancia de la partida actual en este repositorio
             this.partidaActual = partida;
+            // Actualizo los datos de la partida actual en la config
+            Config.DirectorioPartidaActual = @$"{Config.DirectorioPartidas}\{dirPartida}";
 
             // Retorno la partida obtenida
             return partida;
