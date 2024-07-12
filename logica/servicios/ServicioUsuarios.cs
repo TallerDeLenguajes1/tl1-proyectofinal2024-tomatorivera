@@ -10,13 +10,13 @@ namespace Logica.Servicios
     /// <summary>
     /// Servicio para la gestión de usuarios en el juego.
     /// </summary>
-    public interface UsuarioServicio
+    public interface IUsuarioServicio
     {
         void CrearUsuario(Usuario usuario);
         Usuario ObtenerDatosUsuario();
     }
 
-    public class UsuarioServicioImpl : UsuarioServicio
+    public class UsuarioServicioImpl : IUsuarioServicio
     {
         private readonly IRepositorio<Usuario> repositorio;
 

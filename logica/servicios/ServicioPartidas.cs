@@ -9,7 +9,7 @@ namespace Logica.Servicios
     /// <summary>
     /// Servicio para la gestión de la partida
     /// </summary>
-    public interface PartidaServicio
+    public interface IPartidaServicio
     {
         void CrearPartida(Partida partida);
         Partida ObtenerDatosPartida();
@@ -19,15 +19,17 @@ namespace Logica.Servicios
         PartidaHandler ObtenerManejadorPartida(Partida partida);
     }
 
-    public class PartidaServicioImpl : PartidaServicio
+    public class PartidaServicioImpl : IPartidaServicio
     {
         private readonly IRepositorioNavegable<Partida> repositorio;
-        private readonly UsuarioServicio usuarioServicio;
+        private readonly IUsuarioServicio usuarioServicio;
+        private readonly IHistorialServicio historialServicio;
 
         public PartidaServicioImpl()
         {
             this.repositorio = new PartidaRepositorioImpl();
             this.usuarioServicio = new UsuarioServicioImpl();
+            this.historialServicio = new HistorialServicioImpl();
         }
 
         /// <summary>
@@ -40,6 +42,7 @@ namespace Logica.Servicios
             {
                 repositorio.Crear(partida);
                 usuarioServicio.CrearUsuario(partida.Usuario);
+                historialServicio.CrearHistorial(partida.Historial);
             }
             catch (Exception)
             {

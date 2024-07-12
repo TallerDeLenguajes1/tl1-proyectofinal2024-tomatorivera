@@ -13,7 +13,7 @@ namespace Persistencia.Repositorios
         {
             // Si por alguna razón no se ha configurado el directorio de la partida actual al cargar/crear
             // la partida, entonces se lanzará una excepción puesto que no hay carpeta donde persistir
-            if (String.IsNullOrWhiteSpace(Config.DirectorioPartidaActual))
+            if (string.IsNullOrWhiteSpace(Config.DirectorioPartidaActual))
                 throw new PartidaInvalidaException("No se pudo cargar el directorio de la partida actual de la configuración");
 
             // Guardo el nombre del archivo

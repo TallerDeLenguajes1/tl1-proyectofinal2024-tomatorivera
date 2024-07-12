@@ -31,7 +31,7 @@ namespace Gui.Controladores
 
     public class InicioControlador : Controlador<Inicio>
     {
-        private UsuarioServicio servicio;
+        private IUsuarioServicio servicio;
 
         public InicioControlador(Inicio vista) : base(vista)
         {
@@ -87,7 +87,7 @@ namespace Gui.Controladores
     {
         private bool estaSeleccionando;
         private int indiceSeleccionado;
-        private UsuarioServicio servicio;
+        private IUsuarioServicio servicio;
 
         public MenuControlador(Menu vista) : base(vista)
         {

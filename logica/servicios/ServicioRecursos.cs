@@ -3,12 +3,12 @@ using Persistencia.Util;
 
 namespace Logica.Servicios
 {
-    public interface RecursoServicio
+    public interface IRecursoServicio
     {
         string ObtenerLogo();
     }
 
-    public class RecursoServicioImpl : RecursoServicio
+    public class RecursoServicioImpl : IRecursoServicio
     {
         /// <summary>
         /// Obtiene el Path completo del archivo 'Logo' o lanza una excepción en caso de que haya problemas con el path

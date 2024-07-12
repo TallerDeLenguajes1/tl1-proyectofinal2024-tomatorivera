@@ -148,7 +148,7 @@ Espero que te hayas divertido :)
                 .SpinnerStyle(Style.Parse("yellow bold"))
                 .Start("[yellow]Creando nueva partida...[/]", ctx => 
                 {
-                    manejadorPartida = crearPartida(nombreUsuario, nombreEquipo).GetAwaiter().GetResult();
+                    manejadorPartida = crearPartidaAsync(nombreUsuario, nombreEquipo).GetAwaiter().GetResult();
                 }
             );
 
@@ -162,7 +162,13 @@ Espero que te hayas divertido :)
             }
         }
 
-        private async Task<PartidaHandler> crearPartida(string nombreUsuario, string nombreEquipo)
+        /// <summary>
+        /// Crea los datos de una nueva partida
+        /// </summary>
+        /// <param name="nombreUsuario">Nombre del usuario</param>
+        /// <param name="nombreEquipo">Nombre del nuevo equipo</param>
+        /// <returns>Objeto <c>PartidaHandler</c> para manejar la partida creada</returns>
+        private async Task<PartidaHandler> crearPartidaAsync(string nombreUsuario, string nombreEquipo)
         {
             // Creo la nueva partida y la inicio automáticamente
             var partidaServicio = new PartidaServicioImpl();
@@ -172,7 +178,8 @@ Espero que te hayas divertido :)
             int id = partidaServicio.ObtenerNuevoIdPartida();
             Equipo nuevoEquipo = await equipoServicio.GenerarEquipoAsync(nombreEquipo);
             Usuario nuevoUsuario = new Usuario(nombreUsuario, nuevoEquipo);
-            Partida nuevaPartida = new Partida(id, DateTime.Now, nuevoUsuario);
+            Historial nuevoHistorial = new Historial();
+            Partida nuevaPartida = new Partida(id, DateTime.Now, nuevoUsuario, nuevoHistorial);
 
             // Creo la partida
             partidaServicio.CrearPartida(nuevaPartida);
@@ -183,7 +190,7 @@ Espero que te hayas divertido :)
             // Si por alguna razón la partida creada no se guarda en el repositorio, el método ObtenerDatosPartida lanzará una excepción
             var partidaCreada = partidaServicio.ObtenerDatosPartida();
             return partidaServicio.ObtenerManejadorPartida(partidaCreada);
-    }
+        }
 
         /// <summary>
         /// Valida si un nombre es correcto
@@ -207,6 +214,10 @@ Espero que te hayas divertido :)
             return ValidationResult.Success();
         }
 
+        /// <summary>
+        /// Muestra por pantalla aquellos errores que se hayan producido durante el proceso de
+        /// creación de la partida, pero que no detendrán la ejecución del juego
+        /// </summary>
         private void MostrarErroresIgnorables()
         {   
             System.Console.WriteLine();
@@ -241,7 +252,7 @@ Espero que te hayas divertido :)
             System.Console.WriteLine();
 
             // Obtengo una lista de partidas guardadas
-            PartidaServicio servicio = new PartidaServicioImpl();
+            IPartidaServicio servicio = new PartidaServicioImpl();
             List<Partida> partidasGuardadas = servicio.ObtenerPartidas();
 
             // Verifico si hay al menos una partida, de lo contrario muestro un mensaje por pantalla

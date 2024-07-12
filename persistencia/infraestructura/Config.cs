@@ -17,6 +17,7 @@ namespace Persistencia.Infraestructura
 
         public static string? NombreJsonPartida { get; set; }
         public static string? NombreJsonUsuario { get; set; }
+        public static string? NombreJsonHistorial { get; set; }
         public static string? NombreImgLogo { get; set; }
 
         public static string? ApiSportsKey { get; set; }
@@ -43,6 +44,7 @@ namespace Persistencia.Infraestructura
 
             NombreJsonPartida = "partida.json";
             NombreJsonUsuario = "usuario.json";
+            NombreJsonHistorial = "historial.json";
             NombreImgLogo = "logo.png";
             
             ApiSportsKey = "03028e54f1f00215f6bb821f0b260a6d";

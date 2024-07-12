@@ -9,7 +9,11 @@ namespace Logica.Modelo
         private float puntos;
         private Equipo equipo;
         
-        public Usuario() {}
+        public Usuario() {
+            this.nombre = string.Empty;
+            this.puntos = 0f;
+            this.equipo = new Equipo();
+        }
 
         /// <summary>
         /// Constructor de la clase Usuario

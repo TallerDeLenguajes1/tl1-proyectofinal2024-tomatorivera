@@ -43,8 +43,11 @@ namespace Gui.Vistas
             var layout = new Layout("raiz")
                     .SplitRows(
                         new Layout("arriba"),
-                        new Layout("centro"),
                         new Layout("abajo")
+                            .SplitColumns(
+                                new Layout("abajo_izq"),
+                                new Layout("abajo_der")
+                            )
                     );
 
             // Coloco el titulo en el layout de arriba
@@ -57,34 +60,37 @@ namespace Gui.Vistas
                 .Border(BoxBorder.Heavy)
                 .BorderColor(Color.Red)
             );
-            // Coloco la imagen renderizada en el layout del medio
-            layout["centro"].Update(
+            // Coloco la imagen renderizada en el layout a la izquierda
+            layout["abajo_izq"].Update(
                 new Panel(
                     Align.Center(
                         // falta obtener la ruta mediante una capa de servicio
-                        (Logo != null) ? (IRenderable) Logo : new Markup(""),
-                        VerticalAlignment.Top
+                        (Logo != null) ? (IRenderable) Logo : new Markup("[red strikethrough]---[/] [red underline bold] VBM [/][red] * By: [/][bold red reverse]Ramiro Tomas Rivera Octtaviano[/] [red strikethrough]---[/]"),
+                        VerticalAlignment.Middle
                     )
                 )
+                .Expand()
                 .Border(BoxBorder.None) 
-                .Padding(new Padding(0, 2, 0, 0))
             );
-            // Coloco el mensaje para continuar en el layout de abajo
-            layout["abajo"].Update(
+            // Coloco el mensaje para continuar en el layout de abajo a la derecha
+            layout["abajo_der"].Update(
                 new Panel(
                     Align.Center(
-                        new Markup("[bold underline red]Presione una tecla para continuar...[/]"),
+                        new Rows(
+                            new Markup("[red strikethrough]---[/] [red underline bold] VBM [/][red] * By: [/][bold red reverse]Ramiro Tomas Rivera Octtaviano[/] [red strikethrough]---[/]"),
+                            new Text(""),
+                            new Markup("[italic underline red]Presione una tecla para iniciar...[/]")
+                        ),
                         VerticalAlignment.Middle
                     )
                 )
                 .Border(BoxBorder.None)
-                .Padding(new Padding(0,3))
+                .Expand()
             );
 
             // Configuro los tamaños de cada fila
             layout["arriba"].Ratio(1);
-            layout["centro"].Ratio(3);
-            layout["abajo"].Ratio(1);
+            layout["abajo"].Ratio(3);
 
             // Y muestro por pantalla el layout
             AnsiConsole.Write(layout);
