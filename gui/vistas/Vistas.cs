@@ -395,6 +395,72 @@ namespace Gui.Vistas
                 .Expand()
             );
 
+            /*********************
+             * SECCIÓN HISTORIAL *
+             *********************/
+
+            var dineroClub = new Markup($"\n:small_orange_diamond: [orange1]Dinero actual:[/] [yellow]$ {informacionPartida.Usuario.Dinero}[/]");
+            var arbolHistorial = new Tree(":small_orange_diamond: [orange1]Últimos partidos jugados:[/]")
+            {
+                Style = Style.Parse("orange3")
+            };
+
+            // Si el historial aún no contiene partidos, lo indico por pantalla
+            if (!informacionPartida.Historial.HistorialPartidos.Any())
+            {
+                arbolHistorial.AddNode($"[red]{informacionPartida.Usuario.Equipo.Nombre} [/][orange3]aún no ha jugado partidos[/]");
+            }
+            else
+            {
+                // En esta tabla mostraré los últimos partidos del historial
+                var tablaPartidos = new Table()
+                {
+                    Caption = new TableTitle("[italic grey](( Puede consultar el historial detallado más abajo ))[/]")
+                }
+                .Border(TableBorder.Rounded)
+                .BorderColor(Color.Orange3);
+
+                tablaPartidos.AddColumn(new TableColumn(new Markup("[orange3]Partido[/]")).Centered());
+                tablaPartidos.AddColumn(new TableColumn(new Markup("[orange3]Local[/]")).Centered());
+                tablaPartidos.AddColumn(new TableColumn(new Markup("[orange3]Resultado[/]")).Centered());
+                tablaPartidos.AddColumn(new TableColumn(new Markup("[orange3]Visitante[/]")).Centered());
+    
+                // Como máximo se muestran 8 partidos, si el historial tiene menos de 8, se muestran lo que hayan
+                var nPartidosMostrar = (informacionPartida.Historial.TotalPartidosJugados > 8) ? 8 : informacionPartida.Historial.TotalPartidosJugados;
+                foreach (var partido in informacionPartida.Historial.HistorialPartidos.TakeLast(nPartidosMostrar)) 
+                {
+                    columnas.Add(new Markup($"[yellow]{partido.TipoPartido}[/]"));
+                    columnas.Add(new Markup($"[yellow]{partido.Local}[/]"));
+                    columnas.Add(new Markup($"[yellow]{partido.ScoreLocal}[/][gray] (L) - [/][yellow]{partido.ScoreVistante}[/] [gray](V)[/]"));
+                    columnas.Add(new Markup($"[yellow]{partido.Visitante}[/]"));
+
+                    tablaPartidos.AddRow(columnas);
+                    columnas.Clear();
+                }
+
+                arbolHistorial.AddNode(tablaPartidos);
+            }
+
+            // Uso el componente Rows para mostrar el dinero arriba del historial
+            var filasHistorial = new Rows(
+                dineroClub,
+                arbolHistorial
+            );
+
+            // Muestro la info anterior en el layout
+            layout["abajo_der_arr"].Update(
+                new Panel(Align.Left(
+                    filasHistorial,
+                    VerticalAlignment.Top
+                ))
+                {
+                    Header = new PanelHeader("[dim] [/][orange1 underline bold]Información del jugador[/][dim] [/]").LeftJustified()
+                }
+                .Border(BoxBorder.Rounded)
+                .BorderColor(Color.Orange3)
+                .Expand()
+            );
+
             /**** Muestro el dashboard ****/
             AnsiConsole.Write(layout);
         }

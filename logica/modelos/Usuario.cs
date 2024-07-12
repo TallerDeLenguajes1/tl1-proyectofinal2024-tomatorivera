@@ -6,12 +6,12 @@ namespace Logica.Modelo
     public class Usuario
     {
         private string nombre;
-        private float puntos;
+        private float dinero;
         private Equipo equipo;
         
         public Usuario() {
             this.nombre = string.Empty;
-            this.puntos = 0f;
+            this.dinero = 0f;
             this.equipo = new Equipo();
         }
 
@@ -23,19 +23,19 @@ namespace Logica.Modelo
         {
             this.nombre = nombre;
             this.equipo = new Equipo();
-            this.puntos = 0;
+            this.dinero = 0;
         }
 
         public Usuario(string nombre, Equipo equipo)
         {
             this.nombre = nombre;
             this.equipo = equipo;
-            this.puntos = 0;
+            this.dinero = 0;
         }
 
         // Propiedades
         public string Nombre { get => nombre; set => nombre = value; }
-        public float Puntos { get => puntos; set => puntos = value; } 
+        public float Dinero { get => dinero; set => dinero = value; } 
         public Equipo Equipo { get => equipo; set => equipo = value; }
 
         // Métodos

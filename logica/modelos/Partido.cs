@@ -6,22 +6,22 @@ namespace Logica.Modelo
     /// </summary>
     public class Partido
     {
-         private string local;
-        private string visitante;
+        private Equipo local;
+        private Equipo visitante;
         private TipoPartido tipoPartido;
         private Dictionary<int /* nro set */, (int, int) /* L, V */> resultadoSets;
-        private int setsLocal;
-        private int setsVisitante;
+        private int scoreLocal;
+        private int scoreVisitante;
         private string nombreGanador;
 
         // Propiedades
-        public string Local { get => local; set => local = value; }
-        public string Visitante { get => visitante; set => visitante = value; }
+        public Equipo Local { get => local; set => local = value; }
+        public Equipo Visitante { get => visitante; set => visitante = value; }
         public TipoPartido TipoPartido { get => tipoPartido; set => tipoPartido = value; }
         public Dictionary<int, (int, int)> ResultadoSets { get => resultadoSets; set => resultadoSets = value; }
         public string NombreGanador { get => nombreGanador; set => nombreGanador = value; }
-        public int SetsLocal { get => setsLocal; set => setsLocal = value; }
-        public int SetsVisitante { get => setsVisitante; set => setsVisitante = value; }
+        public int ScoreLocal { get => scoreLocal; set => scoreLocal = value; }
+        public int ScoreVistante { get => scoreVisitante; set => scoreVisitante = value; }
 
         // Métodos
         public override string ToString()
