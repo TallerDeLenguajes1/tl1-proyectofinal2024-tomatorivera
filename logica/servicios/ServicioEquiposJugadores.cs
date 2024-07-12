@@ -80,9 +80,9 @@ namespace Logica.Servicios
 
                 // Si la respuesta es nula, lanzo la excepción porque puede tratarse de un error
                 if (listaEquipos.response == null)
-                    throw new ApiInaccesibleException("La respuesta de Api Sports es nula", listaEquipos);
+                    throw new RespuestaApiInvalidaException("La respuesta de Api Sports es nula");
                 if (!listaEquipos.response.Any())
-                    throw new ApiInaccesibleException("La respuesta de Api Sports está vacía");
+                    throw new RespuestaApiInvalidaException("La respuesta de Api Sports está vacía");
 
                 // Filtro equipos no nacionales y que no tengan el mismo nombre que el equipo del usuario (por las dudas)
                 var equiposFiltrados = listaEquipos.response.Where(equipo => !equipo.national)
@@ -186,10 +186,10 @@ namespace Logica.Servicios
 
                 // Si la respuesta es nula, lanzo la excepción porque puede tratarse de un error
                 if (listaNombres.Results == null)
-                    throw new ApiInaccesibleException("La respuesta de Random User API es nula", listaNombres);
+                    throw new RespuestaApiInvalidaException("La respuesta de Random User API es nula");
                 
                 if (!listaNombres.Results.Any()) 
-                    throw new ApiInaccesibleException("La respuesta de Random User API está vacía");
+                    throw new RespuestaApiInvalidaException("La respuesta de Random User API está vacía");
 
                 var nombreAleatorio = listaNombres.Results.ElementAt(new Random().Next(listaNombres.Results.Count()));
 

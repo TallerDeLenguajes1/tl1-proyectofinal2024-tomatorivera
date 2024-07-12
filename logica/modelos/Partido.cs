@@ -1,3 +1,6 @@
+using Newtonsoft.Json;
+using Persistencia.Infraestructura;
+
 namespace Logica.Modelo
 {
     /// <summary>
@@ -27,6 +30,109 @@ namespace Logica.Modelo
         public override string ToString()
         {
             return $"Partido {TipoPartido} - {local} (local) VS {visitante} (visitante) - Ganador: {nombreGanador}";
+        }
+    }
+
+    // Modelos para API's relacionadas a los partidos
+    public class GamesRaiz : IConsumido
+    {
+        [JsonProperty("response", NullValueHandling = NullValueHandling.Ignore)]
+        public List<GamesResponse>? Response { get; set; }
+    }
+
+    public class GamesResponse
+    {
+
+        [JsonProperty("date", NullValueHandling = NullValueHandling.Ignore)]
+        public DateTime? Date { get; set; }
+
+        [JsonProperty("timezone", NullValueHandling = NullValueHandling.Ignore)]
+        public string? Timezone { get; set; }
+
+        [JsonProperty("status", NullValueHandling = NullValueHandling.Ignore)]
+        public GameLeagueStatus Status { get; set; }
+
+        [JsonProperty("teams", NullValueHandling = NullValueHandling.Ignore)]
+        public Teams Teams { get; set; }
+
+        [JsonProperty("scores", NullValueHandling = NullValueHandling.Ignore)]
+        public GameScore Scores { get; set; }
+    }
+
+
+    public class GameTeam
+    {
+        [JsonProperty("id", NullValueHandling = NullValueHandling.Ignore)]
+        public int? Id { get; set; }
+
+        [JsonProperty("name", NullValueHandling = NullValueHandling.Ignore)]
+        public string? Name { get; set; }
+
+        [JsonProperty("logo", NullValueHandling = NullValueHandling.Ignore)]
+        public string? Logo { get; set; }
+    }
+
+
+    public class GameLeagueStatus
+    {
+        [JsonProperty("long", NullValueHandling = NullValueHandling.Ignore)]
+        public string? Long { get; set; }
+        
+        [JsonProperty("short", NullValueHandling = NullValueHandling.Ignore)]
+        public string? Short { get; set; }
+    }
+
+    public class GameScore
+    {
+        [JsonProperty("home", NullValueHandling = NullValueHandling.Ignore)]
+        public int Home { get; set; }
+
+        [JsonProperty("away", NullValueHandling = NullValueHandling.Ignore)]
+        public int Away { get; set; }
+    }
+
+    public class Teams
+    {
+        [JsonProperty("home", NullValueHandling = NullValueHandling.Ignore)]
+        public GameTeam Home { get; set; }
+
+        [JsonProperty("away", NullValueHandling = NullValueHandling.Ignore)]
+        public GameTeam Away { get; set; }
+    }
+
+    public class LeaguesRaiz : IConsumido
+    {
+        [JsonProperty("response", NullValueHandling = NullValueHandling.Ignore)]
+        public List<LeagueResponse>? Response { get; set; }
+    }
+
+    public class LeagueResponse
+    {
+        [JsonProperty("id", NullValueHandling = NullValueHandling.Ignore)]
+        public int Id { get; set; }
+
+        [JsonProperty("name", NullValueHandling = NullValueHandling.Ignore)]
+        public string Name { get; set; }
+        
+        [JsonProperty("country", NullValueHandling = NullValueHandling.Ignore)]
+        public LeagueCountry Country { get; set; }
+
+        public LeagueResponse()
+        {
+            this.Id = -1;
+            this.Name = "Indefinido";
+            this.Country = new LeagueCountry();
+        }
+    }
+
+    public class LeagueCountry
+    {
+        [JsonProperty("name", NullValueHandling = NullValueHandling.Ignore)]
+        public string Name { get; set; }
+
+        public LeagueCountry()
+        {
+            this.Name = "Indefinido";
         }
     }
 }

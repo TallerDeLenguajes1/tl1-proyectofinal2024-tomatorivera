@@ -284,8 +284,18 @@ Espero que te hayas divertido :)
                 // un manejador para dicha partida, desde donde se inicia automáticamente luego de ser cargada
                 if (partidaSeleccionada.Id != -1)
                 {
-                    var manejadorPartida = servicio.ObtenerManejadorPartida(servicio.ObtenerDatosPartida(partidaSeleccionada.Id));
-                    manejadorPartida.IniciarPartida();
+                    PartidaHandler? manejadorPartida = null;
+                    AnsiConsole.Status()
+                        .Spinner(Spinner.Known.BouncingBall)
+                        .SpinnerStyle(Style.Parse("yellow bold"))
+                        .Start("[yellow]Cargando partida...[/]", ctx => 
+                        {
+                            // Cargo las novedades para ser mostradas en el dashboard
+                            manejadorPartida = servicio.ObtenerManejadorPartida(servicio.ObtenerDatosPartida(partidaSeleccionada.Id));
+                        }
+                    );
+
+                    if (manejadorPartida != null) manejadorPartida.IniciarPartida();
                 }
             }
         }

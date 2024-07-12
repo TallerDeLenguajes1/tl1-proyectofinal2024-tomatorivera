@@ -47,8 +47,14 @@ namespace Logica.Servicios
         /// <returns>Objeto <c>Usuario</c> con los datos del jugador actual</returns>
         public Usuario ObtenerDatosUsuario()
         {
-            // Falta implementar la obtención de datos de la persistencia
-            return new Usuario("Usuario");
+            try
+            {
+                return repositorio.ObtenerActual();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         /// <summary>

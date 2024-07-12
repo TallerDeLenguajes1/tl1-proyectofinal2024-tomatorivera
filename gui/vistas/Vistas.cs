@@ -1,6 +1,6 @@
+using System.Text;
 using Gui.Modelo;
 using Gui.Util;
-using Logica.Handlers;
 using Logica.Modelo;
 using Spectre.Console;
 using Spectre.Console.Rendering;
@@ -245,22 +245,24 @@ namespace Gui.Vistas
     /// </summary>
     public class Dashboard : Vista
     {
-        private Partida informacionPartida;
+        private readonly Partida informacionPartida;
+        private (LeagueResponse, List<GamesResponse>) informacionNovedades;
 
         public Dashboard(Partida informacionPartida)
         {
             this.informacionPartida = informacionPartida;
         }
 
+        // Propiedades
+        public (LeagueResponse, List<GamesResponse>) InformacionNovedades { get => informacionNovedades; set => informacionNovedades = value; }
+
+        // Métodos
         public override void Dibujar()
         {
-            // Limpio la consola
-            AnsiConsole.Clear();
-            
             // Layout del dashboard
             // -------------
             // |     1     |
-            // -------------
+            // |-----------|
             // |     |  3  |
             // |  2  |-----|
             // |     |  4  |
@@ -285,6 +287,23 @@ namespace Gui.Vistas
             layout["centro"].Ratio = 1;
             layout["abajo"].Ratio = 3;
 
+            // Agrego el titulo al layout
+            layout["arriba"].Update(obtenerTitulo());
+            // Agrego el header al layout
+            layout["centro"].Update(obtenerHeader()).Size(3);
+            // Agrego la info del equipo al layout
+            layout["abajo_izq"].Update(obtenerInformacionEquipo());
+            // Muestro la informacion del usuario
+            layout["abajo_der_arr"].Update(obtenerInformacionUsuario());
+            // Muestro las nuevas novedades
+            layout["abajo_der_aba"].Update(obtenerNovedades());
+
+            /**** Muestro el dashboard ****/
+            AnsiConsole.Write(layout);
+        }
+
+        private Panel obtenerTitulo()
+        {
             /******************
              * SECCION TITULO *
              ******************/
@@ -304,9 +323,8 @@ namespace Gui.Vistas
                 Align.Center(new Markup($"[yellow]{titulo}[/]")),
                 Align.Center(new Markup(subtitulo))
             );
-            
-            // Agrego y alineo las filas layout
-            layout["arriba"].Update(
+
+            return 
                 new Panel(Align.Center(
                         filasCabecera,
                         VerticalAlignment.Middle
@@ -314,26 +332,29 @@ namespace Gui.Vistas
                 )
                 .Border(BoxBorder.Rounded)
                 .BorderColor(Color.Yellow)
-                .Expand()
-            );
+                .Expand();
+        }
 
+        private Panel obtenerHeader()
+        {
             /******************
              * SECCION HEADER * 
              ******************/
 
             var mensajeHeader = $":volleyball: [orange1]¡Bienvenido DT [/][yellow]{informacionPartida.Usuario.Nombre}[/][orange1]! Suerte dirigiendo a [/][yellow]{informacionPartida.Usuario.Equipo.Nombre}[/] :volleyball:";
 
-            // Muestro el mensaje del header centrado en el layout
-            layout["centro"].Update(
+            return
                 new Panel(Align.Center(
                         new Markup(mensajeHeader), 
                         VerticalAlignment.Middle
                     )
                 )
                 .Border(BoxBorder.Rounded)
-                .BorderColor(Color.Orange3)
-            ).Size(3);
+                .BorderColor(Color.Orange3);
+        }
 
+        private Panel obtenerInformacionEquipo()
+        {
             /************************
              * SECCION INFO. EQUIPO *
              ************************/
@@ -384,17 +405,18 @@ namespace Gui.Vistas
                 arbolPlantilla
             );
 
-            // Muestro la info anterior en el layout del dashboard
-            layout["abajo_izq"].Update(
+            return 
                 new Panel(Align.Left(filasInformacionEquipo))
                 {
                     Header = new PanelHeader("[dim] [/][orange1 underline bold]Información del equipo[/][dim] [/]").LeftJustified()
                 }
                 .Border(BoxBorder.Rounded)
                 .BorderColor(Color.Orange3)
-                .Expand()
-            );
-
+                .Expand();
+        }
+    
+        private Panel obtenerInformacionUsuario()
+        {
             /*********************
              * SECCIÓN HISTORIAL *
              *********************/
@@ -426,6 +448,7 @@ namespace Gui.Vistas
                 tablaPartidos.AddColumn(new TableColumn(new Markup("[orange3]Visitante[/]")).Centered());
     
                 // Como máximo se muestran 8 partidos, si el historial tiene menos de 8, se muestran lo que hayan
+                var columnas = new List<Markup>();
                 var nPartidosMostrar = (informacionPartida.Historial.TotalPartidosJugados > 8) ? 8 : informacionPartida.Historial.TotalPartidosJugados;
                 foreach (var partido in informacionPartida.Historial.HistorialPartidos.TakeLast(nPartidosMostrar)) 
                 {
@@ -448,7 +471,7 @@ namespace Gui.Vistas
             );
 
             // Muestro la info anterior en el layout
-            layout["abajo_der_arr"].Update(
+            return
                 new Panel(Align.Left(
                     filasHistorial,
                     VerticalAlignment.Top
@@ -458,11 +481,102 @@ namespace Gui.Vistas
                 }
                 .Border(BoxBorder.Rounded)
                 .BorderColor(Color.Orange3)
-                .Expand()
-            );
+                .Expand();
+        }
 
-            /**** Muestro el dashboard ****/
-            AnsiConsole.Write(layout);
+        private Panel obtenerNovedades()
+        {
+            IRenderable novedades;
+
+            if (informacionNovedades.Item1.Id == -1 ||
+                !informacionNovedades.Item2.Any())
+            {
+                novedades = new Markup("\n:see_no_evil_monkey: [orange1]No hay nuevas novedades para mostrar[/]");
+            }
+            else
+            {
+                var competicion = informacionNovedades.Item1;
+
+                var sb = new StringBuilder();
+                var arbolPartidos = new Tree($"\n:collision: [orange1]¡Novedades de la competición [/][red]{competicion.Name}[/] {(!competicion.Country.Name.Equals("World") ? $"[orange1]de [/][red]{competicion.Country.Name} [/]" : string.Empty)}[orange4](TEMPORADA 23/24)[/][orange1]![/]")
+                {
+                    Style = Style.Parse("orange3")
+                };
+
+                // Muestro los ultimos 8 partidos de la competicion seleccionada, si tiene menos de 8, muestro los que tenga
+                var nPartidosMostrar = (informacionNovedades.Item2.Count() <= 8) ? informacionNovedades.Item2.Count() : 8;
+                foreach (var partido in informacionNovedades.Item2.TakeLast(nPartidosMostrar))
+                {
+                    // Según el estado del partido, muestro los datos correspondientes
+
+                    /*
+                     * Estados posibles de los partidos según datos de API Sports
+                     *
+                     * NS : Not Started
+                     * S1 : Set 1 (In Play)
+                     * S2 : Set 2 (In Play)
+                     * S3 : Set 3 (In Play)
+                     * S4 : Set 4 (In Play)
+                     * S5 : Set 5 (In Play)
+                     * AW : Awarded
+                     * POST : Postponed
+                     * CANC : Cancelled
+                     * INTR : Interrupted
+                     * ABD : Abandoned
+                     * FT : Finished (Game Finished)
+                     *
+                     */
+                    switch (partido.Status.Short)
+                    {
+                        case "NS":
+                            string fecha = partido.Date.HasValue ? "(" + partido.Date.Value.ToString("dd/MM/yyyy hh:mm") + $" {partido.Timezone}" + ")" : string.Empty;
+                            sb.Append($"[orange3]PROXIMAMENTE [/][grey]{fecha}[/][orange3]: [/][yellow]{partido.Teams.Home.Name} :vs_button: {partido.Teams.Away.Name}[/]");
+                            break;
+                        case "S1":
+                        case "S2":
+                        case "S3":
+                        case "S4":
+                        case "S5":
+                            sb.Append($"[orange3]Se está disputando [/][yellow]{partido.Teams.Home.Name}[/] [orange1]({partido.Scores.Home})[/] :vs_button: [yellow]{partido.Teams.Away.Name}[/][orange1] ({partido.Scores.Away})[/][orange3] - {partido.Status.Long}[/]");
+                            break;
+                        case "POST":
+                            sb.Append($"[orange1]¡Habrá que esperar![/][orange3] Se ha pospuesto el partido de [/][yellow]${partido.Teams.Home.Name} :vs_button: {partido.Teams.Away.Name}[/]");
+                            break;
+                        case "CANC":
+                            sb.Append($"[yellow]¡PARTIDO CANCELADO![/][orange1] ${partido.Teams.Home.Name} :vs_button: {partido.Teams.Away.Name}[/]");
+                            break;
+                        case "INTR":
+                            sb.Append($"[yellow]¡INTERRUMPIDO POR INCONVENIENTES![/][orange1] ${partido.Teams.Home.Name} :vs_button: {partido.Teams.Away.Name}[/]");
+                            break;
+                        case "ABD":
+                            sb.Append($"[orange3]El partido entre [/][orange1]${partido.Teams.Home.Name} y {partido.Teams.Away.Name}[/][orange3] se ha abandonado por algún motivo[/]");
+                            break;
+                        case "FT":
+                            sb.Append($"[orange3]FINALIZADO[/][grey]{(partido.Date.HasValue ? " (" + partido.Date.Value.ToString("dd/MM/yyyy") + ")" : string.Empty)}[/][orange3]: [/][yellow]{partido.Teams.Home.Name}[/]");
+                            sb.Append((partido.Scores.Home > partido.Scores.Away) ? "[orange1] le ha ganado a [/]" : "[orange1] perdió contra [/]");
+                            sb.Append($"[yellow]{partido.Teams.Away.Name}[/]");
+                            sb.Append($"[orange1] por [/][yellow]{partido.Scores.Home} - {partido.Scores.Away}[/]");
+                            break;
+                    }
+
+                    arbolPartidos.AddNode(new Markup(sb.ToString()));
+                    sb.Clear();
+                }
+
+                novedades = arbolPartidos;
+            }
+
+            return 
+                new Panel(Align.Left(
+                    novedades,
+                    VerticalAlignment.Top
+                ))
+                {
+                    Header = new PanelHeader("[red] [/][orange1 bold underline]Noticias internacionales[/][red] [/]").LeftJustified()
+                }
+                .Border(BoxBorder.Rounded)
+                .BorderColor(Color.Orange1)
+                .Expand();
         }
     }
 }

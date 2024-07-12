@@ -1,6 +1,8 @@
 using Gui.Modelo;
 using Gui.Util;
 using Gui.Vistas;
+using Logica.Handlers;
+using Logica.Modelo;
 using Logica.Servicios;
 using Spectre.Console;
 
@@ -173,15 +175,76 @@ namespace Gui.Controladores
     public class DashboardControlador : Controlador<Dashboard>
     {
         public DashboardControlador(Dashboard vista) : base(vista)
-        {
-        }
+        {}
 
         public override void MostrarVista()
         {
+            // Muestro un spinner mientras cargan las novedades
+            AnsiConsole.Status()
+                .Spinner(Spinner.Known.BouncingBall)
+                .SpinnerStyle(Style.Parse("yellow bold"))
+                .Start("[yellow]Cargando últimos datos...[/]", ctx => 
+                {
+                    // Cargo las novedades para ser mostradas en el dashboard
+                    var novedades = obtenerNovedades().GetAwaiter().GetResult();
+                    vista.InformacionNovedades = novedades;
+                }
+            );
+
+            // Limpio la consola
+            AnsiConsole.Clear();
+
+            // Si ocurrieron errores durante la carga de novedades las muestro por pantalla
+            if (ErroresIgnorablesHandler.ObtenerInstancia().Errores.Any()) MostrarErrores();
+            
             vista.Dibujar();
 
             // Para que no se cierre el programa
             Console.ReadKey();
+        }
+        
+        /// <summary>
+        /// Obtiene novedades para ser mostradas en el dashboard
+        /// </summary>
+        /// <returns>Diccionario con información de la liga y de sus respectivos partidos a mostrar en novedades</returns>
+        private async Task<(LeagueResponse, List<GamesResponse>)> obtenerNovedades()
+        {
+            var random = new Random();
+            var servicioNovedades = new NovedadesServicioImpl();
+            var temporada = 2024;
+
+            // Obtengo las ligas del servicio, si no devuelve nada entonces retorno
+            // datos vacíos para luego mostrar el mensaje por pantalla
+            var ligas = await servicioNovedades.ObtenerLigasAsync(temporada);
+            if (!ligas.Any())
+            {
+                return (new LeagueResponse(), new List<GamesResponse>());
+            }
+            
+            // Selecciono una liga aleatoria y obtengo datos de sus partidos recientes
+            var ligaSeleccionada = ligas[random.Next(ligas.Count())];
+            var partidos = await servicioNovedades.ObtenerPartidosAsync(ligaSeleccionada.Id, temporada);
+
+            return (ligaSeleccionada, partidos);
+        }
+
+        /// <summary>
+        /// Muestra los errores guardados en <c>ErroresIgnorablesHandler</c>
+        /// </summary>
+        private void MostrarErrores()
+        {
+            var titulo = new Rule("[bold red] Se han producido uno o más errores [/]");
+            titulo.LeftJustified();
+            titulo.Style = Style.Parse("bold red");
+            AnsiConsole.Write(titulo);
+            
+            foreach (var error in ErroresIgnorablesHandler.ObtenerInstancia().Errores)
+            {
+                AnsiConsole.Write(new Markup($"[gray]Durante la operación [/][red underline]{error.Key}[/][gray]: [/][gray]{error.Value.Message}.[/]"));
+            }
+
+            System.Console.WriteLine("\n");
+            ErroresIgnorablesHandler.ObtenerInstancia().LimpiarErrores();
         }
     }
 }

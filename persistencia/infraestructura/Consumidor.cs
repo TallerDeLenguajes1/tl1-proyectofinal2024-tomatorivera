@@ -74,8 +74,9 @@ namespace Persistencia.Infraestructura
                 var cuerpoRespuesta = await apiRespuesta.Content.ReadAsStringAsync();
                 var respuestaDeserealizada = JsonConvert.DeserializeObject<T>(cuerpoRespuesta);
                 
-                return (respuestaDeserealizada != null) ? respuestaDeserealizada 
-                                                        : throw new DeserealizacionNulaException("El resultado de la deserealizacion es nulo");
+                if (respuestaDeserealizada == null) throw new DeserealizacionNulaException("El resultado de la deserealizacion es nulo");
+
+                return respuestaDeserealizada;
             }
         }
     }

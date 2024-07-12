@@ -26,4 +26,10 @@ namespace Logica.Excepciones
             this.RespuestaApi = RespuestaApi;
         }
     }
+
+    public class RespuestaApiInvalidaException : Exception
+    {
+        public RespuestaApiInvalidaException(string message) : base(message)
+        {}
+    }
 }
