@@ -123,14 +123,13 @@ namespace Logica.Servicios
                 var rnd = new Random();
                 var listaJugadores = new List<Jugador>();
                 var listaIdentificadores = await GenerarIdentificadoresJugadoresAsync(nJugadores);
-                var tipoJugadores = Enum.GetValues(typeof(TipoJugador));
                 
                 TipoJugador tipoJugador;
                 JugadorFabrica fabricaJugador;
 
                 for (int i=0 ; i < nJugadores ; i++)
                 {
-                    tipoJugador = (TipoJugador) tipoJugadores.GetValue(rnd.Next(tipoJugadores.Length))!;
+                    tipoJugador = (TipoJugador) rnd.Next(Enum.GetValues(typeof(TipoJugador)).Length);
 
                     fabricaJugador = tipoJugador switch
                     {
@@ -262,31 +261,6 @@ namespace Logica.Servicios
 
                     listaIdentificadores.Add(numeroCamiseta, nombreJugador);
                 }
-                /*
-                for (int i=0 ; i<nIdentificadores ; i++)
-                {
-                    // Genero el numero de camiseta controlando que no sea duplicada
-                    var numeroCamiseta = random.Next(nCamisetaMin, nCamisetaMax);
-                    while (!numerosOcupados.Add(numeroCamiseta))
-                    {
-                        numeroCamiseta = random.Next(nCamisetaMin, nCamisetaMax);
-                    }
-                    
-                    // Obtengo un nombre random de la lista controlando que no sea duplicado
-                    var nombreJugador = listaNombres.ElementAt(random.Next(listaNombres.Count()));
-                    while (!nombresOcupados.Add(nombreJugador))
-                    {
-                        nombreJugador = GenerarNombreJugador();
-
-                        // En caso de que se devuelva "Jugador", quiere decir que hubo problemas conectándose con la API
-                        // y en dicho caso se crea un nombre genérico
-                        if (nombreJugador.Contains("Jugador"))
-                            nombreJugador += $" {numeroCamiseta}";
-                    }
-
-                    listaIdentificadores.Add(numeroCamiseta, nombreJugador);
-                }
-                */
                 
             }
             catch (Exception ex)

@@ -488,7 +488,9 @@ namespace Gui.Vistas
         {
             IRenderable novedades;
 
-            if (informacionNovedades.Item1.Id == -1 ||
+            if (informacionNovedades.Item1 == null ||
+                informacionNovedades.Item2 == null ||
+                informacionNovedades.Item1.Id == -1 ||
                 !informacionNovedades.Item2.Any())
             {
                 novedades = new Markup("\n:see_no_evil_monkey: [orange1]No hay nuevas novedades para mostrar[/]");

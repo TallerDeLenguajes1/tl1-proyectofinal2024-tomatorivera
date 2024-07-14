@@ -10,16 +10,25 @@ namespace Gui.Modelo
     /// <summary>
     /// Interfaz que representa un comando de un menú
     /// </summary>
-    public interface IComando
+    public abstract class IComando
     {
         /// <value>La propiedad nombre es como se muestra el comando en un menú</value>
-        string titulo { get; }
+        public abstract string titulo { get; }
 
         /// <summary>
         /// Realiza todas las acciones que este comando deba realizar
         /// al ser seleccionado mediante un menú
         /// </summary>
-        public void ejecutar();
+        public abstract void ejecutar();
+
+        /// <summary>
+        /// Muestra los datos del comando
+        /// </summary>
+        /// <returns><c>string</c> con el titulo del comando</returns>
+        public override string ToString()
+        {
+            return titulo;
+        }
     }
 
     public class ComandoSalir : IComando
@@ -27,7 +36,7 @@ namespace Gui.Modelo
         private TipoMenu tipoMenu;
         private Action? accionPersonalizada;
 
-        public string titulo => tipoMenu.Descripcion();
+        public override string titulo => tipoMenu.Descripcion();
         public Action? AccionPersonalizada { get => accionPersonalizada; set => accionPersonalizada = value; } 
 
         public ComandoSalir(TipoMenu tipoMenu)
@@ -35,7 +44,7 @@ namespace Gui.Modelo
             this.tipoMenu = tipoMenu;
         }
 
-        public void ejecutar()
+        public override void ejecutar()
         {
             System.Console.WriteLine();
 
@@ -105,9 +114,9 @@ Espero que te hayas divertido :)
 
     public class ComandoNuevaPartida : IComando
     {
-        public string titulo => "Crear nueva partida";
+        public override string titulo => "Crear nueva partida";
 
-        public void ejecutar()
+        public override void ejecutar()
         {
             /* EL USERNAME NO SE PIDE EN BUCLE PARA EVITAR BUGS VISUALES EN EL MENÚ */
             System.Console.WriteLine();
@@ -245,9 +254,9 @@ Espero que te hayas divertido :)
 
     public class ComandoCargarPartida : IComando
     {
-        public string titulo => "Cargar partida";
+        public override string titulo => "Cargar partida";
 
-        public void ejecutar()
+        public override void ejecutar()
         {
             System.Console.WriteLine();
 
@@ -298,6 +307,56 @@ Espero que te hayas divertido :)
                     if (manejadorPartida != null) manejadorPartida.IniciarPartida();
                 }
             }
+        }
+    }
+
+    public class ComandoJugarAmistoso : IComando
+    {
+        public override string titulo => "Jugar partido amistoso";
+
+        public override void ejecutar()
+        {
+            throw new NotImplementedException("Esta función no ha sido implementada aún");
+        }
+    }
+
+    public class ComandoJugarLiga : IComando
+    {
+        public override string titulo => "Jugar una liga";
+
+        public override void ejecutar()
+        {
+            throw new NotImplementedException("Esta función no ha sido implementada aún");
+        }
+    }
+
+    public class ComandoJugarTorneo : IComando
+    {
+        public override string titulo => "Jugar un torneo";
+
+        public override void ejecutar()
+        {
+            throw new NotImplementedException("Esta función no ha sido implementada aún");
+        }
+    }
+
+    public class ComandoConsultarPlantilla : IComando
+    {
+        public override string titulo => "Consultar plantilla de jugadores";
+
+        public override void ejecutar()
+        {
+            throw new NotImplementedException("Esta función no ha sido implementada aún");
+        }
+    }
+
+    public class ComandoConsultarHistorial : IComando
+    {
+        public override string titulo => "Consultar historial de partidos";
+
+        public override void ejecutar()
+        {
+            throw new NotImplementedException("Esta función no ha sido implementada aún");
         }
     }
 }

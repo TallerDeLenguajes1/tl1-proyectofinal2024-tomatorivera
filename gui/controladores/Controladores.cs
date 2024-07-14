@@ -106,12 +106,13 @@ namespace Gui.Controladores
         {
             ConsoleKeyInfo teclaPresionada;
             vista.IndiceSeleccionado = this.indiceSeleccionado;
-            vista.MostrarTitulo();
-            vista.Dibujar();
 
             // El menú se mostrará mientras no se seleccione la opción Salir
             while (estaSeleccionando)
             {
+                vista.MostrarTitulo();
+                vista.Dibujar();
+
                 // Este while mantiene al usuario en el menú hasta que presione enter
                 while ((teclaPresionada = Console.ReadKey(true)).Key != ConsoleKey.Enter)
                 {
@@ -179,6 +180,7 @@ namespace Gui.Controladores
 
         public override void MostrarVista()
         {
+            /*
             // Muestro un spinner mientras cargan las novedades
             AnsiConsole.Status()
                 .Spinner(Spinner.Known.BouncingBall)
@@ -190,6 +192,7 @@ namespace Gui.Controladores
                     vista.InformacionNovedades = novedades;
                 }
             );
+            */
 
             // Limpio la consola
             AnsiConsole.Clear();
@@ -198,9 +201,6 @@ namespace Gui.Controladores
             if (ErroresIgnorablesHandler.ObtenerInstancia().Errores.Any()) MostrarErrores();
             
             vista.Dibujar();
-
-            // Para que no se cierre el programa
-            Console.ReadKey();
         }
         
         /// <summary>
