@@ -9,7 +9,7 @@ namespace Persistencia.Repositorios
 {
     public class PartidaRepositorioImpl : IRepositorioNavegable<Partida>
     {
-        public Partida? partidaActual { get; set; }
+        private static Partida? partidaActual;
 
         /// <summary>
         /// Crea un nuevo archivo de persistencia para <paramref name="obj"/>
@@ -46,7 +46,7 @@ namespace Persistencia.Repositorios
             // Actualizo el directorio de la partida actual en el archivo de configuración
             Config.DirectorioPartidaActual = nuevaPartidaDir;
             // Actualizo la instancia de la partida actual para manejar los datos desde el programa
-            this.partidaActual = obj;
+            partidaActual = obj;
         }
 
         public void Guardar(Partida obj)
@@ -110,7 +110,7 @@ namespace Persistencia.Repositorios
             }
 
             // Actualizo la instancia de la partida actual en este repositorio
-            this.partidaActual = partida;
+            partidaActual = partida;
             // Actualizo los datos de la partida actual en la config
             Config.DirectorioPartidaActual = @$"{Config.DirectorioPartidas}\{dirPartida}";
 

@@ -1,6 +1,7 @@
 ﻿using Gui.Controladores;
 using Gui.Modelo;
 using Gui.Vistas;
+using Logica.Comandos;
 using Persistencia.Infraestructura;
 using Spectre.Console;
 

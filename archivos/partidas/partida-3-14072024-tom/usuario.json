@@ -1,0 +1,164 @@
+{
+  "Nombre": "tom",
+  "Dinero": 0.0,
+  "Equipo": {
+    "NombreEquipo": "Banfield",
+    "TotalJugadores": 14,
+    "Jugadores": [
+      {
+        "Nombre": "Miguel Guerrero",
+        "NumeroCamiseta": 38,
+        "TipoJugador": "CENTRAL",
+        "Experiencia": 0.0,
+        "HabilidadSaque": 1.46,
+        "HabilidadRemate": 3.34,
+        "HabilidadRecepcion": 1.48,
+        "HabilidadColocacion": 3.02,
+        "HabilidadBloqueo": 5.16
+      },
+      {
+        "Nombre": "Gavin Hernandez",
+        "NumeroCamiseta": 11,
+        "TipoJugador": "CENTRAL",
+        "Experiencia": 0.0,
+        "HabilidadSaque": 2.28,
+        "HabilidadRemate": 3.85,
+        "HabilidadRecepcion": 1.52,
+        "HabilidadColocacion": 2.08,
+        "HabilidadBloqueo": 5.91
+      },
+      {
+        "Nombre": "Luis Gutiérrez",
+        "NumeroCamiseta": 13,
+        "TipoJugador": "CENTRAL",
+        "Experiencia": 0.0,
+        "HabilidadSaque": 1.86,
+        "HabilidadRemate": 4.89,
+        "HabilidadRecepcion": 2.11,
+        "HabilidadColocacion": 3.42,
+        "HabilidadBloqueo": 6.28
+      },
+      {
+        "Nombre": "Johnny Woods",
+        "NumeroCamiseta": 31,
+        "TipoJugador": "OPUESTO",
+        "Experiencia": 0.0,
+        "HabilidadSaque": 4.19,
+        "HabilidadRemate": 5.31,
+        "HabilidadRecepcion": 2.59,
+        "HabilidadColocacion": 2.63,
+        "HabilidadBloqueo": 2.4
+      },
+      {
+        "Nombre": "John Benítez",
+        "NumeroCamiseta": 30,
+        "TipoJugador": "CENTRAL",
+        "Experiencia": 0.0,
+        "HabilidadSaque": 1.6,
+        "HabilidadRemate": 4.48,
+        "HabilidadRecepcion": 1.42,
+        "HabilidadColocacion": 2.47,
+        "HabilidadBloqueo": 6.82
+      },
+      {
+        "Nombre": "Abelardo Cuellar",
+        "NumeroCamiseta": 1,
+        "TipoJugador": "PUNTA",
+        "Experiencia": 0.0,
+        "HabilidadSaque": 2.62,
+        "HabilidadRemate": 6.26,
+        "HabilidadRecepcion": 3.85,
+        "HabilidadColocacion": 1.38,
+        "HabilidadBloqueo": 3.32
+      },
+      {
+        "Nombre": "Cristian Carrasco",
+        "NumeroCamiseta": 14,
+        "TipoJugador": "PUNTA",
+        "Experiencia": 0.0,
+        "HabilidadSaque": 4.17,
+        "HabilidadRemate": 4.75,
+        "HabilidadRecepcion": 2.62,
+        "HabilidadColocacion": 2.47,
+        "HabilidadBloqueo": 3.91
+      },
+      {
+        "Nombre": "Tristan Phillips",
+        "NumeroCamiseta": 18,
+        "TipoJugador": "LIBERO",
+        "Experiencia": 0.0,
+        "HabilidadSaque": 2.65,
+        "HabilidadRemate": 0.72,
+        "HabilidadRecepcion": 6.49,
+        "HabilidadColocacion": 1.99,
+        "HabilidadBloqueo": 1.36
+      },
+      {
+        "Nombre": "Jonathan Arias",
+        "NumeroCamiseta": 40,
+        "TipoJugador": "OPUESTO",
+        "Experiencia": 0.0,
+        "HabilidadSaque": 3.7,
+        "HabilidadRemate": 6.42,
+        "HabilidadRecepcion": 2.03,
+        "HabilidadColocacion": 2.16,
+        "HabilidadBloqueo": 2.03
+      },
+      {
+        "Nombre": "Bernardo Cedillo",
+        "NumeroCamiseta": 48,
+        "TipoJugador": "LIBERO",
+        "Experiencia": 0.0,
+        "HabilidadSaque": 3.11,
+        "HabilidadRemate": 1.73,
+        "HabilidadRecepcion": 6.59,
+        "HabilidadColocacion": 2.63,
+        "HabilidadBloqueo": 1.05
+      },
+      {
+        "Nombre": "Servando Maestas",
+        "NumeroCamiseta": 5,
+        "TipoJugador": "CENTRAL",
+        "Experiencia": 0.0,
+        "HabilidadSaque": 1.94,
+        "HabilidadRemate": 4.96,
+        "HabilidadRecepcion": 0.78,
+        "HabilidadColocacion": 3.36,
+        "HabilidadBloqueo": 6.67
+      },
+      {
+        "Nombre": "Alfonso Alvarez",
+        "NumeroCamiseta": 4,
+        "TipoJugador": "PUNTA",
+        "Experiencia": 0.0,
+        "HabilidadSaque": 4.33,
+        "HabilidadRemate": 5.3,
+        "HabilidadRecepcion": 2.9,
+        "HabilidadColocacion": 2.01,
+        "HabilidadBloqueo": 3.44
+      },
+      {
+        "Nombre": "Antonio Sanz",
+        "NumeroCamiseta": 45,
+        "TipoJugador": "CENTRAL",
+        "Experiencia": 0.0,
+        "HabilidadSaque": 2.35,
+        "HabilidadRemate": 4.27,
+        "HabilidadRecepcion": 1.53,
+        "HabilidadColocacion": 3.22,
+        "HabilidadBloqueo": 6.79
+      },
+      {
+        "Nombre": "Rufino Riojas",
+        "NumeroCamiseta": 46,
+        "TipoJugador": "PUNTA",
+        "Experiencia": 0.0,
+        "HabilidadSaque": 3.73,
+        "HabilidadRemate": 4.58,
+        "HabilidadRecepcion": 3.46,
+        "HabilidadColocacion": 1.66,
+        "HabilidadBloqueo": 3.44
+      }
+    ]
+  }
+}

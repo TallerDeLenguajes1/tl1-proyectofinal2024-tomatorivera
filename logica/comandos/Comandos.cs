@@ -1,34 +1,26 @@
 using System.Text.RegularExpressions;
+using Gui.Modelo;
 using Gui.Util;
 using Logica.Handlers;
 using Logica.Modelo;
 using Logica.Servicios;
 using Spectre.Console;
 
-namespace Gui.Modelo
+namespace Logica.Comandos
 {
     /// <summary>
     /// Interfaz que representa un comando de un menú
     /// </summary>
-    public abstract class IComando
+    public interface IComando
     {
         /// <value>La propiedad nombre es como se muestra el comando en un menú</value>
-        public abstract string titulo { get; }
+        public string titulo { get; }
 
         /// <summary>
         /// Realiza todas las acciones que este comando deba realizar
         /// al ser seleccionado mediante un menú
         /// </summary>
-        public abstract void ejecutar();
-
-        /// <summary>
-        /// Muestra los datos del comando
-        /// </summary>
-        /// <returns><c>string</c> con el titulo del comando</returns>
-        public override string ToString()
-        {
-            return titulo;
-        }
+        public void ejecutar();
     }
 
     public class ComandoSalir : IComando
@@ -36,7 +28,7 @@ namespace Gui.Modelo
         private TipoMenu tipoMenu;
         private Action? accionPersonalizada;
 
-        public override string titulo => tipoMenu.Descripcion();
+        public string titulo => tipoMenu.Descripcion();
         public Action? AccionPersonalizada { get => accionPersonalizada; set => accionPersonalizada = value; } 
 
         public ComandoSalir(TipoMenu tipoMenu)
@@ -44,7 +36,7 @@ namespace Gui.Modelo
             this.tipoMenu = tipoMenu;
         }
 
-        public override void ejecutar()
+        public void ejecutar()
         {
             System.Console.WriteLine();
 
@@ -86,15 +78,11 @@ Espero que te hayas divertido :)
                     );
 
                     AnsiConsole.Write(layout);
-                    //VistasUtil.MostrarCentrado(VistasUtil.ObtenerLineasSeparadas(mensajeDespedida));
                 }
                 else
                 {
-                    VistasUtil.MostrarCentrado("Volviendo al menu anterior...");
-
-                    // Espero 500 ms antes de borrar este mensaje y mostrar la vista anterior
-                    Thread.Sleep(500);
-                    Console.Clear();
+                    AnsiConsole.Write(Align.Center(new Markup("[gray italic]Volviendo al menú anterior...[/]")));
+                    VistasUtil.PausarVistas(1);
                 }
 
                 if (accionPersonalizada != null) accionPersonalizada.Invoke();
@@ -108,15 +96,15 @@ Espero que te hayas divertido :)
         /// <returns>Primer caracter de <paramref name="input"/></returns>
         private char primerCaracter(string input) 
         {
-            return String.IsNullOrWhiteSpace(input) ? ' ' : input.Trim().ToLower()[0];
+            return string.IsNullOrWhiteSpace(input) ? ' ' : input.Trim().ToLower()[0];
         }
     }
 
     public class ComandoNuevaPartida : IComando
     {
-        public override string titulo => "Crear nueva partida";
+        public string titulo => "Crear nueva partida";
 
-        public override void ejecutar()
+        public void ejecutar()
         {
             /* EL USERNAME NO SE PIDE EN BUCLE PARA EVITAR BUGS VISUALES EN EL MENÚ */
             System.Console.WriteLine();
@@ -254,9 +242,9 @@ Espero que te hayas divertido :)
 
     public class ComandoCargarPartida : IComando
     {
-        public override string titulo => "Cargar partida";
+        public string titulo => "Cargar partida";
 
-        public override void ejecutar()
+        public void ejecutar()
         {
             System.Console.WriteLine();
 
@@ -312,39 +300,112 @@ Espero que te hayas divertido :)
 
     public class ComandoJugarAmistoso : IComando
     {
-        public override string titulo => "Jugar partido amistoso";
-
-        public override void ejecutar()
+        public string titulo => "Jugar partido amistoso";
+        private PartidaHandler manejadorPartida;
+        
+        public ComandoJugarAmistoso(PartidaHandler manejadorPartida)
         {
-            throw new NotImplementedException("Esta función no ha sido implementada aún");
+            this.manejadorPartida = manejadorPartida;
         }
-    }
 
-    public class ComandoJugarLiga : IComando
-    {
-        public override string titulo => "Jugar una liga";
-
-        public override void ejecutar()
+        public void ejecutar()
         {
-            throw new NotImplementedException("Esta función no ha sido implementada aún");
+            Partido? p = null;
+            AnsiConsole.Status()
+                .Spinner(Spinner.Known.Clock)
+                .SpinnerStyle(Style.Parse("yellow bold"))
+                .Start("[yellow]Esperando al jugador...[/]", ctx => 
+                {
+                    var equipoJugador = seleccionarEquipoTitular();
+
+                    ctx.Status("[yellow]Buscando rival...[/]");
+
+                    p = generarDatosPartidoAsync(equipoJugador).GetAwaiter().GetResult();
+                }
+            );
+
+            // Si los datos del partido se generaron exitosamente, inicio el partido
+            if (p != null) manejadorPartida.JugarPartido(p);
         }
-    }
 
-    public class ComandoJugarTorneo : IComando
-    {
-        public override string titulo => "Jugar un torneo";
-
-        public override void ejecutar()
+        /// <summary>
+        /// Genera los datos necesarios para comenzar un partido
+        /// </summary>
+        /// <returns>Objeto <c>Partido</c></returns>
+        private async Task<Partido> generarDatosPartidoAsync(Equipo equipoJugador)
         {
-            throw new NotImplementedException("Esta función no ha sido implementada aún");
+            var servicioEquipos = new EquipoJugadoresServicioImpl();
+            
+            // Genero el equipo rival
+            var equipoRival = await servicioEquipos.GenerarEquipoAsync();
+
+            // Las probabilidades del jugador de jugar de local o visitante son 50/50
+            Partido datosPartido = (new Random().Next(2) < 0.5) ? new Partido(equipoJugador, equipoRival, TipoPartido.AMISTOSO) 
+                                                                : new Partido(equipoRival, equipoJugador, TipoPartido.AMISTOSO);
+            
+            return datosPartido;
+        }
+
+        /// <summary>
+        /// A partir del equipo del usuario, solicita una plantilla de 14 jugadores
+        /// a ser convocados para el partido a disputarse
+        /// </summary>
+        /// <returns>Objeto <c>Equipo</c> solo con los jugadores convocados</returns>
+        /// <exception cref="Exception">Cuando la seleccion de jugadores sea inválida</exception>
+        private Equipo seleccionarEquipoTitular()
+        {
+            System.Console.WriteLine();
+
+            // Muestro un separador
+            var separador = new Rule("[underline orange3]Seleccione su equipo titular[/]")
+            {
+                Justification = Justify.Left,
+                Style = Style.Parse("bold gray")
+            };
+            AnsiConsole.Write(separador);
+
+            // Obtengo el equipo del usuario
+            var servicioUsuario = new UsuarioServicioImpl();
+            var equipoJugador = servicioUsuario.ObtenerDatosUsuario().Equipo;
+
+            // A partir de su equipo actual, le solicito 14 jugadores a convocar
+            var equipoConvocado = AnsiConsole.Prompt(
+                new MultiSelectionPrompt<Jugador>()
+                    .Title("")
+                    .PageSize(14)
+                    .HighlightStyle(Style.Parse("orange1"))
+                    .MoreChoicesText("[grey italic](( Desplázese por los jugadores utilizando las flechas del teclado ))[/]")
+                    .InstructionsText("[gray italic]Presione[/] [tan]<< espacio >>[/] [gray italic]para seleccionar y[/] [tan]<< enter >>[/] [gray italic]para finalizar[/]\n")
+                    .UseConverter(jugador => jugador.ToString())
+                    .AddChoiceGroup(new Jugador(TipoJugador.PUNTA), equipoJugador.Jugadores.Where(j => j.TipoJugador == TipoJugador.PUNTA))
+                    .AddChoiceGroup(new Jugador(TipoJugador.OPUESTO), equipoJugador.Jugadores.Where(j => j.TipoJugador == TipoJugador.OPUESTO))
+                    .AddChoiceGroup(new Jugador(TipoJugador.ARMADOR), equipoJugador.Jugadores.Where(j => j.TipoJugador == TipoJugador.ARMADOR))
+                    .AddChoiceGroup(new Jugador(TipoJugador.CENTRAL), equipoJugador.Jugadores.Where(j => j.TipoJugador == TipoJugador.CENTRAL))
+                    .AddChoiceGroup(new Jugador(TipoJugador.LIBERO), equipoJugador.Jugadores.Where(j => j.TipoJugador == TipoJugador.LIBERO))
+            );
+
+            // Si la selección es inválida por algún motivo, le notifico al jugador
+            // caso contrario retorno un equipo con los datos del equipo del usuario y una lista con los jugadores convocados
+            if (equipoConvocado.Count() != 14)
+                throw new Exception("Debe seleccionar 14 jugadores para convocar");
+
+            if (equipoConvocado.Where(j => j.TipoJugador == TipoJugador.LIBERO).Count() > 2)
+                throw new Exception("No se pueden convocar más de dos jugadores líberos");
+
+            return new Equipo()
+            {
+                Nombre = equipoJugador.Nombre,
+                Jugadores = equipoConvocado
+            };
+
         }
     }
 
     public class ComandoConsultarPlantilla : IComando
     {
-        public override string titulo => "Consultar plantilla de jugadores";
+        public string titulo => "Consultar plantilla de jugadores";
 
-        public override void ejecutar()
+        public void ejecutar()
         {
             throw new NotImplementedException("Esta función no ha sido implementada aún");
         }
@@ -352,9 +413,9 @@ Espero que te hayas divertido :)
 
     public class ComandoConsultarHistorial : IComando
     {
-        public override string titulo => "Consultar historial de partidos";
+        public string titulo => "Consultar historial de partidos";
 
-        public override void ejecutar()
+        public void ejecutar()
         {
             throw new NotImplementedException("Esta función no ha sido implementada aún");
         }

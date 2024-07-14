@@ -1,6 +1,6 @@
 using System.Text;
-using Gui.Modelo;
 using Gui.Util;
+using Logica.Comandos;
 using Logica.Modelo;
 using Spectre.Console;
 using Spectre.Console.Rendering;
@@ -95,54 +95,6 @@ namespace Gui.Vistas
             // Y muestro por pantalla el layout
             AnsiConsole.Write(layout);
         }
-
-        /* Vieja vista de inicio
-                public override void Dibujar()
-                {
-                    Console.CursorVisible = false;
-                    Console.Clear();
-                    Console.ForegroundColor = ConsoleColor.Green;
-
-                    string logo = @"
-        ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-                                                ██████████                                    ░░
-                                            ██████▓▓▓▓▓▓▓▓████                                ░░
-        ░░      ░░    ░░      ░░      ░░  ██▓▓██    ████▓▓▓▓▓▓██  ░░      ░░      ░░    ░░    ░░
-                ░░      ░░    ░░      ░░████▓▓▓▓██      ████▓▓▓▓██  ░░    ░░      ░░      ░░  ░░
-                                        ██  ██▓▓▓▓██        ██▓▓██                            ░░
-        ░░                            ██    ██▓▓▓▓▓▓████      ██▓▓██                          ░░
-        ░░      ░░    ░░░░    ░░      ██      ████▓▓▓▓▓▓██      ████░░    ░░      ░░    ░░░░  ░░
-                ░░      ░░    ░░      ██    ████▓▓██▓▓▓▓▓▓██    ████      ░░      ░░      ░░  ░░
-                                      ██  ██▓▓▓▓▓▓▓▓██▓▓▓▓▓▓████  ██                          ░░
-                                      ██  ██▓▓▓▓▓▓▓▓██▓▓▓▓▓▓▓▓██████                          ░░
-        ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░████▓▓▓▓▓▓██  ██▓▓▓▓██  ██░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-        ░░      ░░      ░░    ░░      ░░██████▓▓██      ████  ████  ░░    ░░      ░░      ░░  ░░
-                                          ████▓▓████        ████                                
-        ░░                                  ████▓▓██      ████                                  
-        ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░    ██████████      ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-
-        ";
-
-                    VistasUtil.MostrarCentrado(VistasUtil.ObtenerLineasSeparadas(logo));
-
-                    string titulo = @"
-         _    __      ____           __          ____
-        | |  / /___  / / /__  __  __/ /_  ____ _/ / /
-        | | / / __ \/ / / _ \/ / / / __ \/ __ `/ / / 
-        | |/ / /_/ / / /  __/ /_/ / /_/ / /_/ / / /  
-        |___/\____/_/_/\___/\__, /_.___/\__,_/_/_/   
-           /  |/  /___ ____/____/_ _____ ____  _____ 
-          / /|_/ / __ `/ __ \/ __ `/ __ `/ _ \/ ___/ 
-         / /  / / /_/ / / / / /_/ / /_/ /  __/ /     
-        /_/  /_/\__,_/_/ /_/\__,_/\__, /\___/_/      
-                                 /____/              
-        ";
-                    VistasUtil.MostrarCentrado(VistasUtil.ObtenerLineasSeparadas(titulo));
-
-                    System.Console.WriteLine();
-                    VistasUtil.MostrarCentrado("* Presione una tecla para iniciar... *");
-                }
-        */
     }
 
     /// <summary>

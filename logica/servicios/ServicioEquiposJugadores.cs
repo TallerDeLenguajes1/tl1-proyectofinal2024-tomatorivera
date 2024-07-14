@@ -126,10 +126,15 @@ namespace Logica.Servicios
                 
                 TipoJugador tipoJugador;
                 JugadorFabrica fabricaJugador;
+                int nMax;
 
                 for (int i=0 ; i < nJugadores ; i++)
                 {
-                    tipoJugador = (TipoJugador) rnd.Next(Enum.GetValues(typeof(TipoJugador)).Length);
+                    // Almaceno el número de líberos que hay actualmente en la plantilla, si hay dos, no incluyo
+                    // esta posición en el tipo de jugador aleatorio por el reglamento de que no se pueden convocar
+                    // más de dos líberos
+                    nMax = listaJugadores.Where(j => j.TipoJugador == TipoJugador.LIBERO).Count();
+                    tipoJugador = (TipoJugador) rnd.Next(Enum.GetValues(typeof(TipoJugador)).Length - ((nMax == 2) ? 1 : 0));
 
                     fabricaJugador = tipoJugador switch
                     {

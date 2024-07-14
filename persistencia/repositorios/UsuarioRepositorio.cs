@@ -8,7 +8,7 @@ namespace Persistencia.Repositorios
 {
     public class UsuarioRepositorioImpl : IRepositorio<Usuario>
     {
-        public Usuario? usuarioActual { get; set; }
+        private static Usuario? usuarioActual;
 
         /// <summary>
         /// Crea un nuevo archivo de persistencia para <paramref name="obj"/>
@@ -36,7 +36,7 @@ namespace Persistencia.Repositorios
             }
 
             // Actualizo la instancia del usuario actual para manejar sus datos desde el programa
-            this.usuarioActual = obj;
+            usuarioActual = obj;
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace Persistencia.Repositorios
             }
 
             // Actualizo la instancia del usuario actual en el repositorio
-            this.usuarioActual = usuario;
+            usuarioActual = usuario;
             // Modifico los datos de configuración vinculados al usuario
             Config.NombreUsuarioActual = usuario.Nombre;
 
@@ -82,9 +82,17 @@ namespace Persistencia.Repositorios
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Obtiene la instancia del usuario actual correspondiente a la partida que se está jugando
+        /// </summary>
+        /// <returns>Objeto <c>Usuario</c> con los datos del usuario actual</returns>
+        /// <exception cref="UsuarioInvalidoException">En caso de que se solicite el usuario actual cuando la instancia aún sea null</exception>
         public Usuario ObtenerActual()
         {
-            throw new NotImplementedException();
+            if (usuarioActual == null)
+                throw new UsuarioInvalidoException("No se ha cargado una instancia del usuario actual en el repositorio");
+
+            return usuarioActual;
         }
     }
 }

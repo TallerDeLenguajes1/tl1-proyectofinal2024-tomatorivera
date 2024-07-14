@@ -1,0 +1,164 @@
+{
+  "Nombre": "tomatin",
+  "Dinero": 0.0,
+  "Equipo": {
+    "NombreEquipo": "Tucuman De Gimnasia",
+    "TotalJugadores": 14,
+    "Jugadores": [
+      {
+        "Nombre": "Barry Gordon",
+        "NumeroCamiseta": 43,
+        "TipoJugador": "CENTRAL",
+        "Experiencia": 0.0,
+        "HabilidadSaque": 1.51,
+        "HabilidadRemate": 4.55,
+        "HabilidadRecepcion": 0.63,
+        "HabilidadColocacion": 3.06,
+        "HabilidadBloqueo": 5.44
+      },
+      {
+        "Nombre": "Dave Sanders",
+        "NumeroCamiseta": 46,
+        "TipoJugador": "ARMADOR",
+        "Experiencia": 0.0,
+        "HabilidadSaque": 3.35,
+        "HabilidadRemate": 3.25,
+        "HabilidadRecepcion": 2.67,
+        "HabilidadColocacion": 6.13,
+        "HabilidadBloqueo": 3.64
+      },
+      {
+        "Nombre": "Reginald Gonzalez",
+        "NumeroCamiseta": 45,
+        "TipoJugador": "ARMADOR",
+        "Experiencia": 0.0,
+        "HabilidadSaque": 2.81,
+        "HabilidadRemate": 4.49,
+        "HabilidadRecepcion": 3.83,
+        "HabilidadColocacion": 5.92,
+        "HabilidadBloqueo": 2.76
+      },
+      {
+        "Nombre": "Fidel Rodríguez",
+        "NumeroCamiseta": 34,
+        "TipoJugador": "PUNTA",
+        "Experiencia": 0.0,
+        "HabilidadSaque": 3.18,
+        "HabilidadRemate": 4.61,
+        "HabilidadRecepcion": 2.16,
+        "HabilidadColocacion": 2.45,
+        "HabilidadBloqueo": 3.4
+      },
+      {
+        "Nombre": "Pablo Pastor",
+        "NumeroCamiseta": 9,
+        "TipoJugador": "PUNTA",
+        "Experiencia": 0.0,
+        "HabilidadSaque": 3.46,
+        "HabilidadRemate": 5.94,
+        "HabilidadRecepcion": 3.32,
+        "HabilidadColocacion": 1.39,
+        "HabilidadBloqueo": 3.97
+      },
+      {
+        "Nombre": "Vicente Velasco",
+        "NumeroCamiseta": 21,
+        "TipoJugador": "LIBERO",
+        "Experiencia": 0.0,
+        "HabilidadSaque": 2.97,
+        "HabilidadRemate": 1.6,
+        "HabilidadRecepcion": 6.32,
+        "HabilidadColocacion": 2.25,
+        "HabilidadBloqueo": 0.69
+      },
+      {
+        "Nombre": "Aldo Palomo",
+        "NumeroCamiseta": 12,
+        "TipoJugador": "LIBERO",
+        "Experiencia": 0.0,
+        "HabilidadSaque": 3.26,
+        "HabilidadRemate": 1.15,
+        "HabilidadRecepcion": 6.39,
+        "HabilidadColocacion": 2.29,
+        "HabilidadBloqueo": 1.46
+      },
+      {
+        "Nombre": "René Menéndez",
+        "NumeroCamiseta": 25,
+        "TipoJugador": "OPUESTO",
+        "Experiencia": 0.0,
+        "HabilidadSaque": 4.45,
+        "HabilidadRemate": 5.91,
+        "HabilidadRecepcion": 2.78,
+        "HabilidadColocacion": 2.21,
+        "HabilidadBloqueo": 2.66
+      },
+      {
+        "Nombre": "Bobby Wallace",
+        "NumeroCamiseta": 39,
+        "TipoJugador": "PUNTA",
+        "Experiencia": 0.0,
+        "HabilidadSaque": 2.5,
+        "HabilidadRemate": 6.43,
+        "HabilidadRecepcion": 2.78,
+        "HabilidadColocacion": 2.09,
+        "HabilidadBloqueo": 3.43
+      },
+      {
+        "Nombre": "Oscar Lawrence",
+        "NumeroCamiseta": 24,
+        "TipoJugador": "CENTRAL",
+        "Experiencia": 0.0,
+        "HabilidadSaque": 1.58,
+        "HabilidadRemate": 4.94,
+        "HabilidadRecepcion": 2.07,
+        "HabilidadColocacion": 3.53,
+        "HabilidadBloqueo": 6.31
+      },
+      {
+        "Nombre": "Alfonso Pérez",
+        "NumeroCamiseta": 3,
+        "TipoJugador": "OPUESTO",
+        "Experiencia": 0.0,
+        "HabilidadSaque": 4.42,
+        "HabilidadRemate": 6.58,
+        "HabilidadRecepcion": 1.34,
+        "HabilidadColocacion": 1.89,
+        "HabilidadBloqueo": 3.92
+      },
+      {
+        "Nombre": "Julio César Quiñones",
+        "NumeroCamiseta": 30,
+        "TipoJugador": "PUNTA",
+        "Experiencia": 0.0,
+        "HabilidadSaque": 2.76,
+        "HabilidadRemate": 5.2,
+        "HabilidadRecepcion": 2.16,
+        "HabilidadColocacion": 2.49,
+        "HabilidadBloqueo": 3.09
+      },
+      {
+        "Nombre": "Servando Guzmán",
+        "NumeroCamiseta": 19,
+        "TipoJugador": "OPUESTO",
+        "Experiencia": 0.0,
+        "HabilidadSaque": 4.39,
+        "HabilidadRemate": 5.87,
+        "HabilidadRecepcion": 1.88,
+        "HabilidadColocacion": 2.42,
+        "HabilidadBloqueo": 2.89
+      },
+      {
+        "Nombre": "Iker Soto",
+        "NumeroCamiseta": 23,
+        "TipoJugador": "CENTRAL",
+        "Experiencia": 0.0,
+        "HabilidadSaque": 2.42,
+        "HabilidadRemate": 3.64,
+        "HabilidadRecepcion": 1.64,
+        "HabilidadColocacion": 3.89,
+        "HabilidadBloqueo": 6.88
+      }
+    ]
+  }
+}

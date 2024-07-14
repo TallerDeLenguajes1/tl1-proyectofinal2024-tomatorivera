@@ -17,6 +17,19 @@ namespace Logica.Modelo
         private int scoreVisitante;
         private string nombreGanador;
 
+        public Partido(Equipo local, Equipo visitante, TipoPartido tipoPartido)
+        {
+            this.local = local;
+            this.visitante = visitante;
+            this.tipoPartido = tipoPartido;
+
+            // Valores por defecto
+            resultadoSets = new Dictionary<int, (int, int)>();
+            scoreLocal = 0;
+            scoreVisitante = 0;
+            nombreGanador = string.Empty;
+        }
+
         // Propiedades
         public Equipo Local { get => local; set => local = value; }
         public Equipo Visitante { get => visitante; set => visitante = value; }

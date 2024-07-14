@@ -9,7 +9,7 @@ namespace Logica.Modelo
     /// </summary>
     public class Jugador
     {
-        private string? nombre;
+        private string nombre;
         private int numeroCamiseta;
         [JsonConverter(typeof(StringEnumConverter))]
         private TipoJugador tipoJugador;
@@ -20,8 +20,19 @@ namespace Logica.Modelo
         private float habilidadColocacion;
         private float habilidadBloqueo;
 
+        public Jugador()
+        {
+            this.nombre = string.Empty;
+        }
+
+        public Jugador(TipoJugador tipoJugador)
+        {
+            this.nombre = string.Empty;
+            this.tipoJugador = tipoJugador;
+        }
+
         // Propiedades
-        public string? Nombre { get => nombre; set => nombre = value; }
+        public string Nombre { get => nombre; set => nombre = value; }
         public int NumeroCamiseta { get => numeroCamiseta; set => numeroCamiseta = value; }
 
         [JsonConverter(typeof(StringEnumConverter))] // Para guardar el ENUM en json con su nombre y no su ID
@@ -33,6 +44,13 @@ namespace Logica.Modelo
         public float HabilidadRecepcion { get => habilidadRecepcion; set => habilidadRecepcion = value; }
         public float HabilidadColocacion { get => habilidadColocacion; set => habilidadColocacion = value; }
         public float HabilidadBloqueo { get => habilidadBloqueo; set => habilidadBloqueo = value; }
+
+        // Métodos
+        public override string ToString()
+        {
+            return !string.IsNullOrWhiteSpace(nombre) ? $"{nombre} ({numeroCamiseta}) - {tipoJugador} - {experiencia} pts. de experiencia en juego"
+                                                      : $"Jugadores {tipoJugador}";
+        }
     }
     
     public enum TipoJugador
@@ -40,8 +58,8 @@ namespace Logica.Modelo
         PUNTA,
         OPUESTO,
         ARMADOR,
-        LIBERO,
-        CENTRAL
+        CENTRAL,
+        LIBERO
     }
 
     // Modelos para API's relacionadas al jugador
