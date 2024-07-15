@@ -26,10 +26,10 @@ namespace Logica.Comandos
     public class ComandoSalir : IComando
     {
         private TipoMenu tipoMenu;
-        private Action? accionPersonalizada;
+        private Action? accionSalida;
 
         public string titulo => tipoMenu.Descripcion();
-        public Action? AccionPersonalizada { get => accionPersonalizada; set => accionPersonalizada = value; } 
+        public Action? AccionSalida { get => accionSalida; set => accionSalida = value; } 
 
         public ComandoSalir(TipoMenu tipoMenu)
         {
@@ -85,7 +85,7 @@ Espero que te hayas divertido :)
                     VistasUtil.PausarVistas(1);
                 }
 
-                if (accionPersonalizada != null) accionPersonalizada.Invoke();
+                if (accionSalida != null) accionSalida.Invoke();
             }
         }
 
@@ -301,12 +301,6 @@ Espero que te hayas divertido :)
     public class ComandoJugarAmistoso : IComando
     {
         public string titulo => "Jugar partido amistoso";
-        private PartidaHandler manejadorPartida;
-        
-        public ComandoJugarAmistoso(PartidaHandler manejadorPartida)
-        {
-            this.manejadorPartida = manejadorPartida;
-        }
 
         public void ejecutar()
         {
@@ -325,7 +319,7 @@ Espero que te hayas divertido :)
             );
 
             // Si los datos del partido se generaron exitosamente, inicio el partido
-            if (p != null) manejadorPartida.JugarPartido(p);
+            if (p != null) new SimuladorPartidoHandler().IniciarPartido(p);
         }
 
         /// <summary>

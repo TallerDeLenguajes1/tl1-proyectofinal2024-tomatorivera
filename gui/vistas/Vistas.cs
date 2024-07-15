@@ -502,6 +502,9 @@ namespace Gui.Vistas
                         case "INTR":
                             sb.Append($"[yellow]¡INTERRUMPIDO POR INCONVENIENTES![/][orange1] ${partido.Teams.Home.Name} :vs_button: {partido.Teams.Away.Name}[/]");
                             break;
+                        case "AW":
+                            sb.Append($"[orange3]Partido galardonado[/] :face_screaming_in_fear: :1st_place_medal: [gray]-[/] [orange1] ${partido.Teams.Home.Name} :vs_button: {partido.Teams.Away.Name}[/]");
+                            break;
                         case "ABD":
                             sb.Append($"[orange3]El partido entre [/][orange1]${partido.Teams.Home.Name} y {partido.Teams.Away.Name}[/][orange3] se ha abandonado por algún motivo[/]");
                             break;

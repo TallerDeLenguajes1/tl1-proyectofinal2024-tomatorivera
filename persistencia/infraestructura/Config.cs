@@ -14,11 +14,13 @@ namespace Persistencia.Infraestructura
         public static string? DirectorioPartidasPrefix { get; set; }
         public static string? DirectorioRecursos { get; set; }
         public static string? DirectorioImagenes { get; set; }
+        public static string? DirectorioFuentes { get; set; }
 
         public static string? NombreJsonPartida { get; set; }
         public static string? NombreJsonUsuario { get; set; }
         public static string? NombreJsonHistorial { get; set; }
         public static string? NombreImgLogo { get; set; }
+        public static string? NombreFuentePagga { get; set; }
 
         public static string? ApiSportsKey { get; set; }
         public static string? ApiSportsUrl { get; set; }
@@ -41,11 +43,13 @@ namespace Persistencia.Infraestructura
             DirectorioPartidasPrefix = "partida-";
             DirectorioRecursos = "recursos";
             DirectorioImagenes = DirectorioRecursos + @"\img";
+            DirectorioFuentes = DirectorioRecursos + @"\font";
 
             NombreJsonPartida = "partida.json";
             NombreJsonUsuario = "usuario.json";
             NombreJsonHistorial = "historial.json";
             NombreImgLogo = "logo.png";
+            NombreFuentePagga = "Pagga.flf";
             
             ApiSportsKey = "03028e54f1f00215f6bb821f0b260a6d";
             ApiSportsUrl = "https://v1.volleyball.api-sports.io";

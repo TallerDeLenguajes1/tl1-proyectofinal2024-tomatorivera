@@ -169,7 +169,7 @@ namespace Gui.Controladores
         /// </summary>
         private void configurarComandoSalida() {
             var cmdSalir = (ComandoSalir) vista.Comandos.Where(cmd => cmd is ComandoSalir).First();
-            cmdSalir.AccionPersonalizada = () => { this.estaSeleccionando = false; };
+            cmdSalir.AccionSalida = () => { this.estaSeleccionando = false; };
         }
     }
 

@@ -9,6 +9,8 @@ namespace Logica.Modelo
     /// </summary>
     public class Partido
     {
+        private const int puntosParaGanar = 5;
+
         private Equipo local;
         private Equipo visitante;
         private TipoPartido tipoPartido;
@@ -38,6 +40,7 @@ namespace Logica.Modelo
         public string NombreGanador { get => nombreGanador; set => nombreGanador = value; }
         public int ScoreLocal { get => scoreLocal; set => scoreLocal = value; }
         public int ScoreVistante { get => scoreVisitante; set => scoreVisitante = value; }
+        public static int PuntosParaGanar => puntosParaGanar;
 
         // Métodos
         public override string ToString()
