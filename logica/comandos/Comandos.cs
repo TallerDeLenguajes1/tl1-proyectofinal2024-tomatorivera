@@ -306,11 +306,11 @@ Espero que te hayas divertido :)
         {
             Partido? p = null;
             AnsiConsole.Status()
-                .Spinner(Spinner.Known.Clock)
+                .Spinner(Spinner.Known.BouncingBall)
                 .SpinnerStyle(Style.Parse("yellow bold"))
                 .Start("[yellow]Esperando al jugador...[/]", ctx => 
                 {
-                    var equipoJugador = seleccionarEquipoTitular();
+                    var equipoJugador = seleccionarJugadoresConvocados();
 
                     ctx.Status("[yellow]Buscando rival...[/]");
 
@@ -318,8 +318,16 @@ Espero que te hayas divertido :)
                 }
             );
 
-            // Si los datos del partido se generaron exitosamente, inicio el partido
-            if (p != null) new SimuladorPartidoHandler().IniciarPartido(p);
+            // Si los datos del partido se generaron exitosamente, puedo iniciar el partido
+            if (p != null) 
+            {
+                // solicito al usuario cuantas rondas se jugarán
+                int nSets = solicitarRondas();
+
+                // Genero un simulador de partido y lo inicio
+                var simuladorPartido = new SimuladorPartidoHandler(p, nSets);
+                simuladorPartido.IniciarPartido();
+            }
         }
 
         /// <summary>
@@ -331,11 +339,13 @@ Espero que te hayas divertido :)
             var servicioEquipos = new EquipoJugadoresServicioImpl();
             
             // Genero el equipo rival
+            var tipoEquipoConsola = (new Random().Next(2) < 0.5) ? TipoEquipo.LOCAL : TipoEquipo.VISITANTE;
             var equipoRival = await servicioEquipos.GenerarEquipoAsync();
+            equipoRival.FormacionPartido = obtenerFormacionConsola(equipoRival, tipoEquipoConsola);
 
             // Las probabilidades del jugador de jugar de local o visitante son 50/50
-            Partido datosPartido = (new Random().Next(2) < 0.5) ? new Partido(equipoJugador, equipoRival, TipoPartido.AMISTOSO) 
-                                                                : new Partido(equipoRival, equipoJugador, TipoPartido.AMISTOSO);
+            Partido datosPartido = (tipoEquipoConsola == TipoEquipo.VISITANTE) ? new Partido(equipoJugador, equipoRival, TipoPartido.AMISTOSO) 
+                                                                               : new Partido(equipoRival, equipoJugador, TipoPartido.AMISTOSO);
             
             return datosPartido;
         }
@@ -346,17 +356,9 @@ Espero que te hayas divertido :)
         /// </summary>
         /// <returns>Objeto <c>Equipo</c> solo con los jugadores convocados</returns>
         /// <exception cref="Exception">Cuando la seleccion de jugadores sea inválida</exception>
-        private Equipo seleccionarEquipoTitular()
+        private Equipo seleccionarJugadoresConvocados()
         {
             System.Console.WriteLine();
-
-            // Muestro un separador
-            var separador = new Rule("[underline orange3]Seleccione su equipo titular[/]")
-            {
-                Justification = Justify.Left,
-                Style = Style.Parse("bold gray")
-            };
-            AnsiConsole.Write(separador);
 
             // Obtengo el equipo del usuario
             var servicioUsuario = new UsuarioServicioImpl();
@@ -365,8 +367,8 @@ Espero que te hayas divertido :)
             // A partir de su equipo actual, le solicito 14 jugadores a convocar
             var equipoConvocado = AnsiConsole.Prompt(
                 new MultiSelectionPrompt<Jugador>()
-                    .Title("")
-                    .PageSize(14)
+                    .Title(":backhand_index_pointing_down: [orange3]Seleccione los jugadores a convocar[/]")
+                    .PageSize(6)
                     .HighlightStyle(Style.Parse("orange1"))
                     .MoreChoicesText("[grey italic](( Desplázese por los jugadores utilizando las flechas del teclado ))[/]")
                     .InstructionsText("[gray italic]Presione[/] [tan]<< espacio >>[/] [gray italic]para seleccionar y[/] [tan]<< enter >>[/] [gray italic]para finalizar[/]\n")
@@ -385,13 +387,127 @@ Espero que te hayas divertido :)
 
             if (equipoConvocado.Where(j => j.TipoJugador == TipoJugador.LIBERO).Count() > 2)
                 throw new Exception("No se pueden convocar más de dos jugadores líberos");
-
+            
+            // Solicito al usuario su equipo titular
+            var titularesJugador = seleccionarEquipoTitularJugador(equipoJugador);
+            
             return new Equipo()
             {
                 Nombre = equipoJugador.Nombre,
-                Jugadores = equipoConvocado
+                Jugadores = equipoConvocado,
+                EsEquipoJugador = true,
+                FormacionPartido = new Formacion(titularesJugador, obtenerSuplentes(equipoConvocado, titularesJugador))
             };
+        }
 
+        /// <summary>
+        /// A partir de los 14 jugadores convocados por el usuario, se le permite seleccionar
+        /// los 6 jugadores que jugarán de titulares y en qué zona de la cancha comenzarán
+        /// </summary>
+        /// <param name="equipoConvocado">Lista de jugadores convocados</param>
+        /// <returns>Objeto <c>ListaCircular</c> de <c>Jugador</c> con los titulares</returns>
+        private ListaCircular<Jugador> seleccionarEquipoTitularJugador(Equipo equipoConvocado)
+        {
+            var equipoTitular = new ListaCircular<Jugador>();
+            var jugadoresSeleccionables = equipoConvocado.Jugadores;
+            var nJugadoresCancha = 6;
+            for (int i=nJugadoresCancha ; i>0 ; i--) // Para que la lista circular quede en orden, hay que ingresar los datos de atrás para adelante
+            {
+                var jugador = AnsiConsole.Prompt(
+                    new SelectionPrompt<Jugador>()
+                        .Title($":backhand_index_pointing_down: [orange3]Seleccione al jugador que iniciará en zona [/][red]{i}[/]")
+                        .HighlightStyle(Style.Parse("orange1"))
+                        .PageSize(6)
+                        .MoreChoicesText("[grey italic](( Desplázese por los jugadores utilizando las flechas del teclado ))[/]\n\n")
+                        .UseConverter(jugador => $"{jugador.Nombre} :volleyball: [gray]Saque:[/] {jugador.HabilidadSaque} pts. [gray]Remate:[/] {jugador.HabilidadRemate} pts. [gray]Recepcion:[/] {jugador.HabilidadRecepcion} pts. [gray]Colocación:[/] {jugador.HabilidadColocacion} pts. [gray]Bloqueo:[/] {jugador.HabilidadBloqueo} pts. [gray]Experiencia:[/] {jugador.Experiencia} pts.")
+                        .AddChoices(jugadoresSeleccionables)
+                );
+
+                equipoTitular.Insertar(jugador);
+                jugadoresSeleccionables.Remove(jugador);
+            }
+
+            return equipoTitular;
+        }
+        
+        /// <summary>
+        /// Selecciona el equipo titular de la consola
+        /// </summary>
+        /// <param name="equipoConvocado">Equipo generado para la consola</param>
+        /// <param name="tipoEquipo">Tipo de equipo de la consola (LOCAL O VISITANTE)</param>
+        /// <returns>Objeto <c>ListaCircular</c> de <c>Jugador</c> con los titulares</returns>
+        private Formacion obtenerFormacionConsola(Equipo equipoConvocado, TipoEquipo tipoEquipo)
+        {
+            var titularesConsola = new ListaCircular<Jugador>();
+
+            // Selecciono el equipo de la consola según sus habilidades
+            var libero = equipoConvocado.Jugadores.OrderByDescending(jugador => jugador.HabilidadRecepcion).First();
+            equipoConvocado.Jugadores.Remove(libero);
+            var zaguero = equipoConvocado.Jugadores.OrderByDescending(jugador => jugador.HabilidadRecepcion).First();
+            equipoConvocado.Jugadores.Remove(zaguero);
+
+            titularesConsola.Insertar(zaguero); // zona 6
+            titularesConsola.Insertar(libero);  // zona 5
+
+            var lateral = equipoConvocado.Jugadores.OrderByDescending(jugador => jugador.HabilidadRemate).First();
+            equipoConvocado.Jugadores.Remove(lateral);
+            var armador = equipoConvocado.Jugadores.OrderByDescending(jugador => jugador.HabilidadColocacion).First();
+            equipoConvocado.Jugadores.Remove(armador);
+            var opuesto = (tipoEquipo == TipoEquipo.LOCAL) ? equipoConvocado.Jugadores.OrderByDescending(jugador => jugador.HabilidadBloqueo).First()
+                                                           : equipoConvocado.Jugadores.OrderByDescending(jugador => jugador.HabilidadSaque).First();
+            equipoConvocado.Jugadores.Remove(opuesto);
+
+            titularesConsola.Insertar(lateral); // zona 4 
+            titularesConsola.Insertar(armador); // zona 3
+            titularesConsola.Insertar(opuesto); // zona 2
+
+            var servidor = (tipoEquipo == TipoEquipo.LOCAL) ? equipoConvocado.Jugadores.OrderByDescending(jugador => jugador.HabilidadSaque).First()
+                                                            : equipoConvocado.Jugadores.OrderByDescending(jugador => jugador.HabilidadRecepcion).First();
+            equipoConvocado.Jugadores.Remove(servidor);
+
+            titularesConsola.Insertar(servidor); // zona 1
+
+            return new Formacion(titularesConsola, obtenerSuplentes(equipoConvocado.Jugadores, titularesConsola));
+        }
+
+        /// <summary>
+        /// Obtiene los jugadores suplentes de una plantilla
+        /// </summary>
+        /// <param name="jugadores">Lista completa de jugadores</param>
+        /// <param name="titulares">Lista de titulares</param>
+        /// <returns>Lista Circular con jugadores suplentes</returns>
+        private ListaCircular<Jugador> obtenerSuplentes(List<Jugador> jugadores, ListaCircular<Jugador> titulares)
+        {
+            var listaSuplentes = new ListaCircular<Jugador>();
+            foreach (var jugadorSuplente in jugadores.Where(jugador => !titulares.Contains(jugador)).ToList())
+            {
+                listaSuplentes.Insertar(jugadorSuplente);
+            }
+
+            return listaSuplentes;
+        }
+
+        /// <summary>
+        /// Solicita al usuario el número de rondas que se jugarán
+        /// </summary>
+        /// <returns>Número de rondas (verificado)</returns>
+        private int solicitarRondas()
+        {
+            return AnsiConsole.Prompt(
+                new TextPrompt<int>(":backhand_index_pointing_right: [orange3]Indique al mejor de cuantas rondas se va a jugar:[/]")
+                    .PromptStyle("yellow")
+                    .DefaultValue(3)
+                    .HideDefaultValue()
+                    .ValidationErrorMessage("[red]Debe ingresar un numero entero[/]")
+                    .Validate(input => {
+                        if (input % 2 == 0)
+                            return ValidationResult.Error("[red]Debe ingresar un número impar[/]");
+                        if (input < 3)
+                            return ValidationResult.Error("[red]Deben jugarse al menos 3 sets[/]");
+
+                        return ValidationResult.Success();
+                    })
+            );
         }
     }
 

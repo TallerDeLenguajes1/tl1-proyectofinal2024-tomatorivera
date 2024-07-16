@@ -73,11 +73,4 @@ namespace Logica.Modelo
                                      : "Partida ID " + id;
         }
     }
-
-    public enum TipoPartido
-    {
-        AMISTOSO,
-        LIGA,
-        TORNEO
-    }
 }

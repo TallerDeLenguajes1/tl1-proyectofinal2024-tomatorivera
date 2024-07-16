@@ -51,6 +51,22 @@ namespace Logica.Modelo
             return !string.IsNullOrWhiteSpace(nombre) ? $"{nombre} ({numeroCamiseta}) - {tipoJugador} - {experiencia} pts. de experiencia en juego"
                                                       : $"Jugadores {tipoJugador}";
         }
+
+        public override bool Equals(object? obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+            
+            Jugador other = (Jugador)obj;
+            return NumeroCamiseta == other.NumeroCamiseta;
+        }
+        
+        public override int GetHashCode()
+        {
+            return NumeroCamiseta.GetHashCode();
+        }
     }
     
     public enum TipoJugador

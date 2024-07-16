@@ -3,6 +3,7 @@ using Gui.Modelo;
 using Gui.Util;
 using Gui.Vistas;
 using Logica.Comandos;
+using Logica.Excepciones;
 using Logica.Modelo;
 using Persistencia.Infraestructura;
 using Persistencia.Util;
@@ -95,29 +96,54 @@ namespace Logica.Handlers
     /// </summary>
     public class SimuladorPartidoHandler
     {
-        private bool partidoTerminado;
+        private const int puntosParaSet = 5;
+        private Partido partido;
+        private int setsMaximos;
+        private int setsRestantes;
+        private int setActual;
+        private TipoEquipo posesionPelota;
+        private Jugador? jugadorAccion;
 
-        public SimuladorPartidoHandler()
+        public SimuladorPartidoHandler(Partido partido, int setsMaximos)
         {
-            this.partidoTerminado = false;
+            this.partido = partido;
+
+            // Valores iniciales por defecto
+            this.setsMaximos = setsMaximos;
+            this.setsRestantes = setsMaximos;
+            this.setActual = 1;
+
+            // El equipo en posesión de la pelota siempre arranca siendo el local
+            this.posesionPelota = TipoEquipo.LOCAL;
         }
 
         /// <summary>
         /// Método encargado de manejar la lógica de un partido
         /// </summary>
-        /// <param name="partido">Datos del partido a jugarse</param>
-        public void IniciarPartido(Partido partido)
+        public void IniciarPartido()
         {
             AnsiConsole.Clear(); 
             
             // Muestro un encabezado
             mostrarEncabezadoPartido(partido.Local.Nombre, partido.Visitante.Nombre, partido.TipoPartido);
-            
-            // El partido termina cuando alguno de los equipos llegue al puntaje necesario para ganar (establecido en la clase Partido)
-            // con diferencia de dos puntos como establecen las reglas del volley
-            while (!partidoTerminado)
-            {
 
+            // Inicializo datos del partido
+            partido.ResultadoSets.Add(setActual, new ResultadoSet());
+            
+            // El partido termina cuando ya se hayan jugado todos los sets o cuando se pueda
+            // determinar un ganador según el puntaje de los equipos tras cada ronda
+            while (setsRestantes == 0 || !hayGanadorPartido(partido.ScoreLocal, partido.ScoreVistante))
+            {
+                empezarRally();
+
+                // Si después de un rally hay un ganador del set, se realizan algunas acciones para pasar al siguiente
+                if (hayGanadorSet(partido.ResultadoSets[setActual].PuntosLocal, partido.ResultadoSets[setActual].PuntosVisitante))
+                {
+                    setsRestantes--;
+                    setActual++;
+
+                    partido.ResultadoSets.Add(setActual, new ResultadoSet());
+                }
             }
 
             // Temporal: para que no finalice je
@@ -192,5 +218,56 @@ namespace Logica.Handlers
             AnsiConsole.Clear();
         }
 
+        /// <summary>
+        /// Se encarga de manejar la lógica de ejecución de un rally, es decir, de un intercambio
+        /// entre equipos sin que la pelota caiga al suelo
+        /// </summary>
+        private void empezarRally()
+        {
+            // Obtengo el equipo que va a sacar
+            var equipoEnPosesion = ObtenerEquipoEnPosesion();
+
+            // Si por alguna razón su formación fuese nula, no puedo continuar
+            if (equipoEnPosesion.FormacionPartido == null)
+                throw new FormacionInvalidaException("No se pudo iniciar el rally porque la formación del equipo en posesión es nula", equipoEnPosesion);
+
+            // Establezco el jugador que va a sacar
+            this.jugadorAccion = equipoEnPosesion.FormacionPartido.JugadoresCancha.ElementAt(0);
+
+        }
+
+        /// <summary>
+        /// Determina si con los sets ganados actuales de los equipos se puede determinar que
+        /// hay un ganador según los sets restantes y la cantidad de rondas a jugarse
+        /// </summary>
+        /// <param name="scoreLocal">Sets ganados del equipo local</param>
+        /// <param name="scoreVisitante">Sets ganados del equipo visitante</param>
+        /// <returns><c>True</c> si ya se puede decidir un ganador, <c>False</c> en caso contrario</returns>
+        private bool hayGanadorPartido(int scoreLocal, int scoreVisitante)
+        {
+            return (scoreLocal + setsRestantes < scoreVisitante) ||
+                   (scoreVisitante + setsRestantes < scoreLocal);
+        }
+
+        /// <summary>
+        /// Determina si un equipo ya sea local o visitante ha ganado el set
+        /// </summary>
+        /// <param name="puntosLocal">Puntos del equipo local</param>
+        /// <param name="puntosVisitante">Puntos del equipo visitante</param>
+        /// <returns><c>True</c> si un equipo ya ha ganado el set, <c>False</c> en caso contrario</returns>
+        private bool hayGanadorSet(int puntosLocal, int puntosVisitante)
+        {
+            return (puntosLocal >= puntosParaSet && puntosLocal - puntosVisitante >= 2) ||
+                   (puntosVisitante >= puntosParaSet && puntosVisitante - puntosLocal >= 2);
+        }
+
+        /// <summary>
+        /// Retorna la instancia del equipo que tenga la pelota en posesión, ya sea el local o el visitante
+        /// </summary>
+        /// <returns>Objeto <c>Equipo</c> que posee la pelota</returns>
+        private Equipo ObtenerEquipoEnPosesion()
+        {
+            return (posesionPelota == TipoEquipo.LOCAL) ? partido.Local : partido.Visitante;
+        }
     }
 }

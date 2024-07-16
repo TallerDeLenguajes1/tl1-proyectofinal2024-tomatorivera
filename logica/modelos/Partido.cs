@@ -9,12 +9,10 @@ namespace Logica.Modelo
     /// </summary>
     public class Partido
     {
-        private const int puntosParaGanar = 5;
-
         private Equipo local;
         private Equipo visitante;
         private TipoPartido tipoPartido;
-        private Dictionary<int /* nro set */, (int, int) /* L, V */> resultadoSets;
+        private Dictionary<int /* nro set */, ResultadoSet> resultadoSets;
         private int scoreLocal;
         private int scoreVisitante;
         private string nombreGanador;
@@ -26,7 +24,7 @@ namespace Logica.Modelo
             this.tipoPartido = tipoPartido;
 
             // Valores por defecto
-            resultadoSets = new Dictionary<int, (int, int)>();
+            resultadoSets = new Dictionary<int, ResultadoSet>();
             scoreLocal = 0;
             scoreVisitante = 0;
             nombreGanador = string.Empty;
@@ -36,17 +34,41 @@ namespace Logica.Modelo
         public Equipo Local { get => local; set => local = value; }
         public Equipo Visitante { get => visitante; set => visitante = value; }
         public TipoPartido TipoPartido { get => tipoPartido; set => tipoPartido = value; }
-        public Dictionary<int, (int, int)> ResultadoSets { get => resultadoSets; set => resultadoSets = value; }
+        public Dictionary<int, ResultadoSet> ResultadoSets { get => resultadoSets; set => resultadoSets = value; }
         public string NombreGanador { get => nombreGanador; set => nombreGanador = value; }
         public int ScoreLocal { get => scoreLocal; set => scoreLocal = value; }
         public int ScoreVistante { get => scoreVisitante; set => scoreVisitante = value; }
-        public static int PuntosParaGanar => puntosParaGanar;
 
         // Métodos
         public override string ToString()
         {
             return $"Partido {TipoPartido} - {local} (local) VS {visitante} (visitante) - Ganador: {nombreGanador}";
         }
+    }
+
+    /// <summary>
+    /// Clase que almacena datos de un set
+    /// </summary>
+    public class ResultadoSet
+    {
+        public int PuntosLocal { get; set; }
+        public int PuntosVisitante { get; set; }
+
+        public ResultadoSet()
+        {
+            this.PuntosLocal = 0;
+            this.PuntosVisitante = 0;
+        }
+    }
+
+    /// <summary>
+    /// Tipos de partidos
+    /// </summary>
+    public enum TipoPartido
+    {
+        AMISTOSO,
+        LIGA,
+        TORNEO
     }
 
     // Modelos para API's relacionadas a los partidos
