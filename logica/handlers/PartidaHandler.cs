@@ -98,20 +98,17 @@ namespace Logica.Handlers
     {
         private const int puntosParaSet = 5;
         private Partido partido;
-        private int setsMaximos;
         private int setsRestantes;
-        private int setActual;
         private TipoEquipo posesionPelota;
         private Jugador? jugadorAccion;
 
-        public SimuladorPartidoHandler(Partido partido, int setsMaximos)
+        public SimuladorPartidoHandler(Partido partido)
         {
             this.partido = partido;
 
             // Valores iniciales por defecto
-            this.setsMaximos = setsMaximos;
-            this.setsRestantes = setsMaximos;
-            this.setActual = 1;
+            this.setsRestantes = partido.SetMaximos;
+            this.partido.SetActual = 1;
 
             // El equipo en posesión de la pelota siempre arranca siendo el local
             this.posesionPelota = TipoEquipo.LOCAL;
@@ -122,29 +119,33 @@ namespace Logica.Handlers
         /// </summary>
         public void IniciarPartido()
         {
-            AnsiConsole.Clear(); 
-            
             // Muestro un encabezado
             mostrarEncabezadoPartido(partido.Local.Nombre, partido.Visitante.Nombre, partido.TipoPartido);
 
             // Inicializo datos del partido
-            partido.ResultadoSets.Add(setActual, new ResultadoSet());
+            partido.ResultadoSets.Add(partido.SetActual, new ResultadoSet());
+
+            // Muestro las vistas del partido
+            var panelPartidoControlador = new PanelPartidoControlador(new PanelPartido(), partido);
+            panelPartidoControlador.MostrarVista();
             
+            /*
             // El partido termina cuando ya se hayan jugado todos los sets o cuando se pueda
             // determinar un ganador según el puntaje de los equipos tras cada ronda
-            while (setsRestantes == 0 || !hayGanadorPartido(partido.ScoreLocal, partido.ScoreVistante))
+            while (setsRestantes == 0 || !hayGanadorPartido(partido.ScoreLocal, partido.ScoreVisitante))
             {
                 empezarRally();
 
                 // Si después de un rally hay un ganador del set, se realizan algunas acciones para pasar al siguiente
-                if (hayGanadorSet(partido.ResultadoSets[setActual].PuntosLocal, partido.ResultadoSets[setActual].PuntosVisitante))
+                if (hayGanadorSet(partido.ResultadoSets[partido.SetActual].PuntosLocal, partido.ResultadoSets[partido.SetActual].PuntosVisitante))
                 {
                     setsRestantes--;
-                    setActual++;
+                    partido.SetActual++;
 
-                    partido.ResultadoSets.Add(setActual, new ResultadoSet());
+                    partido.ResultadoSets.Add(partido.SetActual, new ResultadoSet());
                 }
             }
+            */
 
             // Temporal: para que no finalice je
             Console.ReadKey();
@@ -158,6 +159,8 @@ namespace Logica.Handlers
         /// <param name="tipoPartido">Tipo de partido a disputarse</param>
         private void mostrarEncabezadoPartido(string nombreLocal, string nombreVisitante, TipoPartido tipoPartido)
         {
+            AnsiConsole.Clear(); 
+
             var layout = new Layout("raiz")
                 .SplitRows(new Layout("arriba"));
 
@@ -208,14 +211,11 @@ namespace Logica.Handlers
                         
                         textosMostrados.Add(new Text(""));
                         controladorDisplay.Refresh();
-                        Thread.Sleep(1000);
+                        VistasUtil.PausarVistas(1);
                     }
 
-                    Thread.Sleep(3000);
+                    VistasUtil.PausarVistas(3);
                 });
-
-            // Limpio la consola
-            AnsiConsole.Clear();
         }
 
         /// <summary>

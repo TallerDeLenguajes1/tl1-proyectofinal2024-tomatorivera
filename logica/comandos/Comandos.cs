@@ -323,9 +323,10 @@ Espero que te hayas divertido :)
             {
                 // solicito al usuario cuantas rondas se jugarán
                 int nSets = solicitarRondas();
+                p.SetMaximos = nSets;
 
                 // Genero un simulador de partido y lo inicio
-                var simuladorPartido = new SimuladorPartidoHandler(p, nSets);
+                var simuladorPartido = new SimuladorPartidoHandler(p);
                 simuladorPartido.IniciarPartido();
             }
         }

@@ -406,7 +406,7 @@ namespace Gui.Vistas
                 {
                     columnas.Add(new Markup($"[yellow]{partido.TipoPartido}[/]"));
                     columnas.Add(new Markup($"[yellow]{partido.Local}[/]"));
-                    columnas.Add(new Markup($"[yellow]{partido.ScoreLocal}[/][gray] (L) - [/][yellow]{partido.ScoreVistante}[/] [gray](V)[/]"));
+                    columnas.Add(new Markup($"[yellow]{partido.ScoreLocal}[/][gray] (L) - [/][yellow]{partido.ScoreVisitante}[/] [gray](V)[/]"));
                     columnas.Add(new Markup($"[yellow]{partido.Visitante}[/]"));
 
                     tablaPartidos.AddRow(columnas);
@@ -534,6 +534,236 @@ namespace Gui.Vistas
                 .Border(BoxBorder.Rounded)
                 .BorderColor(Color.Orange1)
                 .Expand();
+        }
+    }
+
+    /// <summary>
+    /// Clase Vista que se encarga de mostrar los datos de un partido por pantalla
+    /// </summary>
+    public class PanelPartido : Vista
+    {
+        public Partido? InformacionPartido { get; set; }
+        private Layout layoutInformacion;
+
+        public PanelPartido()
+        {
+            this.layoutInformacion = generarLayout();
+        }
+
+        // Métodos
+        public override void Dibujar()
+        {
+            AnsiConsole.Clear();
+
+            layoutInformacion["info_partido"].Update(dibujarInformacionPartido());
+            layoutInformacion["info_equipos"].Update(dibujarInformacionEquipos());
+            layoutInformacion["info_acciones"].Update(dibujarAcciones());
+
+            AnsiConsole.Write(layoutInformacion);
+        }
+
+        /// <summary>
+        /// Genera el layout sobre el cual se desplegará la información
+        /// </summary>
+        /// <returns>Objeto <c>Layout</c></returns>
+        private Layout generarLayout()
+        {
+            var layout = new Layout("raiz")
+                            .SplitColumns(
+                                new Layout("info_partido"),
+                                new Layout("info_acciones"),
+                                new Layout("info_equipos")
+                            );
+            
+            /*
+            layout["info_partido"].Ratio(1);
+            layout["info_acciones"].Ratio(1);
+            layout["info_equipos"].Ratio(2);
+            */
+
+            return layout;
+        }
+
+        /// <summary>
+        /// Dibuja el panel con información del partido
+        /// </summary>
+        /// <returns>Objeto <c>Panel</c></returns>
+        private Panel dibujarInformacionPartido()
+        {
+            // Si por alguna razón la información del partido es nula, no muestro nada por pantalla
+            if (InformacionPartido == null)
+            {
+                return 
+                    new Panel(Align.Left(
+                        new Markup(":warning: [red]Ha ocurrido algún error obteniendo la información[/]")
+                    ))
+                    {
+                        Header = new PanelHeader("[dim] [/][orange1 bold underline]Información del partido[/][dim] [/]")
+                    }
+                    .Border(BoxBorder.Rounded)
+                    .BorderColor(Color.Orange1)
+                    .Expand();
+            }
+            else
+            {
+                var tablaResultado = new Table()
+                {
+                    Title = new TableTitle($"[red]{InformacionPartido.Local.Nombre} :vs_button: {InformacionPartido.Visitante.Nombre}[/]")
+                }
+                .Border(TableBorder.Square)
+                .BorderColor(Color.Orange1)
+                .ShowRowSeparators()
+                .Centered();
+
+                tablaResultado.AddColumn(new TableColumn(new Markup(":t_shirt: [orange1]Equipo[/]")).Centered());
+                tablaResultado.AddColumn(new TableColumn(new Markup(":star: [orange1]Sets[/]")).Centered());
+                tablaResultado.AddColumn(new TableColumn(new Markup(":volleyball: [orange1]Puntaje[/]")).Centered());
+
+                tablaResultado.AddRow($"[tan]{InformacionPartido.Local.Nombre}[/]", $"[tan]{InformacionPartido.ScoreLocal}[/]", $"[tan]{InformacionPartido.ResultadoSets[InformacionPartido.SetActual].PuntosLocal}[/]");
+                tablaResultado.AddRow($"[tan]{InformacionPartido.Visitante.Nombre}[/]", $"[tan]{InformacionPartido.ScoreVisitante}[/]", $"[tan]{InformacionPartido.ResultadoSets[InformacionPartido.SetActual].PuntosVisitante}[/]");
+
+                var filasInformacion = new Rows(
+                    new Text(""), // separador
+                    tablaResultado,
+                    new Text(""), // separador
+                    new Markup($":backhand_index_pointing_right: [tan]Set actual:[/] [yellow bold]{InformacionPartido.SetActual}[/]"),
+                    new Markup($":backhand_index_pointing_right: [tan]Sets a jugar:[/] [yellow bold]{InformacionPartido.SetMaximos}[/]"),
+                    new Markup($":backhand_index_pointing_right: [tan]Tipo de partido:[/] [yellow bold]{InformacionPartido.TipoPartido}[/]")
+                );
+
+                return
+                    new Panel(Align.Left(
+                        filasInformacion
+                    ))
+                    {
+                        Header = new PanelHeader("[dim] [/][orange1 bold underline]Información del partido[/][dim] [/]")
+                    }
+                    .Border(BoxBorder.Rounded)
+                    .BorderColor(Color.Orange1)
+                    .Expand();
+            }
+        }
+
+        /// <summary>
+        /// Dibuja el panel con información de los equipos
+        /// </summary>
+        /// <returns>Objeto <c>Panel</c></returns>
+        private Panel dibujarInformacionEquipos()
+        {
+            // Si por alguna razón la información del partido es nula, no muestro detalles
+            if (InformacionPartido == null)
+            {
+                return 
+                    new Panel(Align.Left(
+                        new Markup(":warning: [red]Ha ocurrido algún error obteniendo la información[/]")
+                    ))
+                    {
+                        Header = new PanelHeader("[dim] [/][orange1 bold underline]Información de los equipos[/][dim] [/]")
+                    }
+                    .Border(BoxBorder.Rounded)
+                    .BorderColor(Color.Orange1)
+                    .Expand();
+            }
+            else
+            {
+                /******************
+                 * EQUIPO JUGADOR *
+                 *****************/
+                var equipoJugadorSeparador = new Rule("[orange1]Su equipo[/]");
+                equipoJugadorSeparador.RuleStyle(Style.Parse("gray bold"));
+                equipoJugadorSeparador.LeftJustified();
+
+                var arbolSuplentes = new Tree("\n:small_orange_diamond: [orange3]Jugadores suplentes:[/]")
+                {
+                    Style = Style.Parse("orange3")
+                };
+                var formacionJugador = InformacionPartido.ObtenerEquipoJugador().FormacionPartido;
+                if (formacionJugador == null)
+                {
+                    arbolSuplentes.AddNode(":warning: [red]Ha ocurrido un error obteniendo los suplentes[/]");
+                }
+                else
+                {
+                    foreach (var jugador in formacionJugador.JugadoresSuplentes)
+                    {
+                        var nodoJugador = arbolSuplentes.AddNode(
+                            $"[yellow]{jugador.Nombre}[/] [orange3]({jugador.NumeroCamiseta})[/][gray] - [/][orange1]{jugador.TipoJugador}[/]"
+                        );
+
+                        nodoJugador.AddNode(
+                            $"[gray]SAQ:[/] {jugador.HabilidadSaque} [gray]REM:[/] {jugador.HabilidadRemate} [gray]REC:[/] {jugador.HabilidadRecepcion} [gray]COL:[/] {jugador.HabilidadColocacion} [gray]BLO:[/] {jugador.HabilidadBloqueo}"
+                        );
+                    }
+                }
+
+                /******************
+                 * EQUIPO CONSOLA *
+                 *****************/
+                var equipoConsolaSeparador = new Rule("[orange1]Equipo rival[/]");
+                equipoConsolaSeparador.RuleStyle(Style.Parse("gray bold"));
+                equipoConsolaSeparador.LeftJustified();
+
+                var arbolTitulares = new Tree("\n:small_orange_diamond: [orange3]Jugadores en cancha:[/]")
+                {
+                    Style = Style.Parse("orange3")
+                };
+                var formacionConsola = InformacionPartido.ObtenerEquipoConsola().FormacionPartido;
+                if (formacionConsola == null)
+                {
+                    arbolTitulares.AddNode(":warning: [red]Ha ocurrido un error obteniendo los titulares[/]");
+                }
+                else
+                {
+                    for (int i=0 ; i<formacionConsola.JugadoresCancha.Count() ; i++)
+                    {
+                        var jugador = formacionConsola.JugadoresCancha.ElementAt(i);
+
+                        var nodoJugador = arbolTitulares.AddNode(
+                            $"[red]ZONA {i+1}:[/] [yellow]{jugador.Nombre}[/] [orange3]({jugador.NumeroCamiseta})[/]"
+                        );
+                        nodoJugador.AddNode(
+                            $"[gray]SAQ:[/] {jugador.HabilidadSaque} [gray]REM:[/] {jugador.HabilidadRemate} [gray]REC:[/] {jugador.HabilidadRecepcion} [gray]COL:[/] {jugador.HabilidadColocacion} [gray]BLO:[/] {jugador.HabilidadBloqueo}"
+                        );
+                    }
+                }
+
+                // Junto las filas con el componente Rows
+                var filasInformacion = new Rows(
+                    new Text(""), // separador
+                    equipoJugadorSeparador,
+                    arbolSuplentes,
+                    new Text(""), // separador
+                    equipoConsolaSeparador,
+                    arbolTitulares
+                );
+
+                // Retorno el panel con la información
+                return
+                    new Panel(Align.Left(
+                        filasInformacion
+                    ))
+                    {
+                        Header = new PanelHeader("[dim] [/][orange1 bold underline]Información de los equipos[/][dim] [/]")
+                    }
+                    .Border(BoxBorder.Rounded)
+                    .BorderColor(Color.Orange1)
+                    .Expand();
+            }
+        }
+    
+        private Panel dibujarAcciones()
+        {
+            // Falta implementar
+            return
+                new Panel(Align.Center(
+                    new Markup("\n[gray italic]Falta implementar[/]")
+                ))
+                {
+                    Header = new PanelHeader("[dim] [/][orange1 bold underline]Desarrollo del partido[/][dim] [/]")
+                }
+                .Expand()
+                .Border(BoxBorder.Rounded)
+                .BorderColor(Color.Orange1);
         }
     }
 }

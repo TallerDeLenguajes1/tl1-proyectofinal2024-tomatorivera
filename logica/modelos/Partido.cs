@@ -15,6 +15,8 @@ namespace Logica.Modelo
         private Dictionary<int /* nro set */, ResultadoSet> resultadoSets;
         private int scoreLocal;
         private int scoreVisitante;
+        private int setActual;
+        private int setMaximos;
         private string nombreGanador;
 
         public Partido(Equipo local, Equipo visitante, TipoPartido tipoPartido)
@@ -37,9 +39,21 @@ namespace Logica.Modelo
         public Dictionary<int, ResultadoSet> ResultadoSets { get => resultadoSets; set => resultadoSets = value; }
         public string NombreGanador { get => nombreGanador; set => nombreGanador = value; }
         public int ScoreLocal { get => scoreLocal; set => scoreLocal = value; }
-        public int ScoreVistante { get => scoreVisitante; set => scoreVisitante = value; }
+        public int ScoreVisitante { get => scoreVisitante; set => scoreVisitante = value; }
+        public int SetActual { get => setActual; set => setActual = value; }
+        public int SetMaximos { get => setMaximos ; set => setMaximos = value; }
 
         // Métodos
+        public Equipo ObtenerEquipoJugador()
+        {
+            return local.EsEquipoJugador ? local : visitante;
+        }
+
+        public Equipo ObtenerEquipoConsola()
+        {
+            return (!local.EsEquipoJugador) ? local : visitante;
+        }
+
         public override string ToString()
         {
             return $"Partido {TipoPartido} - {local} (local) VS {visitante} (visitante) - Ganador: {nombreGanador}";

@@ -247,4 +247,20 @@ namespace Gui.Controladores
             ErroresIgnorablesHandler.ObtenerInstancia().LimpiarErrores();
         }
     }
+
+    public class PanelPartidoControlador : Controlador<PanelPartido>
+    {
+        private Partido informacionPartido;
+
+        public PanelPartidoControlador(PanelPartido vista, Partido informacionPartido) : base(vista)
+        {
+            this.informacionPartido = informacionPartido;
+        }
+
+        public override void MostrarVista()
+        {
+            this.vista.InformacionPartido = informacionPartido;
+            this.vista.Dibujar();
+        }
+    }
 }

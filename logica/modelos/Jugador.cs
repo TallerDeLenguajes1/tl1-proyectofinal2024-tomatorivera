@@ -11,7 +11,6 @@ namespace Logica.Modelo
     {
         private string nombre;
         private int numeroCamiseta;
-        [JsonConverter(typeof(StringEnumConverter))]
         private TipoJugador tipoJugador;
         private float experiencia;
         private float habilidadSaque;
