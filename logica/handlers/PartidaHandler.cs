@@ -31,11 +31,12 @@ namespace Logica.Handlers
         /// Inicia la lógica de una partida
         /// </summary>
         public void IniciarPartida() {
+            var vistaDashboard = new Dashboard(partidaActual);
+            var controladorDashboard = new DashboardControlador(vistaDashboard);
+            
             while (!deseaSalir)
             {
                 // Muestro el dashboard
-                var vistaDashboard = new Dashboard(partidaActual);
-                var controladorDashboard = new DashboardControlador(vistaDashboard);
                 controladorDashboard.MostrarVista();
 
                 // Solicito un comando a ejecutar al usuario desde un menú de opciones
@@ -49,6 +50,7 @@ namespace Logica.Handlers
                 catch (Exception e)
                 {
                     VistasUtil.MostrarError(e.Message);
+                    System.Console.WriteLine(e.StackTrace);
 
                     Console.ForegroundColor = ConsoleColor.Red;
                     VistasUtil.MostrarCentrado("-*- Presione una tecla para volver al dashboard -*-");
@@ -97,10 +99,14 @@ namespace Logica.Handlers
     public class SimuladorPartidoHandler
     {
         private const int puntosParaSet = 5;
+
         private Partido partido;
         private int setsRestantes;
         private TipoEquipo posesionPelota;
         private Jugador? jugadorAccion;
+        private Equipo saque;
+        private Equipo contrarioSaque;
+        private Rally rallyActual;
 
         public SimuladorPartidoHandler(Partido partido)
         {
@@ -112,6 +118,11 @@ namespace Logica.Handlers
 
             // El equipo en posesión de la pelota siempre arranca siendo el local
             this.posesionPelota = TipoEquipo.LOCAL;
+            this.saque = partido.Local;
+            this.contrarioSaque = partido.Local;
+
+            // Genero el objeto encargado de cargar con la información de los rally
+            this.rallyActual = new Rally(partido.Local.FormacionPartido!, partido.Visitante.FormacionPartido!, posesionPelota, saque.FormacionPartido!.ObtenerJugadorZona(1));
         }
 
         /// <summary>
@@ -122,30 +133,31 @@ namespace Logica.Handlers
             // Muestro un encabezado
             mostrarEncabezadoPartido(partido.Local.Nombre, partido.Visitante.Nombre, partido.TipoPartido);
 
-            // Inicializo datos del partido
+            // Genero los datos del set actual
             partido.ResultadoSets.Add(partido.SetActual, new ResultadoSet());
 
             // Muestro las vistas del partido
             var panelPartidoControlador = new PanelPartidoControlador(new PanelPartido(), partido);
             panelPartidoControlador.MostrarVista();
             
-            /*
             // El partido termina cuando ya se hayan jugado todos los sets o cuando se pueda
             // determinar un ganador según el puntaje de los equipos tras cada ronda
             while (setsRestantes == 0 || !hayGanadorPartido(partido.ScoreLocal, partido.ScoreVisitante))
             {
-                empezarRally();
+                rallyActual.ComenzarRally();
+                determinarResultadoRally();
 
                 // Si después de un rally hay un ganador del set, se realizan algunas acciones para pasar al siguiente
-                if (hayGanadorSet(partido.ResultadoSets[partido.SetActual].PuntosLocal, partido.ResultadoSets[partido.SetActual].PuntosVisitante))
+                if (hayGanadorSet())
                 {
+                    // Actualizo los sets
                     setsRestantes--;
                     partido.SetActual++;
 
+                    // Agrego el siguiente set a los resultados
                     partido.ResultadoSets.Add(partido.SetActual, new ResultadoSet());
                 }
             }
-            */
 
             // Temporal: para que no finalice je
             Console.ReadKey();
@@ -219,24 +231,6 @@ namespace Logica.Handlers
         }
 
         /// <summary>
-        /// Se encarga de manejar la lógica de ejecución de un rally, es decir, de un intercambio
-        /// entre equipos sin que la pelota caiga al suelo
-        /// </summary>
-        private void empezarRally()
-        {
-            // Obtengo el equipo que va a sacar
-            var equipoEnPosesion = ObtenerEquipoEnPosesion();
-
-            // Si por alguna razón su formación fuese nula, no puedo continuar
-            if (equipoEnPosesion.FormacionPartido == null)
-                throw new FormacionInvalidaException("No se pudo iniciar el rally porque la formación del equipo en posesión es nula", equipoEnPosesion);
-
-            // Establezco el jugador que va a sacar
-            this.jugadorAccion = equipoEnPosesion.FormacionPartido.JugadoresCancha.ElementAt(0);
-
-        }
-
-        /// <summary>
         /// Determina si con los sets ganados actuales de los equipos se puede determinar que
         /// hay un ganador según los sets restantes y la cantidad de rondas a jugarse
         /// </summary>
@@ -252,22 +246,55 @@ namespace Logica.Handlers
         /// <summary>
         /// Determina si un equipo ya sea local o visitante ha ganado el set
         /// </summary>
-        /// <param name="puntosLocal">Puntos del equipo local</param>
-        /// <param name="puntosVisitante">Puntos del equipo visitante</param>
         /// <returns><c>True</c> si un equipo ya ha ganado el set, <c>False</c> en caso contrario</returns>
-        private bool hayGanadorSet(int puntosLocal, int puntosVisitante)
+        private bool hayGanadorSet()
         {
+            var puntosLocal = partido.ResultadoSets[partido.SetActual].PuntosLocal;
+            var puntosVisitante = partido.ResultadoSets[partido.SetActual].PuntosVisitante;
+
             return (puntosLocal >= puntosParaSet && puntosLocal - puntosVisitante >= 2) ||
                    (puntosVisitante >= puntosParaSet && puntosVisitante - puntosLocal >= 2);
         }
 
         /// <summary>
-        /// Retorna la instancia del equipo que tenga la pelota en posesión, ya sea el local o el visitante
+        /// Determina el resultado del rally y realiza acciones en consecuencias de ello
         /// </summary>
-        /// <returns>Objeto <c>Equipo</c> que posee la pelota</returns>
-        private Equipo ObtenerEquipoEnPosesion()
+        private void determinarResultadoRally()
         {
-            return (posesionPelota == TipoEquipo.LOCAL) ? partido.Local : partido.Visitante;
+            switch (rallyActual.PosesionPelota)
+            {
+                // Si la última posesión de la pelota es del equipo local, quiere decir que fue punto del visitante
+                case TipoEquipo.LOCAL:
+                    if (saque.Nombre.Equals(partido.Local.Nombre))
+                    {
+                        System.Console.WriteLine("Recupera el saque y rota el equipo VISITANTE");
+                        partido.Visitante.FormacionPartido!.JugadoresCancha.Rotar();
+                        saque = partido.Visitante;
+                        contrarioSaque = partido.Local;
+                    }
+
+                    posesionPelota = TipoEquipo.VISITANTE;
+                    System.Console.WriteLine("Punto para VISITANTE");
+                    break;
+
+                // Si la última posesión de la pelota es del equipo visitante, quiere decir que fue punto del local
+                case TipoEquipo.VISITANTE:
+                    if (saque.Nombre.Equals(partido.Visitante.Nombre))
+                    {
+                        System.Console.WriteLine("Recupera el saque y rota el equipo LOCAL");
+                        partido.Local.FormacionPartido!.JugadoresCancha.Rotar();
+                        saque = partido.Local;
+                        contrarioSaque = partido.Visitante;
+                    }
+                    posesionPelota = TipoEquipo.LOCAL;
+                    System.Console.WriteLine("Punto para LOCAL");
+                    break;
+            }
+
+            // Actualizo la información del rally y del partido
+            partido.ResultadoSets[partido.SetActual].IncrementarPuntos(posesionPelota);
+            rallyActual.PosesionPelota = posesionPelota;
+            rallyActual.JugadorActual = saque.FormacionPartido!.ObtenerJugadorZona(1);
         }
     }
 }

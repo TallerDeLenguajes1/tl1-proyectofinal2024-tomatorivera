@@ -98,12 +98,12 @@ namespace Gui.Util
         /// barrido de consola rápido en algún momento preciso del código
         /// </summary>
         /// <param name="segundos">Cantidad de segundos a pausar la vista</param>
-        public static void PausarVistas(int segundos)
+        public static void PausarVistas(float segundos)
         {
             try
             {
                 // Pauso el hilo
-                Thread.Sleep(segundos * 1000);
+                Thread.Sleep((int)(segundos * 1000));
 
                 // Limpio el buffer para evitar bugs con las teclas que haya presionado
                 // el usuario durante el período de sleep

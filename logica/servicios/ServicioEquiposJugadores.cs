@@ -150,7 +150,6 @@ namespace Logica.Servicios
                     nuevoJugador.NumeroCamiseta = listaIdentificadores.ElementAt(i).Key;
                     nuevoJugador.Nombre = listaIdentificadores.ElementAt(i).Value;
                     nuevoJugador.TipoJugador = tipoJugador;
-                    nuevoJugador.Experiencia = 0.00f;
 
                     listaJugadores.Add(nuevoJugador);
                 }

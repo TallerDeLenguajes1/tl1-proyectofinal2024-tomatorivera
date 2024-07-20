@@ -70,19 +70,21 @@ namespace Logica.Modelo
 
         public ResultadoSet()
         {
-            this.PuntosLocal = 0;
-            this.PuntosVisitante = 0;
+            PuntosLocal = 0;
+            PuntosVisitante = 0;
         }
-    }
 
-    /// <summary>
-    /// Tipos de partidos
-    /// </summary>
-    public enum TipoPartido
-    {
-        AMISTOSO,
-        LIGA,
-        TORNEO
+        /// <summary>
+        /// Incrementa un punto a alguno de los equipos
+        /// </summary>
+        /// <param name="equipo">Equipo al cual incrementar un punto. Ver <see cref="TipoEquipo"/></param>
+        public void IncrementarPuntos(TipoEquipo equipo)
+        {
+            if (equipo == TipoEquipo.LOCAL) 
+                PuntosLocal++;
+            else 
+                PuntosVisitante++;
+        }
     }
 
     // Modelos para API's relacionadas a los partidos

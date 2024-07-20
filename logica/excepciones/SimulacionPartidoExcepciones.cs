@@ -4,7 +4,12 @@ namespace Logica.Excepciones
 {
     public class FormacionInvalidaException : Exception
     {
-        public Equipo EquipoEnPosesion { get; set; }
+        public Equipo? EquipoEnPosesion { get; set; }
+
+        public FormacionInvalidaException(string message) : base(message)
+        {
+            this.EquipoEnPosesion = null;
+        }
         
         public FormacionInvalidaException(string message, Equipo EquipoEnPosesion) : base(message)
         {

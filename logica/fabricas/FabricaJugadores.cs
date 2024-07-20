@@ -42,7 +42,8 @@ namespace Logica.Fabricas
                     HabilidadRemate = valorAleatorioEntre(habilidades["remate"].min, habilidades["remate"].max),
                     HabilidadRecepcion = valorAleatorioEntre(habilidades["recepcion"].min, habilidades["recepcion"].max),
                     HabilidadColocacion = valorAleatorioEntre(habilidades["colocacion"].min, habilidades["colocacion"].max),
-                    HabilidadBloqueo = valorAleatorioEntre(habilidades["bloqueo"].min, habilidades["bloqueo"].max)
+                    HabilidadBloqueo = valorAleatorioEntre(habilidades["bloqueo"].min, habilidades["bloqueo"].max),
+                    Experiencia = valorAleatorioEntre(1, 10)
                 };
         }
     }
@@ -60,7 +61,7 @@ namespace Logica.Fabricas
                     {
                         { "saque", (2, 4) },
                         { "remate", (0.5f, 2) },
-                        { "recepcion", (5, 7) },
+                        { "recepcion", (6, 7.85f) },
                         { "colocacion", (1, 3) },
                         { "bloqueo", (0.5f, 2) }
                     }
@@ -79,11 +80,11 @@ namespace Logica.Fabricas
             return generarJugador(
                 new Dictionary<string, (float min, float max)>()
                 {
-                    { "saque", (2.5f, 4.5f) },
-                    { "remate", (4.5f, 6.5f) },
-                    { "recepcion", (2, 4) },
-                    { "colocacion", (1, 3) },
-                    { "bloqueo", (3, 5) }
+                    { "saque", (5.25f, 7) },
+                    { "remate", (5.5f, 7.5f) },
+                    { "recepcion", (4.75f, 6.75f) },
+                    { "colocacion", (2, 4) },
+                    { "bloqueo", (4, 5.5f) }
                 }
             );
         }
@@ -100,11 +101,11 @@ namespace Logica.Fabricas
             return generarJugador(
                 new Dictionary<string, (float min, float max)>()
                 {
-                    { "saque", (3, 5) },
-                    { "remate", (5, 7) },
-                    { "recepcion", (1, 3) },
-                    { "colocacion", (1.5f, 3.5f) },
-                    { "bloqueo", (2, 4) }
+                    { "saque", (5.25f, 7) },
+                    { "remate", (6, 8) },
+                    { "recepcion", (3, 5) },
+                    { "colocacion", (2, 4) },
+                    { "bloqueo", (3, 5) }
                 }
             );
         }
@@ -121,10 +122,10 @@ namespace Logica.Fabricas
             return generarJugador(
                 new Dictionary<string, (float min, float max)>()
                 {
-                    { "saque", (2.5f, 5.5f) },
-                    { "remate", (3, 6) },
-                    { "recepcion", (1, 4) },
-                    { "colocacion", (5, 7) },
+                    { "saque", (5.15f, 6.75f) },
+                    { "remate", (4, 6) },
+                    { "recepcion", (3.5f, 5.5f) },
+                    { "colocacion", (6, 7.5f) },
                     { "bloqueo", (2, 4) }
                 }
             );
@@ -142,9 +143,9 @@ namespace Logica.Fabricas
             return generarJugador(
                 new Dictionary<string, (float min, float max)>()
                 {
-                    { "saque", (1, 3) },
+                    { "saque", (5.15f, 6.75f) },
                     { "remate", (3, 5) },
-                    { "recepcion", (0.5f, 2.5f) },
+                    { "recepcion", (3.5f, 5.5f) },
                     { "colocacion", (2, 4) },
                     { "bloqueo", (5, 7) }
                 }

@@ -1,3 +1,4 @@
+using Logica.Util;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Persistencia.Infraestructura;
@@ -9,8 +10,9 @@ namespace Logica.Modelo
     /// </summary>
     public class Jugador
     {
-        private string nombre;
+        private string? nombre;
         private int numeroCamiseta;
+        [JsonConverter(typeof(StringEnumConverter))]
         private TipoJugador tipoJugador;
         private float experiencia;
         private float habilidadSaque;
@@ -18,20 +20,44 @@ namespace Logica.Modelo
         private float habilidadRecepcion;
         private float habilidadColocacion;
         private float habilidadBloqueo;
+        private float cansancio;
 
         public Jugador()
         {
-            this.nombre = string.Empty;
+            nombre = string.Empty;
+            numeroCamiseta = 0;
+            tipoJugador = TipoJugador.PUNTA;
+            experiencia = 0;
+            habilidadSaque = 0;
+            habilidadRemate = 0;
+            habilidadRecepcion = 0;
+            habilidadColocacion = 0;
+            habilidadBloqueo = 0;
+            cansancio = 0;
         }
 
         public Jugador(TipoJugador tipoJugador)
         {
-            this.nombre = string.Empty;
             this.tipoJugador = tipoJugador;
         }
 
+        public Jugador(string? nombre, int numeroCamiseta, TipoJugador tipoJugador, float experiencia)
+        {
+            this.nombre = nombre;
+            this.numeroCamiseta = numeroCamiseta;
+            this.tipoJugador = tipoJugador;
+            this.experiencia = experiencia;
+
+            habilidadSaque = 0;
+            habilidadRemate = 0;
+            habilidadRecepcion = 0;
+            habilidadColocacion = 0;
+            habilidadBloqueo = 0;
+            cansancio = 0;
+        }
+
         // Propiedades
-        public string Nombre { get => nombre; set => nombre = value; }
+        public string? Nombre { get => nombre; set => nombre = value; }
         public int NumeroCamiseta { get => numeroCamiseta; set => numeroCamiseta = value; }
 
         [JsonConverter(typeof(StringEnumConverter))] // Para guardar el ENUM en json con su nombre y no su ID
@@ -43,8 +69,24 @@ namespace Logica.Modelo
         public float HabilidadRecepcion { get => habilidadRecepcion; set => habilidadRecepcion = value; }
         public float HabilidadColocacion { get => habilidadColocacion; set => habilidadColocacion = value; }
         public float HabilidadBloqueo { get => habilidadBloqueo; set => habilidadBloqueo = value; }
-
+        public float Cansancio { get => cansancio; set => cansancio = value; }
+        
         // Métodos
+
+        /// <summary>
+        /// Aumenta el cansancio del jugador entre <paramref name="min"/> y <paramref name="max"/>
+        /// teniendo en cuenta el factor experiencia del jugador.
+        /// </summary>
+        /// <param name="min">Mínimo a aumentar</param>
+        /// <param name="max">Máximo a aumentar</param>
+        public void AumentarCansancio(float min, float max)
+        {
+            float reduccionSegunExperiencia = 1 / experiencia;
+            float incrementoCansancio = ProbabilidadesUtil.ValorAleatorioEntre(min, max) * reduccionSegunExperiencia;
+
+            this.cansancio = Math.Min(cansancio + incrementoCansancio, 10.0f);
+        }
+
         public override string ToString()
         {
             return !string.IsNullOrWhiteSpace(nombre) ? $"{nombre} ({numeroCamiseta}) - {tipoJugador} - {experiencia} pts. de experiencia en juego"
@@ -66,15 +108,6 @@ namespace Logica.Modelo
         {
             return NumeroCamiseta.GetHashCode();
         }
-    }
-    
-    public enum TipoJugador
-    {
-        PUNTA,
-        OPUESTO,
-        ARMADOR,
-        CENTRAL,
-        LIBERO
     }
 
     // Modelos para API's relacionadas al jugador
