@@ -542,12 +542,14 @@ namespace Gui.Vistas
     /// </summary>
     public class PanelPartido : Vista
     {
+        private const string nombrePanelAcciones = "info_acciones";
+
         public Partido? InformacionPartido { get; set; }
-        private Layout layoutInformacion;
+        public Layout LayoutInformacion { get; set; }
 
         public PanelPartido()
         {
-            this.layoutInformacion = generarLayout();
+            LayoutInformacion = generarLayout();
         }
 
         // Métodos
@@ -555,11 +557,11 @@ namespace Gui.Vistas
         {
             AnsiConsole.Clear();
 
-            layoutInformacion["info_partido"].Update(dibujarInformacionPartido());
-            layoutInformacion["info_equipos"].Update(dibujarInformacionEquipos());
-            layoutInformacion["info_acciones"].Update(dibujarAcciones());
+            LayoutInformacion["info_partido"].Update(dibujarInformacionPartido());
+            LayoutInformacion["info_equipos"].Update(dibujarInformacionEquipos());
+            //LayoutInformacion[nombrePanelAcciones].Update(dibujarAcciones());
 
-            AnsiConsole.Write(layoutInformacion);
+            //AnsiConsole.Write(LayoutInformacion);
         }
 
         /// <summary>
@@ -628,7 +630,10 @@ namespace Gui.Vistas
                     new Text(""), // separador
                     new Markup($":backhand_index_pointing_right: [tan]Set actual:[/] [yellow bold]{InformacionPartido.SetActual}[/]"),
                     new Markup($":backhand_index_pointing_right: [tan]Sets a jugar:[/] [yellow bold]{InformacionPartido.SetMaximos}[/]"),
-                    new Markup($":backhand_index_pointing_right: [tan]Tipo de partido:[/] [yellow bold]{InformacionPartido.TipoPartido}[/]")
+                    new Markup($":backhand_index_pointing_right: [tan]Tipo de partido:[/] [yellow bold]{InformacionPartido.TipoPartido}[/]"),
+                    new Text(""), // separador
+                    new Markup($"[yellow]▮ Acciones de {InformacionPartido.Local.Nombre}[/]"),
+                    new Markup($"[red]▮ Acciones de {InformacionPartido.Visitante.Nombre}[/]")
                 );
 
                 return
@@ -687,7 +692,7 @@ namespace Gui.Vistas
                     foreach (var jugador in formacionJugador.JugadoresSuplentes)
                     {
                         var nodoJugador = arbolSuplentes.AddNode(
-                            $"[yellow]{jugador.Nombre}[/] [orange3]({jugador.NumeroCamiseta})[/][gray] - [/][orange1]{jugador.TipoJugador}[/]"
+                            $"[yellow]{jugador.Nombre}[/] [orange3]({jugador.NumeroCamiseta})[/][gray] - [/][orange1]{jugador.TipoJugador}[/][gray] - [/][orange1]Cansancio: [/][orange3]{jugador.Cansancio}[/]"
                         );
 
                         nodoJugador.AddNode(
@@ -750,13 +755,16 @@ namespace Gui.Vistas
                     .Expand();
             }
         }
-    
-        private Panel dibujarAcciones()
+
+        /// <summary>
+        /// Dibuja el panel con la información de las acciones de un partido
+        /// </summary>
+        /// <returns>Objeto <c>Panel</c></returns>
+        private Panel dibujarAcciones(string accion = "")
         {
-            // Falta implementar
             return
                 new Panel(Align.Center(
-                    new Markup("\n[gray italic]Falta implementar[/]")
+                    new Markup(accion)
                 ))
                 {
                     Header = new PanelHeader("[dim] [/][orange1 bold underline]Desarrollo del partido[/][dim] [/]")
@@ -764,6 +772,29 @@ namespace Gui.Vistas
                 .Expand()
                 .Border(BoxBorder.Rounded)
                 .BorderColor(Color.Orange1);
+        }
+
+        /// <summary>
+        /// Actualiza el panel de acciones de modo que se vayan mostrando todas las acciones
+        /// una debajo de la otra con un delay de <paramref name="segundosDelay"/>
+        /// </summary>
+        /// <param name="ctx">Contexto de la actualización del panel en tiempo real</param>
+        /// <param name="acciones">Lista de acciones a mostrar</param>
+        /// <param name="segundosDelay">Segundos de delay entre la aparición de cada acción en pantalla (por defecto, 0 segs)</param>
+        public void ActualizarAcciones(LiveDisplayContext ctx, List<string> acciones, int segundosDelay = 0)
+        {
+            // En esta variable acumulo las acciones que van mostrandose para realizar la animación
+            // de que lo que pasa va dibujandose una línea debajo de otra
+            string accionesAcumuladas = string.Empty;
+
+            foreach (var accion in acciones)
+            {
+                accionesAcumuladas += $"\n{accion}";
+                LayoutInformacion[nombrePanelAcciones].Update(dibujarAcciones(accionesAcumuladas));
+
+                VistasUtil.PausarVistas(segundosDelay);
+                ctx.Refresh();
+            }
         }
     }
 }

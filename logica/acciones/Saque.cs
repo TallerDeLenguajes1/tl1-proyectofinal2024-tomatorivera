@@ -12,9 +12,11 @@ namespace Logica.Acciones
 
         public override ResultadoAccion Realizar()
         {
+            rally.Log(new ResultadoAccion($"{realizador.Nombre} va a realizar el saque", realizador));
+
             // Si el saque no pasa la red, el rally termina
             if (!pasaRed())
-                return new ResultadoAccion($"El saque de {realizador.Nombre} no pasó la red");
+                return new ResultadoAccion($"El saque de {realizador.Nombre} no pasó la red", realizador);
 
             // Hay un 70% de chances de que el saque caiga en la zona de defensa, según donde caiga, se obtiene
             // un receptor aleatorio del equipo rival que se encuentre en dicha zona
@@ -28,11 +30,11 @@ namespace Logica.Acciones
 
             // Si es un punto directo, el rally termina
             if (esPuntoDirecto(receptor))
-                return new ResultadoAccion($"¡{realizador.Nombre} hizo un punto directo!");
+                return new ResultadoAccion($"¡{realizador.Nombre} hizo un punto directo!", realizador);
 
             // En caso de que no sea punto directo, quiere decir que un defensa del equipo rival recepcionó el balón
             rally.JugadorActual = receptor;
-            return new ResultadoAccion(new Recepcion(rally), $"{receptor.Nombre} logra recepcionar el saque de {realizador.Nombre}");
+            return new ResultadoAccion(new Recepcion(rally), $"{receptor.Nombre} logra recepcionar el saque de {realizador.Nombre}", receptor);
         }
 
         /// <summary>

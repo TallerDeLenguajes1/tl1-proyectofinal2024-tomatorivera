@@ -49,7 +49,7 @@ namespace Logica.Acciones
             }
 
             rally.JugadorActual = atacante!;
-            return new ResultadoAccion(new Remate(rally, calidad), mensajeAccion);
+            return new ResultadoAccion(new Remate(rally, calidad), mensajeAccion, realizador);
         }
 
         /// <summary>

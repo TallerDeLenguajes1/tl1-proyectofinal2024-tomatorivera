@@ -21,10 +21,10 @@ namespace Logica.Acciones
         {
             // Si el jugador no llega al remate, termina el rally
             if (!llegaAlRemate())
-                return new ResultadoAccion($"{realizador.Nombre} no llegó al remate");
+                return new ResultadoAccion($"{realizador.Nombre} no llegó al remate", realizador);
             // Si el jugador tira afuera el remate, termina el rally
             if (tiraAfuera())
-                return new ResultadoAccion($"{realizador.Nombre} lanza el remate afuera de la cancha");
+                return new ResultadoAccion($"{realizador.Nombre} lanza el remate afuera de la cancha", realizador);
 
             // Determino la calidad del remate
             var calidadRemate = calcularCalidadRemate();
@@ -46,10 +46,7 @@ namespace Logica.Acciones
                     break;
             }
 
-            Console.ForegroundColor = ConsoleColor.Red;
-            System.Console.WriteLine(accionSubMensaje);
-            Console.ResetColor();
-            Thread.Sleep(1000);
+            rally.Log(new ResultadoAccion(accionSubMensaje, realizador));
 
             // Según la zona en la que se encuentre el rematador, obtengo los posibles bloqueadores y escojo uno random de ellos
             var zonaRematador = rally.ObtenerEquipoPropio().DeterminarZonaJugador(realizador);
@@ -61,7 +58,7 @@ namespace Logica.Acciones
             {
                 rally.IntercambiarPosesionPelota();
                 rally.JugadorActual = bloqueadorApuntado;
-                return new ResultadoAccion(new Bloqueo(rally, calidadRemate), $"¡{bloqueadorApuntado.Nombre} LOGRA LLEGAR AL BLOQUEO!");
+                return new ResultadoAccion(new Bloqueo(rally, calidadRemate), $"¡{bloqueadorApuntado.Nombre} LOGRA LLEGAR AL BLOQUEO!", bloqueadorApuntado);
             }
 
             // Si nadie llega a bloquear, el jugador pasa el bloqueo y puede ser recepcionado por la defensa rival.
@@ -71,8 +68,8 @@ namespace Logica.Acciones
 
             rally.IntercambiarPosesionPelota();
             rally.JugadorActual = receptor;
-            return esPuntoDirecto(receptor) ? new ResultadoAccion($"{receptor.Nombre} no logró recepcionar el remate de {realizador.Nombre}")
-                                            : new ResultadoAccion(new Recepcion(rally), $"{receptor.Nombre} pudo recepcionar el remate de {realizador.Nombre}");
+            return esPuntoDirecto(receptor) ? new ResultadoAccion($"{receptor.Nombre} no logró recepcionar el remate de {realizador.Nombre}", receptor)
+                                            : new ResultadoAccion(new Recepcion(rally), $"{receptor.Nombre} pudo recepcionar el remate de {realizador.Nombre}", receptor);
         }
 
         /// <summary>

@@ -69,7 +69,7 @@ namespace Logica.Modelo
         public float HabilidadRecepcion { get => habilidadRecepcion; set => habilidadRecepcion = value; }
         public float HabilidadColocacion { get => habilidadColocacion; set => habilidadColocacion = value; }
         public float HabilidadBloqueo { get => habilidadBloqueo; set => habilidadBloqueo = value; }
-        public float Cansancio { get => cansancio; set => cansancio = value; }
+        public float Cansancio { get => (float)Math.Round(cansancio, 2); set => cansancio = value; }
         
         // Métodos
 

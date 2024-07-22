@@ -259,8 +259,18 @@ namespace Gui.Controladores
 
         public override void MostrarVista()
         {
-            this.vista.InformacionPartido = informacionPartido;
-            this.vista.Dibujar();
+            vista.InformacionPartido = informacionPartido;
+            vista.Dibujar();
+        }
+
+        public Layout ObtenerLayoutInformacion()
+        {
+            return vista.LayoutInformacion;
+        }
+
+        public void MostrarAcciones(LiveDisplayContext ctx, List<string> acciones)
+        {
+            vista.ActualizarAcciones(ctx, acciones, 1);
         }
     }
 }

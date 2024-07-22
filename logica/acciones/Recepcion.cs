@@ -37,7 +37,7 @@ namespace Logica.Acciones
 
             realizador.AumentarCansancio(0.05f, 0.1f);
             rally.JugadorActual = colocador;
-            return new ResultadoAccion(new Colocacion(rally, calidadRecepcion), mensajeAccion);
+            return new ResultadoAccion(new Colocacion(rally, calidadRecepcion), mensajeAccion, realizador);
         }
 
         /// <summary>

@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using Persistencia.Infraestructura;
+using Spectre.Console;
 
 namespace Logica.Modelo
 {
@@ -13,13 +14,15 @@ namespace Logica.Modelo
         private List<Jugador> jugadores;
         private Formacion? formacionPartido;
         private bool esEquipoJugador;
+        private Color colorConsola;
 
         public Equipo() 
         {
-            this.nombre = "Nombre sin especificar";
-            this.jugadores = new List<Jugador>();
-            this.nJugadores = 0;
-            this.EsEquipoJugador = false;
+            nombre = "Nombre sin especificar";
+            jugadores = new List<Jugador>();
+            nJugadores = 0;
+            EsEquipoJugador = false;
+            colorConsola = Color.White;
         }
 
         // Propiedades
@@ -36,7 +39,8 @@ namespace Logica.Modelo
                 nJugadores = jugadores.Count(); 
             }
         }
-        public Formacion? FormacionPartido { get => formacionPartido ; set => formacionPartido = value; }
+        public Formacion? FormacionPartido { get => formacionPartido; set => formacionPartido = value; }
+        public Color ColorConsola { get => colorConsola; set => colorConsola = value; }
     }
 
     /// <summary>

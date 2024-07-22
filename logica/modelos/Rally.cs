@@ -1,21 +1,28 @@
 using Gui.Util;
 using Logica.Acciones;
+using Spectre.Console;
 
 namespace Logica.Modelo
 {
     public class Rally
     {
+        private string colorAccionesLocal = Color.Yellow.ToMarkup();
+        private string colorAccionesVisitante = Color.Red.ToMarkup();
+
         public Formacion FormacionLocal { get; set; }
         public Formacion FormacionVisitante { get; set;}
         public TipoEquipo PosesionPelota { get; set; }
         public Jugador JugadorActual { get; set; }
+        public List<string> AccionesRally { get; set; }
 
-        public Rally(Formacion formacionLocal, Formacion formacionVisitante, TipoEquipo posesionPelota, Jugador jugadorActual)
+        public Rally(Formacion FormacionLocal, Formacion FormacionVisitante, TipoEquipo PosesionPelota, Jugador JugadorActual)
         {
-            this.FormacionLocal = formacionLocal;
-            this.FormacionVisitante = formacionVisitante;
-            this.PosesionPelota = posesionPelota;
-            this.JugadorActual = jugadorActual;
+            this.FormacionLocal = FormacionLocal;
+            this.FormacionVisitante = FormacionVisitante;
+            this.PosesionPelota = PosesionPelota;
+            this.JugadorActual = JugadorActual;
+
+            AccionesRally = new List<string>();
         }
 
         /// <summary>
@@ -24,7 +31,7 @@ namespace Logica.Modelo
         /// </summary>
         public void IntercambiarPosesionPelota()
         {
-            this.PosesionPelota = (PosesionPelota == TipoEquipo.LOCAL) ? TipoEquipo.VISITANTE : TipoEquipo.LOCAL;
+            PosesionPelota = (PosesionPelota == TipoEquipo.LOCAL) ? TipoEquipo.VISITANTE : TipoEquipo.LOCAL;
         }
 
         /// <summary>
@@ -33,7 +40,7 @@ namespace Logica.Modelo
         /// <returns>Objeto <c>Formacion</c></returns>
         public Formacion ObtenerEquipoPropio()
         {
-            return (this.PosesionPelota == TipoEquipo.LOCAL) ? FormacionLocal : FormacionVisitante;
+            return (PosesionPelota == TipoEquipo.LOCAL) ? FormacionLocal : FormacionVisitante;
         }
 
         /// <summary>
@@ -42,7 +49,7 @@ namespace Logica.Modelo
         /// <returns>Objeto <c>Formacion</c></returns>
         public Formacion ObtenerEquipoRival()
         {
-            return (this.PosesionPelota == TipoEquipo.LOCAL) ? FormacionVisitante : FormacionLocal;
+            return (PosesionPelota == TipoEquipo.LOCAL) ? FormacionVisitante : FormacionLocal;
         }
 
         /// <summary>
@@ -57,22 +64,27 @@ namespace Logica.Modelo
 
             do
             {
-                // realizo la acción
+                // Realizo la acción
                 resultado = accion.Realizar();
 
-                // FALTA IMPLEMENTAR UN LOGGER A LA VISTA DE LA PARTIDA
-                // muestro el mensaje que produzca la acción
-                Console.ForegroundColor = ConsoleColor.Red;
-                System.Console.WriteLine(resultado.MensajeAccion);
-                Console.ResetColor();
-                
-                // Delay de 1 segundo entre las acciones
-                VistasUtil.PausarVistas(1.5f);
+                // Almaceno el mensaje que produzca la acción
+                Log(resultado);
 
                 // Si el resultado tiene una acción siguiente, la ejecuto, caso contrario el rally terminó
                 if (resultado.AccionSiguiente != null) accion = resultado.AccionSiguiente;
 
             } while (resultado.AccionSiguiente != null);
+        }
+
+        /// <summary>
+        /// Realiza el log de una acción del rally
+        /// </summary>
+        /// <param name="mensajeAccion">Mensaje a almacenar</param>
+        public void Log(ResultadoAccion resultadoAccion)
+        {
+            var mensajeAccion = resultadoAccion.MensajeAccion;
+            var colorAccion = FormacionLocal.JugadoresCancha.Contains(resultadoAccion.Realizador) ? colorAccionesLocal : colorAccionesVisitante;
+            AccionesRally.Add($"[white]►[/] [{colorAccion}]{mensajeAccion}[/]");
         }
     }
 }

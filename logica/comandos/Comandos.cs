@@ -327,7 +327,7 @@ Espero que te hayas divertido :)
 
                 // Genero un simulador de partido y lo inicio
                 var simuladorPartido = new SimuladorPartidoHandler(p);
-                simuladorPartido.IniciarPartido();
+                simuladorPartido.IniciarSimulacionPartido();
             }
         }
 
@@ -503,8 +503,8 @@ Espero que te hayas divertido :)
                     .Validate(input => {
                         if (input % 2 == 0)
                             return ValidationResult.Error("[red]Debe ingresar un número impar[/]");
-                        if (input < 3)
-                            return ValidationResult.Error("[red]Deben jugarse al menos 3 sets[/]");
+                        if (input < 1)
+                            return ValidationResult.Error("[red]Debe jugarse al menos 1 set[/]");
 
                         return ValidationResult.Success();
                     })

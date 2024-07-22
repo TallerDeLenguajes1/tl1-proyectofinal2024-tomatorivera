@@ -15,7 +15,7 @@ namespace Logica.Acciones
         {
             // Si el bloqueo va hacia afuera de la cancha, termina el rally
             if (tiraAfuera())
-                return new ResultadoAccion($"El bloqueo de {realizador.Nombre} no fue muy bueno y terminó afuera de la cancha");
+                return new ResultadoAccion($"El bloqueo de {realizador.Nombre} no fue muy bueno y terminó afuera de la cancha", realizador);
 
             // Según la zona en la que se encuentre el bloqueador se determina qué jugadores
             // del equipo rival pueden llegar a recepcionar el bloqueo
@@ -26,7 +26,7 @@ namespace Logica.Acciones
             if (hacePunto(receptor))
             {
                 rally.IntercambiarPosesionPelota();
-                return new ResultadoAccion($"¡BLOQUEO PERFECTO Y PUNTO DE {realizador.Nombre}!");
+                return new ResultadoAccion($"¡BLOQUEO PERFECTO Y PUNTO DE {realizador.Nombre}!", realizador);
             }
 
             // Si el bloqueador llega a tocarla, la pelota puede ser salvada por un defensa de su mismo equipo
@@ -34,7 +34,7 @@ namespace Logica.Acciones
             {
                 receptor = rally.ObtenerEquipoPropio().ObtenerDefensas().OrderByDescending(j => j.HabilidadRecepcion).First();
                 rally.JugadorActual = receptor;
-                return new ResultadoAccion(new Recepcion(rally), $"{realizador.Nombre} realiza un buen toque en el bloqueo para que {receptor.Nombre} pueda recepionar");
+                return new ResultadoAccion(new Recepcion(rally), $"{realizador.Nombre} realiza un buen toque en el bloqueo para que {receptor.Nombre} pueda recepionar", receptor);
             }
 
             // Si el bloqueador llega a taparla pero el equipo anterior llega a salvarla, continúa el juego
@@ -42,7 +42,7 @@ namespace Logica.Acciones
             {
                 rally.IntercambiarPosesionPelota();
                 rally.JugadorActual = receptor;
-                return new ResultadoAccion(new Recepcion(rally), $"¡{realizador.Nombre} BLOQUEA Y {receptor.Nombre} LA SALVA!");
+                return new ResultadoAccion(new Recepcion(rally), $"¡{realizador.Nombre} BLOQUEA Y {receptor.Nombre} LA SALVA!", receptor);
             }
         }
 
