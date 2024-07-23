@@ -559,6 +559,7 @@ namespace Gui.Vistas
 
             LayoutInformacion["info_partido"].Update(dibujarInformacionPartido());
             LayoutInformacion["info_equipos"].Update(dibujarInformacionEquipos());
+            LayoutInformacion["info_adicional"].Update(dibujarInformacionAdicional());
             //LayoutInformacion[nombrePanelAcciones].Update(dibujarAcciones());
 
             //AnsiConsole.Write(LayoutInformacion);
@@ -572,16 +573,23 @@ namespace Gui.Vistas
         {
             var layout = new Layout("raiz")
                             .SplitColumns(
-                                new Layout("info_partido"),
-                                new Layout("info_acciones"),
+                                new Layout("info_columna")
+                                    .SplitRows(
+                                        new Layout("info_fila")
+                                            .SplitColumns(
+                                                new Layout("info_partido"),
+                                                new Layout(nombrePanelAcciones)
+                                            ),
+                                        new Layout("info_adicional")
+                                    ),
                                 new Layout("info_equipos")
                             );
             
-            /*
-            layout["info_partido"].Ratio(1);
-            layout["info_acciones"].Ratio(1);
-            layout["info_equipos"].Ratio(2);
-            */
+            layout["info_columna"].Ratio(2);
+            layout["info_equipos"].Ratio(1);
+
+            layout["info_fila"].Ratio(2);
+            layout["info_adicional"].Ratio(1);
 
             return layout;
         }
@@ -757,6 +765,109 @@ namespace Gui.Vistas
         }
 
         /// <summary>
+        /// Dibuja el panel con información adicional del partido, como
+        /// las formaciones de los equipos y quién realiza un punto
+        /// </summary>
+        /// <returns>Objeto <c>Panel</c></returns>
+        private Panel dibujarInformacionAdicional()
+        {
+            // Si por alguna razón la información del partido es nula, no muestro detalles
+            if (InformacionPartido == null)
+            {
+                return 
+                    new Panel(Align.Left(
+                        new Markup(":warning: [red]Ha ocurrido algún error obteniendo la información[/]")
+                    ))
+                    {
+                        Header = new PanelHeader("[dim] [/][orange1 bold underline]Estado del partido[/][dim] [/]")
+                    }
+                    .Border(BoxBorder.Rounded)
+                    .BorderColor(Color.Orange1)
+                    .Expand();
+            }
+            else
+            {
+                // Armo las formaciones en una matriz
+                var formacionLocal = InformacionPartido.Local.FormacionPartido!;
+                Markup[,] locales = 
+                {
+                    {
+                        new Markup($"\n[orange1]ZONA 5[/]\n[yellow]{formacionLocal.ObtenerJugadorZona(5).Nombre}[/]"), 
+                        new Markup($"\n[orange1]ZONA 4[/]\n[yellow]{formacionLocal.ObtenerJugadorZona(4).Nombre}[/]")
+                    },{
+                        new Markup($"\n[orange1]ZONA 6[/]\n[yellow]{formacionLocal.ObtenerJugadorZona(6).Nombre}[/]"),
+                        new Markup($"\n[orange1]ZONA 3[/]\n[yellow]{formacionLocal.ObtenerJugadorZona(3).Nombre}[/]")
+                    },{
+                        new Markup($"\n[orange1]ZONA 1[/]\n[yellow]{formacionLocal.ObtenerJugadorZona(1).Nombre}[/]\n"),
+                        new Markup($"\n[orange1]ZONA 2[/]\n[yellow]{formacionLocal.ObtenerJugadorZona(2).Nombre}[/]\n")
+                    }
+                };
+
+                var formacionVisitante = InformacionPartido.Visitante.FormacionPartido!;
+                Markup[,] visitantes = 
+                {
+                    {
+                        new Markup($"\n[red]ZONA 2[/]\n[red1]{formacionVisitante.ObtenerJugadorZona(2).Nombre}[/]"),
+                        new Markup($"\n[red]ZONA 1[/]\n[red1]{formacionVisitante.ObtenerJugadorZona(1).Nombre}[/]")
+                    },{
+                        new Markup($"\n[red]ZONA 3[/]\n[red1]{formacionVisitante.ObtenerJugadorZona(3).Nombre}[/]"),
+                        new Markup($"\n[red]ZONA 6[/]\n[red1]{formacionVisitante.ObtenerJugadorZona(6).Nombre}[/]")
+                    },{
+                        new Markup($"\n[red]ZONA 4[/]\n[red1]{formacionVisitante.ObtenerJugadorZona(4).Nombre}[/]\n"),
+                        new Markup($"\n[red]ZONA 5[/]\n[red1]{formacionVisitante.ObtenerJugadorZona(5).Nombre}[/]\n")
+                    }
+                };
+
+                var tablaFormaciones = new Table()
+                {
+                    Title = new TableTitle("[tan](( Formacion actual de los equipos ))[/]")
+                };
+                tablaFormaciones.AddColumn(new TableColumn("local").Centered());
+                tablaFormaciones.AddColumn(new TableColumn("visitante").Centered());
+                tablaFormaciones.HideHeaders();
+                tablaFormaciones.Border(TableBorder.Heavy);
+                tablaFormaciones.BorderColor(Color.LightSkyBlue1);
+                
+                // Genero dos tablas para almacenar las formaciones, una de local y otra para visitantes
+                var tablaLocal = new Table();
+                tablaLocal.AddColumn(new TableColumn("d").Centered());
+                tablaLocal.AddColumn(new TableColumn("o").Centered());
+                tablaLocal.HideHeaders();
+                tablaLocal.Border(TableBorder.Minimal);
+                tablaLocal.BorderColor(Color.DarkSlateGray1);
+                tablaLocal.AddRow(locales[0,0], locales[0,1]);
+                tablaLocal.AddRow(locales[1,0], locales[1,1]);
+                tablaLocal.AddRow(locales[2,0], locales[2,1]);
+
+                var tablaVisitante = new Table();
+                tablaVisitante.AddColumn(new TableColumn("o").Centered());
+                tablaVisitante.AddColumn(new TableColumn("d").Centered());
+                tablaVisitante.HideHeaders();
+                tablaVisitante.Border(TableBorder.Minimal);
+                tablaVisitante.BorderColor(Color.DarkSlateGray1);
+                tablaVisitante.AddRow(visitantes[0,0], visitantes[0,1]);
+                tablaVisitante.AddRow(visitantes[1,0], visitantes[1,1]);
+                tablaVisitante.AddRow(visitantes[2,0], visitantes[2,1]);
+
+                // Las dos tablas se muestran dentro de otra tabla para dar la forma de la cancha
+                tablaFormaciones.AddRow(tablaLocal, tablaVisitante);
+
+                return
+                    new Panel(Align.Center(
+                        tablaFormaciones,
+                        VerticalAlignment.Middle
+                    ))
+                    {
+                        Header = new PanelHeader("[dim] [/][orange1 bold underline]Estado del partido[/][dim] [/]")
+                    }
+                    .Border(BoxBorder.Rounded)
+                    .BorderColor(Color.Orange1)
+                    .Expand();
+            }
+
+        }
+
+        /// <summary>
         /// Dibuja el panel con la información de las acciones de un partido
         /// </summary>
         /// <returns>Objeto <c>Panel</c></returns>
@@ -783,18 +894,59 @@ namespace Gui.Vistas
         /// <param name="segundosDelay">Segundos de delay entre la aparición de cada acción en pantalla (por defecto, 0 segs)</param>
         public void ActualizarAcciones(LiveDisplayContext ctx, List<string> acciones, int segundosDelay = 0)
         {
+            int maxLineasVentana = Console.WindowHeight / 3 * 2 - 5;
+
             // En esta variable acumulo las acciones que van mostrandose para realizar la animación
             // de que lo que pasa va dibujandose una línea debajo de otra
-            string accionesAcumuladas = string.Empty;
+            string accionesSucedidas = string.Empty;
 
             foreach (var accion in acciones)
             {
-                accionesAcumuladas += $"\n{accion}";
-                LayoutInformacion[nombrePanelAcciones].Update(dibujarAcciones(accionesAcumuladas));
+                // Controlo si las lineas de las acciones superan la cantidad máxima de líneas para la ventana.
+                // De ser así, borro las primeras líneas para no desbordar
+                if (accionesSucedidas.Split('\n', StringSplitOptions.None).Length >= maxLineasVentana)
+                {
+                    var lineas = accionesSucedidas.Split('\n').ToList();
+                    lineas.RemoveAt(1);
+                    accionesSucedidas = string.Join('\n', lineas);
+                }
+
+                accionesSucedidas += $"\n{accion}";
+                LayoutInformacion[nombrePanelAcciones].Update(dibujarAcciones(accionesSucedidas));
 
                 VistasUtil.PausarVistas(segundosDelay);
                 ctx.Refresh();
             }
+        }
+    
+        public void MarcarPunto(LiveDisplayContext ctx, TipoEquipo equipo)
+        {
+            (Color figlet, Color subtitulo) color = (equipo == TipoEquipo.LOCAL) ? (Color.Orange1, Color.Yellow) : (Color.Red, Color.Red1);
+            var figletPunto = @"   _ ___  __  ___  ____________  __
+  (_) _ \/ / / / |/ /_  __/ __ \/ /
+ / / ___/ /_/ /    / / / / /_/ /_/ 
+/_/_/   \____/_/|_/ /_/  \____(_)  ";
+            var subtitulo = (equipo == TipoEquipo.LOCAL) ? InformacionPartido!.Local.Nombre : InformacionPartido!.Visitante.Nombre;
+
+            var filas = new Rows(
+                new Markup($"[{color.figlet.ToMarkup()}]{figletPunto}[/]"),
+                new Markup($"[{color.figlet.ToMarkup()}]Punto para el equipo [/][{color.subtitulo.ToMarkup()}]{subtitulo}[/]")
+            );
+
+            LayoutInformacion["info_adicional"].Update(
+                new Panel(Align.Center(
+                    filas,
+                    VerticalAlignment.Middle
+                ))
+                {
+                    Header = new PanelHeader("[dim] [/][orange1 bold underline]Estado del partido[/][dim] [/]")
+                }
+                .Border(BoxBorder.Rounded)
+                .BorderColor(Color.Orange1)
+                .Expand()
+            );
+
+            ctx.Refresh();
         }
     }
 }

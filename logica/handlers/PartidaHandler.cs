@@ -233,7 +233,7 @@ namespace Logica.Handlers
 
             // El partido termina cuando ya se hayan jugado todos los sets o cuando se pueda
             // determinar un ganador según el puntaje de los equipos tras cada ronda
-            while (setsRestantes != 0 || !hayGanadorPartido(partido.ScoreLocal, partido.ScoreVisitante))
+            while (setsRestantes != 0 && !hayGanadorPartido(partido.ScoreLocal, partido.ScoreVisitante))
             {
                 // Comienzo el rally
                 rally.ComenzarRally();
@@ -241,6 +241,7 @@ namespace Logica.Handlers
 
                 // Muestro las acciones del rally
                 controladorPanel.MostrarAcciones(ctx, rally.AccionesRally);
+                controladorPanel.MostrarPunto(ctx, posesionPelota);
                 rally.AccionesRally.Clear();
 
                 // Si después de un rally hay un ganador del set, se realizan algunas acciones para pasar al siguiente
@@ -261,11 +262,11 @@ namespace Logica.Handlers
                     partido.ResultadoSets.Add(partido.SetActual, new ResultadoSet());
                 }
 
-                // Actualizo la información de las vistas
-                controladorPanel.MostrarVista();
-
                 // Temporal, para que no se borren las acciones
                 Console.ReadKey(true);
+                
+                // Actualizo la información de las vistas
+                controladorPanel.MostrarVista();
             }
         }
 

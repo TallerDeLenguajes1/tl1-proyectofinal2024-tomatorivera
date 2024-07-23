@@ -263,14 +263,33 @@ namespace Gui.Controladores
             vista.Dibujar();
         }
 
+        /// <summary>
+        /// Obtiene el layout sobre el cual se despliega la información del partido
+        /// </summary>
+        /// <returns>Objeto <c>Layout</c></returns>
         public Layout ObtenerLayoutInformacion()
         {
             return vista.LayoutInformacion;
         }
 
+        /// <summary>
+        /// Muestra una secuencia de acciones sucedidas en el partido en el layout correspondiente
+        /// </summary>
+        /// <param name="ctx">Contexto del objeto Live que actualiza el Layout</param>
+        /// <param name="acciones">Lista de acciones a mostrar por pantalla</param>
         public void MostrarAcciones(LiveDisplayContext ctx, List<string> acciones)
         {
             vista.ActualizarAcciones(ctx, acciones, 1);
+        }
+
+        /// <summary>
+        /// Muestra en el panel correspondiente qué equipo ha marcado un punto
+        /// </summary>
+        /// <param name="ctx">Contexto del objeto Live que actualiza el Layout</param>
+        /// <param name="equipo">Tipo de equipo que ha marcado el punto (Local o Visitante)</param>
+        public void MostrarPunto(LiveDisplayContext ctx, TipoEquipo equipo)
+        {
+            vista.MarcarPunto(ctx, equipo);
         }
     }
 }
