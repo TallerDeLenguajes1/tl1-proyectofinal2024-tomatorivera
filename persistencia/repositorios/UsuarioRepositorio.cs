@@ -37,6 +37,10 @@ namespace Persistencia.Repositorios
 
             // Actualizo la instancia del usuario actual para manejar sus datos desde el programa
             usuarioActual = obj;
+            // Almaceno el nombre del usuario actual
+            Config.NombreUsuarioActual = usuarioActual.Nombre;
+            // Almaceno el nombre de su equipo
+            Config.NombreEquipoUsuario = usuarioActual.Equipo.Nombre;
         }
 
         /// <summary>
@@ -73,6 +77,7 @@ namespace Persistencia.Repositorios
             usuarioActual = usuario;
             // Modifico los datos de configuración vinculados al usuario
             Config.NombreUsuarioActual = usuario.Nombre;
+            Config.NombreEquipoUsuario = usuarioActual.Equipo.Nombre;
 
             return usuario;
         }

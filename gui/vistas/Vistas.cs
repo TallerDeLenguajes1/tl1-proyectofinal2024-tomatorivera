@@ -177,14 +177,14 @@ namespace Gui.Vistas
                 if (indiceRecorriendo == indiceSeleccionado)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    VistasUtil.MostrarCentrado("► " + comando.titulo + " ◄");
+                    VistasUtil.MostrarCentrado("► " + comando.Titulo + " ◄");
                     Console.ForegroundColor = ConsoleColor.White;
                 }
                 else
                 {
-                    Console.Write(new string(' ', Console.WindowWidth - comando.titulo.Length));
+                    Console.Write(new string(' ', Console.WindowWidth - comando.Titulo.Length));
                     Console.CursorLeft = 0;
-                    VistasUtil.MostrarCentrado(comando.titulo);
+                    VistasUtil.MostrarCentrado(comando.Titulo);
                 }
 
                 indiceRecorriendo++;
@@ -919,6 +919,11 @@ namespace Gui.Vistas
             }
         }
     
+        /// <summary>
+        /// Actualiza el panel de 'Estado del partido' para mostrar qué equipo ha marcado un punto
+        /// </summary>
+        /// <param name="ctx">Contexto de la actualización del panel en tiempo real</param>
+        /// <param name="equipo">Equipo que ha marcado el punto (Local o Visitante)</param>
         public void MarcarPunto(LiveDisplayContext ctx, TipoEquipo equipo)
         {
             (Color figlet, Color subtitulo) color = (equipo == TipoEquipo.LOCAL) ? (Color.Orange1, Color.Yellow) : (Color.Red, Color.Red1);
@@ -930,6 +935,7 @@ namespace Gui.Vistas
 
             var filas = new Rows(
                 new Markup($"[{color.figlet.ToMarkup()}]{figletPunto}[/]"),
+                new Text(""), // separador
                 new Markup($"[{color.figlet.ToMarkup()}]Punto para el equipo [/][{color.subtitulo.ToMarkup()}]{subtitulo}[/]")
             );
 

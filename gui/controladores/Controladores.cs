@@ -145,7 +145,7 @@ namespace Gui.Controladores
                 // Ejecuto el comando seleccionado manejando los posibles errores que pueden lanzar
                 try
                 {
-                    vista.Comandos.ElementAt(indiceSeleccionado).ejecutar();
+                    vista.Comandos.ElementAt(indiceSeleccionado).Ejecutar();
                 }
                 catch (Exception e)
                 {

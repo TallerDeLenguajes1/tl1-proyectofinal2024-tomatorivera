@@ -2,6 +2,7 @@ using Logica.Util;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Persistencia.Infraestructura;
+using Spectre.Console;
 
 namespace Logica.Modelo
 {
@@ -85,6 +86,13 @@ namespace Logica.Modelo
             float incrementoCansancio = ProbabilidadesUtil.ValorAleatorioEntre(min, max) * reduccionSegunExperiencia;
 
             this.cansancio = Math.Min(cansancio + incrementoCansancio, 10.0f);
+        }
+
+        public string DescripcionPartido()
+        {
+            return
+                $"[mistyrose3]{numeroCamiseta}[/] :t_shirt: [lightgoldenrod3]{nombre}[/] [tan]({tipoJugador})[/] [gray] - [/][mistyrose3]Cansancio {cansancio}[/]" +
+                $"[gray] - SAQ:[/] {habilidadSaque} [gray]REM:[/] {habilidadRemate} [gray]REC:[/] {habilidadRecepcion} [gray]COL:[/] {habilidadColocacion} [gray]BLO:[/] {habilidadBloqueo}";
         }
 
         public override string ToString()

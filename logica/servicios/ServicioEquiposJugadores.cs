@@ -9,18 +9,17 @@ namespace Logica.Servicios
     /// <summary>
     /// Servicio para la gestión de tareas relacionadas a un Equipo y sus jugadores
     /// </summary>
-    public interface EquipoJugadoresServicio
+    public interface IEquipoJugadoresServicio
     {
         Task<Equipo> GenerarEquipoAsync(string nombreEquipo = "", int nJugadores = 14);
         Task<string> GenerarNombreEquipoAsync();
-        void AlmacenarNombreEquipoUsuario(string nombreEquipo);
 
         Task<List<Jugador>> GenerarJugadoresAsync(int nJugadores);
         Task<string> GenerarNombreJugadorAsync();
         Task<Dictionary<int, string>> GenerarIdentificadoresJugadoresAsync(int nIdentificadores = 1);
     }
 
-    public class EquipoJugadoresServicioImpl : EquipoJugadoresServicio
+    public class EquipoJugadoresServicioImpl : IEquipoJugadoresServicio
     {
         private const int nCamisetaMin = 1;
         private const int nCamisetaMax = 50;
@@ -100,15 +99,6 @@ namespace Logica.Servicios
             }
 
             return nuevoNombre;
-        }
-
-        /// <summary>
-        /// Guarda en los archivos de configuracion el nombre del equipo del usuario
-        /// </summary>
-        /// <param name="nombreEquipo">Nombre de equipo del usuario</param>
-        public void AlmacenarNombreEquipoUsuario(string nombreEquipo)
-        {
-            Config.NombreEquipoUsuario = nombreEquipo;
         }
 
         /// <summary>
