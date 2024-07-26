@@ -1,5 +1,9 @@
 namespace Logica.Modelo;
 
+/// <summary>
+/// Representa un set del partido, es decir, desde que los equipos
+/// tienen 0 puntos hasta que llegan a la cantidad indicada en PuntosParaSet
+/// </summary>
 public class Set
 {
     public const int PuntosParaSet = 5;
@@ -37,7 +41,8 @@ public class Set
     /// <returns><c>int</c> sustituciones restantes del equipo <paramref name="tipoEquipo"/></returns>
     public int ObtenerSustitucionesRestantes(TipoEquipo tipoEquipo)
     {
-        return SustitucionesPorSet - (tipoEquipo == TipoEquipo.LOCAL ? SustitucionesLocal : SustitucionesVisitantes);
+        return SustitucionesPorSet - ((tipoEquipo == TipoEquipo.LOCAL) ? SustitucionesLocal 
+                                                                       : SustitucionesVisitantes);
     }
 
     /// <summary>
@@ -50,5 +55,32 @@ public class Set
         Sustituciones = new Sustituciones();
         SustitucionesLocal = 0;
         SustitucionesVisitantes = 0;
+    }
+}
+
+/// <summary>
+/// Clase que almacena datos de un set
+/// </summary>
+public class ResultadoSet
+{
+    public int PuntosLocal { get; set; }
+    public int PuntosVisitante { get; set; }
+
+    public ResultadoSet()
+    {
+        PuntosLocal = 0;
+        PuntosVisitante = 0;
+    }
+
+    /// <summary>
+    /// Incrementa un punto a alguno de los equipos
+    /// </summary>
+    /// <param name="equipo">Equipo al cual incrementar un punto. Ver <see cref="TipoEquipo"/></param>
+    public void IncrementarPuntos(TipoEquipo equipo)
+    {
+        if (equipo == TipoEquipo.LOCAL) 
+            PuntosLocal++;
+        else 
+            PuntosVisitante++;
     }
 }

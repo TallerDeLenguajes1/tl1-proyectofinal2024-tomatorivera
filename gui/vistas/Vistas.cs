@@ -560,7 +560,7 @@ namespace Gui.Vistas
             LayoutInformacion["info_partido"].Update(dibujarInformacionPartido());
             LayoutInformacion["info_equipos"].Update(dibujarInformacionEquipos());
             LayoutInformacion["info_adicional"].Update(dibujarInformacionAdicional());
-            //LayoutInformacion[nombrePanelAcciones].Update(dibujarAcciones());
+            LayoutInformacion[nombrePanelAcciones].Update(dibujarAcciones());
 
             //AnsiConsole.Write(LayoutInformacion);
         }
@@ -894,7 +894,7 @@ namespace Gui.Vistas
         /// <param name="segundosDelay">Segundos de delay entre la aparición de cada acción en pantalla (por defecto, 0 segs)</param>
         public void ActualizarAcciones(LiveDisplayContext ctx, List<string> acciones, int segundosDelay = 0)
         {
-            int maxLineasVentana = Console.WindowHeight / 3 * 2 - 5;
+            int maxLineasVentana = Console.WindowHeight / 3 * 2 - 8;
 
             // En esta variable acumulo las acciones que van mostrandose para realizar la animación
             // de que lo que pasa va dibujandose una línea debajo de otra
@@ -908,6 +908,8 @@ namespace Gui.Vistas
                 {
                     var lineas = accionesSucedidas.Split('\n').ToList();
                     lineas.RemoveAt(1);
+                    if (!lineas[1].Contains("►")) lineas.RemoveAt(1);
+
                     accionesSucedidas = string.Join('\n', lineas);
                 }
 

@@ -35,6 +35,11 @@ public class SimuladorPartidoHandler
         panelPartidoControlador = new PanelPartidoControlador(new PanelPartido(), partido);
     }
 
+    /* Propiedades */
+    public Partido Partido { get => partido; }
+
+    /* Métodos */
+
     /// <summary>
     /// Método encargado de inicializar la simulación de un partido, sus vistas y objetos necesarios
     /// </summary>
@@ -209,13 +214,21 @@ public class SimuladorPartidoHandler
         // para ganarlo con una diferencia de dos puntos por encima del rival
         while (!set.HayGanadorSet())
         {
-            // Comienzo el rally
-            rally.ComenzarRally();
-            determinarResultadoRally(rally);
+            // Actualizo el panel de información con el componente Live para ir mostrando las acciones en una misma vista
+            AnsiConsole.Live(panelPartidoControlador.ObtenerLayoutInformacion())
+                .Start(ctx => {
+                    // Actualizo la información general de la vista
+                    panelPartidoControlador.MostrarVista();
 
-            // Muestro la información del rally en la vista y la actualizo, posteriormente, limpio las acciones
-            actualizarInformacionVista(rally.AccionesRally);
-            rally.AccionesRally.Clear();
+                    // Comienzo el rally
+                    rally.ComenzarRally();
+                    determinarResultadoRally(rally);
+
+                    // Muestro las acciones del rally
+                    panelPartidoControlador.MostrarAcciones(ctx, rally.AccionesRally);
+                    //panelPartidoControlador.MostrarPunto(ctx, posesionPelota);
+                    rally.AccionesRally.Clear();
+                });
 
             ejecutarMenu();
         }
@@ -226,24 +239,6 @@ public class SimuladorPartidoHandler
             partido.ScoreLocal++;
         else    
             partido.ScoreVisitante++;
-    }
-
-    /// <summary>
-    /// Actualiza la información en la vista que corresponde al partido y
-    /// muestra en ella la información de las acciones del rally
-    /// </summary>
-    /// <param name="accionesRally"></param>
-    private void actualizarInformacionVista(List<string> accionesRally)
-    {
-        AnsiConsole.Live(panelPartidoControlador.ObtenerLayoutInformacion())
-            .Start(ctx => {
-                // Muestro las acciones del rally
-                panelPartidoControlador.MostrarAcciones(ctx, accionesRally);
-                panelPartidoControlador.MostrarPunto(ctx, posesionPelota);
-
-                // Actualizo la información general de la vista
-                panelPartidoControlador.MostrarVista();
-            });
     }
 
     /// <summary>
@@ -331,46 +326,83 @@ public class SimuladorPartidoHandler
     /// </summary>
     private void ejecutarMenu()
     {
+        IComando comando;
+
         Equipo equipoJugador;
-        int cambiosRestantes;
-        if (partido.Local.EsEquipoJugador)
+        TipoEquipo tipoEquipoJugador;
+
+        // El menú se ejecuta mientras el usuario no seleccione la opción para continuar el partido
+        do
         {
-            equipoJugador = partido.Local;
-            cambiosRestantes = partido.SetActual.ObtenerSustitucionesRestantes(TipoEquipo.LOCAL);
+            if (partido.Local.EsEquipoJugador)
+            {
+                equipoJugador = partido.Local;
+                tipoEquipoJugador = TipoEquipo.LOCAL;
+            }
+            else
+            {
+                equipoJugador = partido.Visitante;
+                tipoEquipoJugador = TipoEquipo.VISITANTE;
+            }
+
+            var cambiosRestantes = partido.SetActual.ObtenerSustitucionesRestantes(tipoEquipoJugador);
+            var comandosDisponibles = new List<IComando>();
+            
+            // El comando para realizar una sustitución lo muestro al usuario solo si es que le quedan suficientes cambios en el set actual
+            if (cambiosRestantes > 0) 
+                comandosDisponibles.Add(new ComandoRealizarSustitucion(this, equipoJugador, tipoEquipoJugador));
+
+            comandosDisponibles.Add(new ComandoVisualizarPlantilla(equipoJugador.FormacionPartido!));  
+            comandosDisponibles.Add(new ComandoContinuarPartido());
+
+            comando = AnsiConsole.Prompt(
+                new SelectionPrompt<IComando>()
+                    .Title("[orange1 bold]Seleccione una opción para continuar[/]")
+                    .HighlightStyle("tan")
+                    .AddChoices(comandosDisponibles)
+                    .UseConverter(cmd => (cmd is ComandoRealizarSustitucion) ? $"{cmd.Titulo} [gray](Restantes: {cambiosRestantes})[/]"
+                                                                             : cmd.Titulo)
+            );
+
+            // Ejecuto el comando controlando y mostrando por pantalla los posibles errores
+            try
+            {
+                comando.Ejecutar();
+            }
+            catch (Exception ex)
+            {
+                VistasUtil.MostrarError($"{ex.Message}");
+                Console.ReadKey(true);
+            }
+        } 
+        while (!(comando is ComandoContinuarPartido));
+    }
+    
+    /// <summary>
+    /// Realiza una sustitución en alguno de los equipos
+    /// </summary>
+    /// <param name="equipoRealizador">Equipo que realiza el cambio (Local o visitante)</param>
+    /// <param name="entrante">Jugador que ingresa</param>
+    /// <param name="saliente">Jugador que sale</param>
+    public void RealizarSustitucion(TipoEquipo equipoRealizador, Jugador entrante, Jugador saliente)
+    {
+        var nuevaSustitucion = new Sustitucion(entrante, saliente);
+        Formacion formacion;
+
+        if (equipoRealizador == TipoEquipo.LOCAL)
+        {
+            partido.SetActual.SustitucionesLocal++;
+            partido.SetActual.Sustituciones.SustitucionesLocal.Add(nuevaSustitucion);
+            formacion = partido.Local.FormacionPartido!;
         }
         else
         {
-            equipoJugador = partido.Visitante;
-            cambiosRestantes = partido.SetActual.ObtenerSustitucionesRestantes(TipoEquipo.VISITANTE);
+            partido.SetActual.SustitucionesVisitantes++;
+            partido.SetActual.Sustituciones.SustitucionesVisitante.Add(nuevaSustitucion);
+            formacion = partido.Visitante.FormacionPartido!;
         }
 
-        var comandosDisponibles = new List<IComando>();
-        
-        // El comando para realizar una sustitución lo muestro al usuario solo si es que le quedan suficientes cambios en el set actual
-        if (cambiosRestantes > 0) 
-            comandosDisponibles.Add(new ComandoRealizarSustitucion(equipoJugador));
-
-        comandosDisponibles.Add(new ComandoVisualizarPlantilla(equipoJugador.FormacionPartido!));  
-        comandosDisponibles.Add(new ComandoContinuarPartido());
-
-        var comando = AnsiConsole.Prompt(
-            new SelectionPrompt<IComando>()
-                .Title("[orange1 bold]Seleccione una opción para continuar[/]")
-                .HighlightStyle("tan")
-                .AddChoices(comandosDisponibles)
-                .UseConverter(cmd => (cmd is ComandoRealizarSustitucion) ? $"{cmd.Titulo} [gray](Restantes: {cambiosRestantes})[/]"
-                                                                         : cmd.Titulo)
-        );
-
-        // Ejecuto el comando controlando y mostrando por pantalla los posibles errores
-        try
-        {
-            comando.Ejecutar();
-        }
-        catch (Exception ex)
-        {
-            VistasUtil.MostrarError($"Ha ocurrido un error ejecutando el comando: {ex.Message}");
-            Console.ReadKey(true);
-        }
+        formacion.JugadoresCancha.Reemplazar(saliente, entrante);
+        formacion.JugadoresSuplentes.Reemplazar(entrante, saliente);
     }
 }

@@ -25,7 +25,7 @@ namespace Logica.Modelo
         public Jugador()
         {
             nombre = string.Empty;
-            numeroCamiseta = 0;
+            numeroCamiseta = -1;
             tipoJugador = TipoJugador.PUNTA;
             experiencia = 0;
             habilidadSaque = 0;
@@ -73,6 +73,10 @@ namespace Logica.Modelo
             this.cansancio = Math.Min(cansancio + incrementoCansancio, 10.0f);
         }
 
+        /// <summary>
+        /// Obtiene la descripción de los jugadores utilizada para los partidos
+        /// </summary>
+        /// <returns><c>string</c> Descripción del jugador con colores</returns>
         public string DescripcionPartido()
         {
             return

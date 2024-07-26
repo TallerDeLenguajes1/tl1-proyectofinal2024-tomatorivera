@@ -16,4 +16,10 @@ namespace Logica.Excepciones
             this.EquipoEnPosesion = EquipoEnPosesion;
         }
     }
+
+    public class SustitucionInvalidaException : Exception
+    {
+        public SustitucionInvalidaException(string message) : base(message)
+        {}
+    }
 }

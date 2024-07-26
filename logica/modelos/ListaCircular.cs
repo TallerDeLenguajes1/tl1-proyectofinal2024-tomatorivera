@@ -42,6 +42,31 @@ namespace Logica.Modelo
         }
 
         /// <summary>
+        /// Reemplaza el valor de un nodo en particular si es que se encuentra en la lista
+        /// </summary>
+        /// <param name="valorAnterior">Valor a reemplazar</param>
+        /// <param name="valorNuevo">Nuevo valor</param>
+        /// <exception cref="InvalidOperationException">Si la lista está vacía o <paramref name="valorAnterior"/> no está en la lista</exception>
+        public void Reemplazar(T valorAnterior, T valorNuevo)
+        {
+            if (EstaVacia() || !this.Contains(valorAnterior))  
+                throw new InvalidOperationException($"{valorAnterior} no está en la lista");
+
+            NodoListaCircular<T>? actual = cabecera!.Siguiente;
+
+            do
+            {
+                if (EqualityComparer<T>.Default.Equals(actual!.Valor, valorAnterior))
+                {
+                    actual.Valor = valorNuevo;
+                    break;
+                }
+                actual = actual.Siguiente;
+            } 
+            while (actual != cabecera!.Siguiente);
+        }
+
+        /// <summary>
         /// Verifica si la lista circular está vacía
         /// </summary>
         /// <returns></returns>
@@ -115,12 +140,17 @@ namespace Logica.Modelo
             return nElementos;
         }
 
-        public bool Contiene(Jugador jugador)
+        /// <summary>
+        /// Verifica si un elemento está contenido en la lista
+        /// </summary>
+        /// <param name="obj">Objeto a buscar</param>
+        /// <returns><c>True</c> en caso de que sí esté, <c>False</c> en caso contrario</returns>
+        public bool Contiene(T obj)
         {
             bool contenido = false;
-            foreach (var j in this)
+            foreach (var item in this)
             {
-                if (j!.Equals(jugador))
+                if (EqualityComparer<T>.Default.Equals(item, obj))
                 {
                     contenido = true;
                     break;

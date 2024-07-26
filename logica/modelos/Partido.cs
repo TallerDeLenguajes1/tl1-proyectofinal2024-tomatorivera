@@ -63,33 +63,6 @@ public class Partido
     }
 }
 
-/// <summary>
-/// Clase que almacena datos de un set
-/// </summary>
-public class ResultadoSet
-{
-    public int PuntosLocal { get; set; }
-    public int PuntosVisitante { get; set; }
-
-    public ResultadoSet()
-    {
-        PuntosLocal = 0;
-        PuntosVisitante = 0;
-    }
-
-    /// <summary>
-    /// Incrementa un punto a alguno de los equipos
-    /// </summary>
-    /// <param name="equipo">Equipo al cual incrementar un punto. Ver <see cref="TipoEquipo"/></param>
-    public void IncrementarPuntos(TipoEquipo equipo)
-    {
-        if (equipo == TipoEquipo.LOCAL) 
-            PuntosLocal++;
-        else 
-            PuntosVisitante++;
-    }
-}
-
 // Modelos para API's relacionadas a los partidos
 public class GamesRaiz : IConsumido
 {

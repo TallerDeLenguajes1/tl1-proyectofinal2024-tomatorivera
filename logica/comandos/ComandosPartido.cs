@@ -1,3 +1,4 @@
+using Logica.Handlers;
 using Logica.Modelo;
 using Spectre.Console;
 
@@ -6,15 +7,25 @@ namespace Logica.Comandos;
 public class ComandoRealizarSustitucion : IComando
 {
     public string Titulo => "Realizar una sustitución";
+    private SimuladorPartidoHandler simulador;
     private Equipo equipo;
+    private TipoEquipo tipoEquipo;
 
-    public ComandoRealizarSustitucion(Equipo equipo)
+    public ComandoRealizarSustitucion(SimuladorPartidoHandler simulador, Equipo equipo, TipoEquipo tipoEquipo)
     {
+        this.simulador = simulador;
         this.equipo = equipo;
+        this.tipoEquipo = tipoEquipo;
     }
 
     public void Ejecutar()
     {
+        var separador = new Rule()
+        {
+            Style = Style.Parse("gray bold")
+        };
+        AnsiConsole.Write(separador);
+
         var formacion = equipo.FormacionPartido!;
         
         // Si el equipo que realizará una sustitución es del usuario, se piden los datos requeridos
@@ -47,6 +58,10 @@ public class ComandoRealizarSustitucion : IComando
                 .AddChoices(plantilla.JugadoresSuplentes)
                 .UseConverter(jugador => jugador.DescripcionPartido())
         );
+
+        simulador.Partido.SetActual.Sustituciones.VerificarSustitucion(tipoEquipo, jugadorIngresa, jugadorSale);
+        simulador.RealizarSustitucion(tipoEquipo, jugadorIngresa, jugadorSale);
+        simulador.Partido.SetActual.Sustituciones.VerificarCicloSustitucionCumplido(tipoEquipo, jugadorIngresa, jugadorSale);
     }
 
     private void ejecutarSustitucionConsola(Formacion plantilla)
@@ -67,7 +82,39 @@ public class ComandoVisualizarPlantilla : IComando
 
     public void Ejecutar()
     {
-        throw new NotImplementedException();
+        var separador = new Rule()
+        {
+            Style = Style.Parse("gray bold")
+        };
+
+        // Muestro los jugadores en cancha indicando su zona
+        var arbolTitulares = new Tree(":small_orange_diamond: [orange3]Jugadores en cancha:[/]")
+        {
+            Style = Style.Parse("orange3")
+        };
+        for (int i=0 ; i<plantilla.JugadoresCancha.Count() ; i++)
+        {
+            arbolTitulares.AddNode($"[red bold]ZONA {i+1}:[/] {plantilla.JugadoresCancha.ElementAt(i).DescripcionPartido()}");
+        }
+
+        // Muestro los suplentes
+        var arbolSuplentes = new Tree("\n:small_orange_diamond: [orange3]Jugadores suplentes:[/]")
+        {
+            Style = Style.Parse("orange3")
+        };
+        foreach (var jugador in plantilla.JugadoresSuplentes)
+        {
+            arbolSuplentes.AddNode($"{jugador.DescripcionPartido()}");
+        }
+
+        AnsiConsole.Write(
+            new Rows(
+                separador,
+                arbolTitulares,
+                arbolSuplentes,
+                separador
+            )
+        );
     }
 }
 

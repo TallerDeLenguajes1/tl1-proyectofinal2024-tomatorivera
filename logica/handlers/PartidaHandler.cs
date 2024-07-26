@@ -47,6 +47,7 @@ public class PartidaHandler
             catch (Exception e)
             {
                 VistasUtil.MostrarError(e.Message);
+                System.Console.WriteLine(e.StackTrace);
 
                 Console.ForegroundColor = ConsoleColor.Red;
                 VistasUtil.MostrarCentrado("-*- Presione una tecla para volver al dashboard -*-");

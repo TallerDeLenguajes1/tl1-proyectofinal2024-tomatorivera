@@ -62,7 +62,7 @@ namespace Logica.Acciones
             // Si la pelota cae en la línea de ataque del equipo rival, es probable que vaya con poca potencia
             // en ese caso, los jugadores que se encuentren allí tienen un porcentaje bonus para poder recibirla
             // de entre 15% y 25%
-            var zonaReceptor = rally.ObtenerEquipoRival().DeterminarZonaJugador(receptor);
+            var zonaReceptor = rally.ObtenerEquipoPropio().DeterminarZonaJugador(receptor); // Obtengo el equipo PROPIO porque la pelota ya está en campo del receptor
             var bonusBajaPotencia = 0.0d;
             if (zonaReceptor >= 2 && zonaReceptor <= 4)
             {
