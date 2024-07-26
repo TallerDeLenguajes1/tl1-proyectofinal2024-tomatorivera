@@ -83,7 +83,7 @@ namespace Logica.Modelo
         public void Log(ResultadoAccion resultadoAccion)
         {
             var mensajeAccion = resultadoAccion.MensajeAccion;
-            var colorAccion = FormacionLocal.JugadoresCancha.Contains(resultadoAccion.Realizador) ? colorAccionesLocal : colorAccionesVisitante;
+            var colorAccion = FormacionLocal.JugadoresCancha.Contiene(resultadoAccion.Realizador) ? colorAccionesLocal : colorAccionesVisitante;
             AccionesRally.Add($"[white]►[/] [{colorAccion}]{mensajeAccion}[/]");
         }
     }

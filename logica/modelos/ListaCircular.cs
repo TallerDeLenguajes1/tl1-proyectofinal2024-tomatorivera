@@ -115,6 +115,21 @@ namespace Logica.Modelo
             return nElementos;
         }
 
+        public bool Contiene(Jugador jugador)
+        {
+            bool contenido = false;
+            foreach (var j in this)
+            {
+                if (j!.Equals(jugador))
+                {
+                    contenido = true;
+                    break;
+                }
+            }
+            
+            return contenido;
+        }
+
         public IEnumerator<T> GetEnumerator()
         {
             return new ListaCircularEnumerator<T>(this);

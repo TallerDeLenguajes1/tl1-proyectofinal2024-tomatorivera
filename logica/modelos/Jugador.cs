@@ -2,7 +2,6 @@ using Logica.Util;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Persistencia.Infraestructura;
-using Spectre.Console;
 
 namespace Logica.Modelo
 {
@@ -11,7 +10,7 @@ namespace Logica.Modelo
     /// </summary>
     public class Jugador
     {
-        private string? nombre;
+        private string nombre;
         private int numeroCamiseta;
         [JsonConverter(typeof(StringEnumConverter))]
         private TipoJugador tipoJugador;
@@ -39,26 +38,12 @@ namespace Logica.Modelo
 
         public Jugador(TipoJugador tipoJugador)
         {
+            nombre = string.Empty;
             this.tipoJugador = tipoJugador;
-        }
-
-        public Jugador(string? nombre, int numeroCamiseta, TipoJugador tipoJugador, float experiencia)
-        {
-            this.nombre = nombre;
-            this.numeroCamiseta = numeroCamiseta;
-            this.tipoJugador = tipoJugador;
-            this.experiencia = experiencia;
-
-            habilidadSaque = 0;
-            habilidadRemate = 0;
-            habilidadRecepcion = 0;
-            habilidadColocacion = 0;
-            habilidadBloqueo = 0;
-            cansancio = 0;
         }
 
         // Propiedades
-        public string? Nombre { get => nombre; set => nombre = value; }
+        public string Nombre { get => nombre; set => nombre = value; }
         public int NumeroCamiseta { get => numeroCamiseta; set => numeroCamiseta = value; }
 
         [JsonConverter(typeof(StringEnumConverter))] // Para guardar el ENUM en json con su nombre y no su ID
@@ -109,7 +94,8 @@ namespace Logica.Modelo
             }
             
             Jugador other = (Jugador)obj;
-            return NumeroCamiseta == other.NumeroCamiseta;
+            return numeroCamiseta == other.NumeroCamiseta &&
+                   nombre.Equals(other.Nombre);
         }
         
         public override int GetHashCode()

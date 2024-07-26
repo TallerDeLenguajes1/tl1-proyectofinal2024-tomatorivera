@@ -629,14 +629,14 @@ namespace Gui.Vistas
                 tablaResultado.AddColumn(new TableColumn(new Markup(":star: [orange1]Sets[/]")).Centered());
                 tablaResultado.AddColumn(new TableColumn(new Markup(":volleyball: [orange1]Puntaje[/]")).Centered());
 
-                tablaResultado.AddRow($"[tan]{InformacionPartido.Local.Nombre}[/]", $"[tan]{InformacionPartido.ScoreLocal}[/]", $"[tan]{InformacionPartido.ResultadoSets[InformacionPartido.SetActual].PuntosLocal}[/]");
-                tablaResultado.AddRow($"[tan]{InformacionPartido.Visitante.Nombre}[/]", $"[tan]{InformacionPartido.ScoreVisitante}[/]", $"[tan]{InformacionPartido.ResultadoSets[InformacionPartido.SetActual].PuntosVisitante}[/]");
+                tablaResultado.AddRow($"[tan]{InformacionPartido.Local.Nombre}[/]", $"[tan]{InformacionPartido.ScoreLocal}[/]", $"[tan]{InformacionPartido.SetActual.Resultado.PuntosLocal}[/]");
+                tablaResultado.AddRow($"[tan]{InformacionPartido.Visitante.Nombre}[/]", $"[tan]{InformacionPartido.ScoreVisitante}[/]", $"[tan]{InformacionPartido.SetActual.Resultado.PuntosVisitante}[/]");
 
                 var filasInformacion = new Rows(
                     new Text(""), // separador
                     tablaResultado,
                     new Text(""), // separador
-                    new Markup($":backhand_index_pointing_right: [tan]Set actual:[/] [yellow bold]{InformacionPartido.SetActual}[/]"),
+                    new Markup($":backhand_index_pointing_right: [tan]Set actual:[/] [yellow bold]{InformacionPartido.SetActual.NumeroSet}[/]"),
                     new Markup($":backhand_index_pointing_right: [tan]Sets a jugar:[/] [yellow bold]{InformacionPartido.SetMaximos}[/]"),
                     new Markup($":backhand_index_pointing_right: [tan]Tipo de partido:[/] [yellow bold]{InformacionPartido.TipoPartido}[/]"),
                     new Text(""), // separador

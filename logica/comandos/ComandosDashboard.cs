@@ -28,11 +28,10 @@ public class ComandoJugarAmistoso : IComando
         // Si los datos del partido se generaron exitosamente, puedo iniciar el partido
         if (p != null) 
         {
-            // solicito al usuario cuantas rondas se jugarán
-            int nSets = solicitarRondas();
+            // Solicito la cantidad de sets a jugarse. No lo hago en el live porque dicho componente no soporta TextPrompts
+            var nSets = solicitarRondas();
             p.SetMaximos = nSets;
 
-            // Genero un simulador de partido y lo inicio
             var simuladorPartido = new SimuladorPartidoHandler(p);
             simuladorPartido.IniciarSimulacionPartido();
         }
@@ -53,7 +52,7 @@ public class ComandoJugarAmistoso : IComando
 
         // Las probabilidades del jugador de jugar de local o visitante son 50/50
         Partido datosPartido = (tipoEquipoConsola == TipoEquipo.VISITANTE) ? new Partido(equipoJugador, equipoRival, TipoPartido.AMISTOSO) 
-                                                                            : new Partido(equipoRival, equipoJugador, TipoPartido.AMISTOSO);
+                                                                           : new Partido(equipoRival, equipoJugador, TipoPartido.AMISTOSO);
         
         return datosPartido;
     }

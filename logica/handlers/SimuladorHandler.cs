@@ -16,24 +16,23 @@ namespace Logica.Handlers;
 /// </summary>
 public class SimuladorPartidoHandler
 {
-    private const int puntosParaSet = 5;
-
     private Partido partido;
     private int setsRestantes;
-    private int cambiosRestantes;
     private TipoEquipo posesionPelota;
     private Equipo equipoEnSaque;
+    private PanelPartidoControlador panelPartidoControlador;
 
     public SimuladorPartidoHandler(Partido partido)
     {
         this.partido = partido;
 
         // Valores iniciales por defecto
-        this.partido.SetActual = 1;
         setsRestantes = partido.SetMaximos;
-        cambiosRestantes = 12;
         posesionPelota = TipoEquipo.LOCAL;
         equipoEnSaque = partido.Local;
+
+        // Inicializo el controlador del panel de la vista del partido
+        panelPartidoControlador = new PanelPartidoControlador(new PanelPartido(), partido);
     }
 
     /// <summary>
@@ -44,18 +43,14 @@ public class SimuladorPartidoHandler
         // Muestro un encabezado
         mostrarEncabezadoPartido(partido.Local.Nombre, partido.Visitante.Nombre, partido.TipoPartido);
 
-        // Genero los datos del set actual
-        partido.ResultadoSets.Add(partido.SetActual, new ResultadoSet());
-
         // Determino qué equipo hará el saque (probabilidad de 50/50)
         equipoEnSaque = determinarSaque();
 
         // Muestro las vistas del partido
-        var panelPartidoControlador = new PanelPartidoControlador(new PanelPartido(), partido);
         panelPartidoControlador.MostrarVista();
         
         // Inicializo la lógica del partido
-        jugarPartido(panelPartidoControlador);
+        jugarPartido();
 
         // Temporal: para que no finalice je
         Console.ReadKey();
@@ -131,16 +126,23 @@ public class SimuladorPartidoHandler
     /// <summary>
     /// Método encargado de ejecutar la lógica de un partido
     /// </summary>
-    private void jugarPartido(PanelPartidoControlador controladorPanel)
+    private void jugarPartido()
     {
-        // Verifico si por alguna razón las formaciones de los equipos en juego son nulas
-        if (partido.Local.FormacionPartido == null)
-            throw new FormacionInvalidaException($"La formación del equipo {partido.Local.Nombre} es nula", partido.Local);
-        if (partido.Visitante.FormacionPartido == null)
-            throw new FormacionInvalidaException($"La formación del equipo {partido.Visitante.Nombre} es nula", partido.Visitante);
-        if (equipoEnSaque.FormacionPartido == null)
-            throw new FormacionInvalidaException($"La formación del equipo {equipoEnSaque.Nombre} es nula", equipoEnSaque);
+        // El partido termina cuando ya se hayan jugado todos los sets o cuando se pueda
+        // determinar un ganador según el puntaje de los equipos tras cada ronda
+        while (setsRestantes != 0 && !hayGanadorPartido(partido.ScoreLocal, partido.ScoreVisitante))
+        {
+            // Comienza un set
+            jugarSet();
 
+            // Actualizo la información necesaria
+            setsRestantes--;
+
+            almacenarResultadoSetActual();
+            partido.SetActual.SiguienteSet();
+        }
+
+        /*
         // Inicializo la información del rally
         var rally = new Rally(partido.Local.FormacionPartido, partido.Visitante.FormacionPartido, posesionPelota, equipoEnSaque.FormacionPartido.ObtenerJugadorZona(1));
 
@@ -183,7 +185,73 @@ public class SimuladorPartidoHandler
             
             // Muestro las opciones del partido al usuario y ejecuto la que elija
             ejecutarMenu();
+            */
+    }
+
+    /// <summary>
+    /// Método encargado de manejar la lógica de un set
+    /// </summary>
+    /// <exception cref="FormacionInvalidaException">Si alguna de las formaciones fuese nula</exception>
+    private void jugarSet()
+    {
+        // Verifico si por alguna razón las formaciones de los equipos en juego son nulas
+        if (partido.Local.FormacionPartido == null)
+            throw new FormacionInvalidaException($"La formación del equipo {partido.Local.Nombre} es nula", partido.Local);
+        if (partido.Visitante.FormacionPartido == null)
+            throw new FormacionInvalidaException($"La formación del equipo {partido.Visitante.Nombre} es nula", partido.Visitante);
+        if (equipoEnSaque.FormacionPartido == null)
+            throw new FormacionInvalidaException($"La formación del equipo {equipoEnSaque.Nombre} es nula", equipoEnSaque);
+        
+        var set = partido.SetActual;
+        var rally = new Rally(partido.Local.FormacionPartido, partido.Visitante.FormacionPartido, posesionPelota, equipoEnSaque.FormacionPartido.ObtenerJugadorZona(1));
+
+        // El set termina cuando uno de los equipos cuente con el puntaje requerido
+        // para ganarlo con una diferencia de dos puntos por encima del rival
+        while (!set.HayGanadorSet())
+        {
+            // Comienzo el rally
+            rally.ComenzarRally();
+            determinarResultadoRally(rally);
+
+            // Muestro la información del rally en la vista y la actualizo, posteriormente, limpio las acciones
+            actualizarInformacionVista(rally.AccionesRally);
+            rally.AccionesRally.Clear();
+
+            ejecutarMenu();
         }
+
+        // El ganador del set siempre es el último que hizo el punto, entonces sumo el score
+        // a ese equipo si se determinó que hay un ganador del set
+        if (posesionPelota == TipoEquipo.LOCAL)
+            partido.ScoreLocal++;
+        else    
+            partido.ScoreVisitante++;
+    }
+
+    /// <summary>
+    /// Actualiza la información en la vista que corresponde al partido y
+    /// muestra en ella la información de las acciones del rally
+    /// </summary>
+    /// <param name="accionesRally"></param>
+    private void actualizarInformacionVista(List<string> accionesRally)
+    {
+        AnsiConsole.Live(panelPartidoControlador.ObtenerLayoutInformacion())
+            .Start(ctx => {
+                // Muestro las acciones del rally
+                panelPartidoControlador.MostrarAcciones(ctx, accionesRally);
+                panelPartidoControlador.MostrarPunto(ctx, posesionPelota);
+
+                // Actualizo la información general de la vista
+                panelPartidoControlador.MostrarVista();
+            });
+    }
+
+    /// <summary>
+    /// Almacena el resultado de un set en la lista correspondiente de resultados de sets del partido
+    /// </summary>
+    private void almacenarResultadoSetActual()
+    {
+        partido.ResultadoSets.Add(partido.SetActual.NumeroSet, partido.SetActual.Resultado);
     }
 
     /// <summary>
@@ -196,20 +264,7 @@ public class SimuladorPartidoHandler
     private bool hayGanadorPartido(int scoreLocal, int scoreVisitante)
     {
         return (scoreLocal + setsRestantes < scoreVisitante) ||
-                (scoreVisitante + setsRestantes < scoreLocal);
-    }
-
-    /// <summary>
-    /// Determina si un equipo ya sea local o visitante ha ganado el set
-    /// </summary>
-    /// <returns><c>True</c> si un equipo ya ha ganado el set, <c>False</c> en caso contrario</returns>
-    private bool hayGanadorSet()
-    {
-        var puntosLocal = partido.ResultadoSets[partido.SetActual].PuntosLocal;
-        var puntosVisitante = partido.ResultadoSets[partido.SetActual].PuntosVisitante;
-
-        return (puntosLocal >= puntosParaSet && puntosLocal - puntosVisitante >= 2) ||
-                (puntosVisitante >= puntosParaSet && puntosVisitante - puntosLocal >= 2);
+               (scoreVisitante + setsRestantes < scoreLocal);
     }
 
     /// <summary>
@@ -247,7 +302,7 @@ public class SimuladorPartidoHandler
         }
 
         // Actualizo la información del rally y del partido
-        partido.ResultadoSets[partido.SetActual].IncrementarPuntos(posesionPelota);
+        partido.SetActual.Resultado.IncrementarPuntos(posesionPelota);
         rallyActual.PosesionPelota = posesionPelota;
         rallyActual.JugadorActual = equipoEnSaque.FormacionPartido!.ObtenerJugadorZona(1);
     }
@@ -258,7 +313,16 @@ public class SimuladorPartidoHandler
     /// <returns>Equipo que comenzará sacando</returns>
     private Equipo determinarSaque()
     {
-        return (new Random().NextDouble() >= 0.5) ? partido.Local : partido.Visitante;
+        if (new Random().NextDouble() >= 0.5)
+        {
+            posesionPelota = TipoEquipo.LOCAL;
+            return partido.Local;
+        }
+        else
+        {
+            posesionPelota = TipoEquipo.VISITANTE;
+            return partido.Visitante;
+        }
     }
 
     /// <summary>
@@ -267,10 +331,25 @@ public class SimuladorPartidoHandler
     /// </summary>
     private void ejecutarMenu()
     {
-        var equipoJugador = partido.Local.EsEquipoJugador ? partido.Local : partido.Visitante;
+        Equipo equipoJugador;
+        int cambiosRestantes;
+        if (partido.Local.EsEquipoJugador)
+        {
+            equipoJugador = partido.Local;
+            cambiosRestantes = partido.SetActual.ObtenerSustitucionesRestantes(TipoEquipo.LOCAL);
+        }
+        else
+        {
+            equipoJugador = partido.Visitante;
+            cambiosRestantes = partido.SetActual.ObtenerSustitucionesRestantes(TipoEquipo.VISITANTE);
+        }
 
         var comandosDisponibles = new List<IComando>();
-        if (cambiosRestantes > 0) comandosDisponibles.Add(new ComandoRealizarSustitucion(equipoJugador));
+        
+        // El comando para realizar una sustitución lo muestro al usuario solo si es que le quedan suficientes cambios en el set actual
+        if (cambiosRestantes > 0) 
+            comandosDisponibles.Add(new ComandoRealizarSustitucion(equipoJugador));
+
         comandosDisponibles.Add(new ComandoVisualizarPlantilla(equipoJugador.FormacionPartido!));  
         comandosDisponibles.Add(new ComandoContinuarPartido());
 
@@ -283,6 +362,7 @@ public class SimuladorPartidoHandler
                                                                          : cmd.Titulo)
         );
 
+        // Ejecuto el comando controlando y mostrando por pantalla los posibles errores
         try
         {
             comando.Ejecutar();
