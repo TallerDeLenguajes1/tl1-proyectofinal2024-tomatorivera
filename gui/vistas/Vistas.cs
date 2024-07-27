@@ -255,6 +255,10 @@ namespace Gui.Vistas
             AnsiConsole.Write(layout);
         }
 
+        /// <summary>
+        /// Dibuja el titulo del juego para el layout
+        /// </summary>
+        /// <returns>Objeto <c>Panel</c></returns>
         private Panel obtenerTitulo()
         {
             /******************
@@ -288,6 +292,10 @@ namespace Gui.Vistas
                 .Expand();
         }
 
+        /// <summary>
+        /// Dibuja un encabezado con una bienvenida al jugador
+        /// </summary>
+        /// <returns>Objeto <c>Panel</c></returns>
         private Panel obtenerHeader()
         {
             /******************
@@ -306,6 +314,10 @@ namespace Gui.Vistas
                 .BorderColor(Color.Orange3);
         }
 
+        /// <summary>
+        /// Dibuja información del equipo y sus jugadores
+        /// </summary>
+        /// <returns>Objeto <c>Panel</c></returns>
         private Panel obtenerInformacionEquipo()
         {
             /************************
@@ -367,7 +379,11 @@ namespace Gui.Vistas
                 .BorderColor(Color.Orange3)
                 .Expand();
         }
-    
+
+        /// <summary>
+        /// Dibuja la información del usuario y su historial de partidos
+        /// </summary>
+        /// <returns>Objeto <c>Panel</c></returns>
         private Panel obtenerInformacionUsuario()
         {
             /*********************
@@ -437,6 +453,10 @@ namespace Gui.Vistas
                 .Expand();
         }
 
+        /// <summary>
+        /// Dibuja las últimas novedades del mundo del voleyball
+        /// </summary>
+        /// <returns>Objeto <c>Panel</c></returns>
         private Panel obtenerNovedades()
         {
             IRenderable novedades;

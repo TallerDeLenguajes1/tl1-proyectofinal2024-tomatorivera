@@ -1,45 +1,53 @@
 using Logica.Modelo;
 using Persistencia.Repositorios;
 
-namespace Logica.Servicios
+namespace Logica.Servicios;
+
+public interface IHistorialServicio
 {
-    public interface IHistorialServicio
+    void CrearHistorial(Historial historial);
+    Historial ObtenerDatosHistorial(int id);
+}
+
+public class HistorialServicioImpl : IHistorialServicio
+{
+    private HistorialRepositorio repositorio;
+
+    public HistorialServicioImpl() 
     {
-        void CrearHistorial(Historial historial);
-        Historial ObtenerDatosHistorial(int id);
+        this.repositorio = new HistorialRepositorio();
     }
 
-    public class HistorialServicioImpl : IHistorialServicio
+    /// <summary>
+    /// Genera un nuevo historial para la partida actual
+    /// </summary>
+    /// <param name="historial">Datos del <c>Historial</c> a almacenar</param>
+    public void CrearHistorial(Historial historial)
     {
-        private HistorialRepositorio repositorio;
-
-        public HistorialServicioImpl() 
+        try 
         {
-            this.repositorio = new HistorialRepositorio();
+            repositorio.Crear(historial);
         }
-
-        public void CrearHistorial(Historial historial)
+        catch (Exception)
         {
-            try 
-            {
-                repositorio.Crear(historial);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            throw;
         }
+    }
 
-        public Historial ObtenerDatosHistorial(int id)
+    /// <summary>
+    /// Obtiene el historial de partidos de una partida en específico
+    /// </summary>
+    /// <param name="id">ID de la partida</param>
+    /// <returns>Objeto <c>Historial</c></returns>
+    public Historial ObtenerDatosHistorial(int id)
+    {
+        try
         {
-            try
-            {
-                return repositorio.Cargar(id);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            return repositorio.Cargar(id);
+        }
+        catch (Exception)
+        {
+            throw;
         }
     }
 }

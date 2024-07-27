@@ -97,7 +97,7 @@ public class ComandoJugarAmistoso : IComando
             throw new PlantillaInvalidaException("No se pueden convocar más de dos jugadores líberos");
         
         // Solicito al usuario su equipo titular
-        var titularesJugador = seleccionarEquipoTitularJugador(equipoJugador);
+        var titularesJugador = seleccionarEquipoTitularJugador(new List<Jugador>(equipoJugador.Jugadores));
         
         return new Equipo()
         {
@@ -114,10 +114,9 @@ public class ComandoJugarAmistoso : IComando
     /// </summary>
     /// <param name="equipoConvocado">Lista de jugadores convocados</param>
     /// <returns>Objeto <c>ListaCircular</c> de <c>Jugador</c> con los titulares</returns>
-    private ListaCircular<Jugador> seleccionarEquipoTitularJugador(Equipo equipoConvocado)
+    private ListaCircular<Jugador> seleccionarEquipoTitularJugador(List<Jugador> jugadoresSeleccionables)
     {
         var equipoTitular = new ListaCircular<Jugador>();
-        var jugadoresSeleccionables = equipoConvocado.Jugadores;
         var nJugadoresCancha = 6;
         for (int i=nJugadoresCancha ; i>0 ; i--) // Para que la lista circular quede en orden, hay que ingresar los datos de atrás para adelante
         {

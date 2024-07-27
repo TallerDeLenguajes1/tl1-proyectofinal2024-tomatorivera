@@ -10,7 +10,11 @@ namespace Persistencia.Repositorios
     {
         public Historial? HistorialActual { get; set; }
 
-
+        /// <summary>
+        /// Crea un nuevo historial en los archivos de persistencia
+        /// </summary>
+        /// <param name="obj">Objeto <c>Historial</c></param>
+        /// <exception cref="PartidaInvalidaException">En caso de que no haya un directorio de la partida actual donde persistir</exception>
         public void Crear(Historial obj)
         {
             // Si por alguna razón no se ha configurado el directorio de la partida actual al cargar/crear
@@ -33,7 +37,15 @@ namespace Persistencia.Repositorios
             // Actualizo la instancia del historial actual
             this.HistorialActual = obj;
         }
-
+        
+        /// <summary>
+        /// Carga los datos del archivo de persistencia de historial correspondiente
+        /// a la partida con el ID <paramref name="id"/>
+        /// </summary>
+        /// <param name="id">ID de la partida</param>
+        /// <returns>Objeto <c>Historial</c></returns>
+        /// <exception cref="PartidaInvalidaException">En caso de que no haya una partida actual de la cual obtener archivos de persistencia</exception>
+        /// <exception cref="HistorialInvalidoException">En caso de que la respuesta de la deserealización del historial sea nula</exception>
         public Historial Cargar(int id)
         {
             if (string.IsNullOrWhiteSpace(Config.DirectorioPartidaActual))
