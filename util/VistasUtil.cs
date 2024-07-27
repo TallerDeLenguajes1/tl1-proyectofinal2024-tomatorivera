@@ -64,7 +64,7 @@ namespace Gui.Util
         /// <param name="mensaje">Mensaje de error a mostrar</param>
         public static void MostrarError(string mensaje)
         {
-            System.Console.WriteLine("\n");
+            System.Console.WriteLine();
             
             string error = @"
 >>======================================================<<
@@ -75,7 +75,6 @@ namespace Gui.Util
 ||  \/_____/   \/_/ /_/   \/_/ /_/   \/_____/   \/_/ /_/||
 ||                                                      ||
 >>======================================================<<
- 
 ";
 
             AnsiConsole.Write(new Panel(
@@ -90,7 +89,7 @@ namespace Gui.Util
                 )
             ).Border(BoxBorder.None));
 
-            System.Console.WriteLine("\n");
+            System.Console.WriteLine();
         }
 
         /// <summary>
@@ -134,6 +133,44 @@ namespace Gui.Util
             }
 
             Console.SetCursorPosition(0, lineaInicio);
+        }
+
+        /// <summary>
+        /// Muestra los detalles de un error con estilos personalizados
+        /// </summary>
+        /// <param name="ex"><c>Exception</c> error a mostrar</param>
+        public static void MostrarDetallesExcepcion(Exception ex)
+        {
+            AnsiConsole.Write(
+                new Rule("[red]Detalles del error[/]")
+                    .HeavyBorder()
+                    .LeftJustified()
+                    .RuleStyle(Style.Parse("gray"))
+            );
+
+            AnsiConsole.WriteException(ex, new ExceptionSettings
+            {
+                Format = ExceptionFormats.ShortenEverything,
+                Style = new ExceptionStyle
+                {
+                    Exception = new Style().Foreground(Color.White),
+                    Message = new Style().Foreground(Color.Red).Decoration(Decoration.Bold),
+                    NonEmphasized = new Style().Foreground(Color.Cornsilk1),
+                    Parenthesis = new Style().Foreground(Color.Cornsilk1),
+                    Method = new Style().Foreground(Color.Orange3),
+                    ParameterName = new Style().Foreground(Color.Cornsilk1),
+                    ParameterType = new Style().Foreground(Color.Orange3),
+                    Path = new Style().Foreground(Color.Orange1),
+                    LineNumber = new Style().Foreground(Color.Yellow),
+                }
+            });
+
+            AnsiConsole.Write(
+                new Rule()
+                    .HeavyBorder()
+                    .LeftJustified()
+                    .RuleStyle(Style.Parse("gray"))
+            );
         }
     }
 }

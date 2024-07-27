@@ -1,6 +1,6 @@
 namespace Logica.Excepciones
 {
-    public class PartidaDuplicadaException : Exception
+    public class PartidaDuplicadaException : VoleyballManagerRuntimeException
     {
         public string PartidaDirectorio { get; set; }
 
@@ -10,13 +10,13 @@ namespace Logica.Excepciones
         }
     }
 
-    public class PartidaInvalidaException : Exception
+    public class PartidaInvalidaException : VoleyballManagerRuntimeException
     {
         public PartidaInvalidaException(string msg) : base(msg)
         {}
     }
 
-    public class DirectorioPartidaInvalidoException : Exception
+    public class DirectorioPartidaInvalidoException : VoleyballManagerRuntimeException
     {
         public DirectorioPartidaInvalidoException(string msg) : base(msg)
         {}

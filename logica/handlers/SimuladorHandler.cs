@@ -19,7 +19,6 @@ public class SimuladorPartidoHandler
     private Partido partido;
     private int setsRestantes;
     private TipoEquipo posesionPelota;
-    private Equipo equipoEnSaque;
     private PanelPartidoControlador panelPartidoControlador;
 
     public SimuladorPartidoHandler(Partido partido)
@@ -29,7 +28,6 @@ public class SimuladorPartidoHandler
         // Valores iniciales por defecto
         setsRestantes = partido.SetMaximos;
         posesionPelota = TipoEquipo.LOCAL;
-        equipoEnSaque = partido.Local;
 
         // Inicializo el controlador del panel de la vista del partido
         panelPartidoControlador = new PanelPartidoControlador(new PanelPartido(), partido);
@@ -49,7 +47,7 @@ public class SimuladorPartidoHandler
         mostrarEncabezadoPartido(partido.Local.Nombre, partido.Visitante.Nombre, partido.TipoPartido);
 
         // Determino qué equipo hará el saque (probabilidad de 50/50)
-        equipoEnSaque = determinarSaque();
+        partido.EquipoEnSaque = determinarSaque();
 
         // Muestro las vistas del partido
         panelPartidoControlador.MostrarVista();
@@ -201,19 +199,21 @@ public class SimuladorPartidoHandler
     {
         // Verifico si por alguna razón las formaciones de los equipos en juego son nulas
         if (partido.Local.FormacionPartido == null)
-            throw new FormacionInvalidaException($"La formación del equipo {partido.Local.Nombre} es nula", partido.Local);
+            throw new NullReferenceException($"La formación del equipo {partido.Local.Nombre} es nula");
         if (partido.Visitante.FormacionPartido == null)
-            throw new FormacionInvalidaException($"La formación del equipo {partido.Visitante.Nombre} es nula", partido.Visitante);
-        if (equipoEnSaque.FormacionPartido == null)
-            throw new FormacionInvalidaException($"La formación del equipo {equipoEnSaque.Nombre} es nula", equipoEnSaque);
+            throw new NullReferenceException($"La formación del equipo {partido.Visitante.Nombre} es nula");
+        if (partido.EquipoEnSaque.FormacionPartido == null)
+            throw new NullReferenceException($"La formación del equipo {partido.EquipoEnSaque.Nombre} es nula");
         
         var set = partido.SetActual;
-        var rally = new Rally(partido.Local.FormacionPartido, partido.Visitante.FormacionPartido, posesionPelota, equipoEnSaque.FormacionPartido.ObtenerJugadorZona(1));
+        var rally = new Rally(partido.Local.FormacionPartido, partido.Visitante.FormacionPartido, posesionPelota, partido.EquipoEnSaque.FormacionPartido.ObtenerJugadorZona(1));
 
         // El set termina cuando uno de los equipos cuente con el puntaje requerido
         // para ganarlo con una diferencia de dos puntos por encima del rival
         while (!set.HayGanadorSet())
         {
+            rally.JugadorActual = partido.EquipoEnSaque.FormacionPartido.ObtenerJugadorZona(1);
+
             // Actualizo el panel de información con el componente Live para ir mostrando las acciones en una misma vista
             AnsiConsole.Live(panelPartidoControlador.ObtenerLayoutInformacion())
                 .Start(ctx => {
@@ -226,6 +226,7 @@ public class SimuladorPartidoHandler
 
                     // Muestro las acciones del rally
                     panelPartidoControlador.MostrarAcciones(ctx, rally.AccionesRally);
+                    panelPartidoControlador.ActualizarMarcador(ctx);
                     //panelPartidoControlador.MostrarPunto(ctx, posesionPelota);
                     rally.AccionesRally.Clear();
                 });
@@ -272,11 +273,11 @@ public class SimuladorPartidoHandler
         {
             // Si la última posesión de la pelota es del equipo local, quiere decir que fue punto del visitante
             case TipoEquipo.LOCAL:
-                if (equipoEnSaque.Nombre.Equals(partido.Local.Nombre))
+                if (partido.EquipoEnSaque.Nombre.Equals(partido.Local.Nombre))
                 {
                     //System.Console.WriteLine("Recupera el saque y rota el equipo VISITANTE");
                     partido.Visitante.FormacionPartido!.JugadoresCancha.Rotar();
-                    equipoEnSaque = partido.Visitante;
+                    partido.EquipoEnSaque = partido.Visitante;
                 }
 
                 posesionPelota = TipoEquipo.VISITANTE;
@@ -285,11 +286,11 @@ public class SimuladorPartidoHandler
 
             // Si la última posesión de la pelota es del equipo visitante, quiere decir que fue punto del local
             case TipoEquipo.VISITANTE:
-                if (equipoEnSaque.Nombre.Equals(partido.Visitante.Nombre))
+                if (partido.EquipoEnSaque.Nombre.Equals(partido.Visitante.Nombre))
                 {
                     //System.Console.WriteLine("Recupera el saque y rota el equipo LOCAL");
                     partido.Local.FormacionPartido!.JugadoresCancha.Rotar();
-                    equipoEnSaque = partido.Local;
+                    partido.EquipoEnSaque = partido.Local;
                 }
                 posesionPelota = TipoEquipo.LOCAL;
                 //System.Console.WriteLine("Punto para LOCAL");
@@ -299,7 +300,6 @@ public class SimuladorPartidoHandler
         // Actualizo la información del rally y del partido
         partido.SetActual.Resultado.IncrementarPuntos(posesionPelota);
         rallyActual.PosesionPelota = posesionPelota;
-        rallyActual.JugadorActual = equipoEnSaque.FormacionPartido!.ObtenerJugadorZona(1);
     }
 
     /// <summary>
@@ -372,6 +372,8 @@ public class SimuladorPartidoHandler
             catch (Exception ex)
             {
                 VistasUtil.MostrarError($"{ex.Message}");
+                if (!(ex is VoleyballManagerRuntimeException)) VistasUtil.MostrarDetallesExcepcion(ex);
+
                 Console.ReadKey(true);
             }
         } 

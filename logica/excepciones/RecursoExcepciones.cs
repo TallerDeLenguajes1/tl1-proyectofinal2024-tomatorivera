@@ -1,18 +1,18 @@
 namespace Logica.Excepciones
 {
-    public class ConfiguracionInexistenteException : Exception
+    public class ConfiguracionInexistenteException : VoleyballManagerRuntimeException
     {
         public ConfiguracionInexistenteException(string message) : base(message)
         {}
     }
 
-    public class DeserealizacionNulaException : Exception
+    public class DeserealizacionNulaException : VoleyballManagerRuntimeException
     {
         public DeserealizacionNulaException(string message) : base(message)
         {}
     }
 
-    public class ApiInaccesibleException : Exception
+    public class ApiInaccesibleException : VoleyballManagerRuntimeException
     {
         public object? RespuestaApi { get; set; }
 
@@ -27,7 +27,7 @@ namespace Logica.Excepciones
         }
     }
 
-    public class RespuestaApiInvalidaException : Exception
+    public class RespuestaApiInvalidaException : VoleyballManagerRuntimeException
     {
         public RespuestaApiInvalidaException(string message) : base(message)
         {}

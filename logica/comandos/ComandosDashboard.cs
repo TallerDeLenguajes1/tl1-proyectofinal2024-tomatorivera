@@ -1,3 +1,4 @@
+using Logica.Excepciones;
 using Logica.Handlers;
 using Logica.Modelo;
 using Logica.Servicios;
@@ -62,7 +63,7 @@ public class ComandoJugarAmistoso : IComando
     /// a ser convocados para el partido a disputarse
     /// </summary>
     /// <returns>Objeto <c>Equipo</c> solo con los jugadores convocados</returns>
-    /// <exception cref="Exception">Cuando la seleccion de jugadores sea inválida</exception>
+    /// <exception cref="PlantillaInvalidaException">Cuando la seleccion de jugadores sea inválida</exception>
     private Equipo seleccionarJugadoresConvocados()
     {
         System.Console.WriteLine();
@@ -90,10 +91,10 @@ public class ComandoJugarAmistoso : IComando
         // Si la selección es inválida por algún motivo, le notifico al jugador
         // caso contrario retorno un equipo con los datos del equipo del usuario y una lista con los jugadores convocados
         if (equipoConvocado.Count() != 14)
-            throw new Exception("Debe seleccionar 14 jugadores para convocar");
+            throw new PlantillaInvalidaException("Debe seleccionar 14 jugadores para convocar");
 
         if (equipoConvocado.Where(j => j.TipoJugador == TipoJugador.LIBERO).Count() > 2)
-            throw new Exception("No se pueden convocar más de dos jugadores líberos");
+            throw new PlantillaInvalidaException("No se pueden convocar más de dos jugadores líberos");
         
         // Solicito al usuario su equipo titular
         var titularesJugador = seleccionarEquipoTitularJugador(equipoJugador);

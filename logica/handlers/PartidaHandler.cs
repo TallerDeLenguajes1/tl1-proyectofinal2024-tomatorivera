@@ -3,6 +3,7 @@ using Gui.Modelo;
 using Gui.Util;
 using Gui.Vistas;
 using Logica.Comandos;
+using Logica.Excepciones;
 using Logica.Modelo;
 using Spectre.Console;
 
@@ -47,7 +48,7 @@ public class PartidaHandler
             catch (Exception e)
             {
                 VistasUtil.MostrarError(e.Message);
-                System.Console.WriteLine(e.StackTrace);
+                if (!(e is VoleyballManagerRuntimeException)) VistasUtil.MostrarDetallesExcepcion(e);
 
                 Console.ForegroundColor = ConsoleColor.Red;
                 VistasUtil.MostrarCentrado("-*- Presione una tecla para volver al dashboard -*-");

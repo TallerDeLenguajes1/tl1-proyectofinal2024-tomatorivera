@@ -1,6 +1,7 @@
 using Gui.Util;
 using Gui.Vistas;
 using Logica.Comandos;
+using Logica.Excepciones;
 using Logica.Handlers;
 using Logica.Modelo;
 using Logica.Servicios;
@@ -150,12 +151,13 @@ namespace Gui.Controladores
                 catch (Exception e)
                 {
                     VistasUtil.MostrarError(e.Message);
+                    if (!(e is VoleyballManagerRuntimeException)) VistasUtil.MostrarDetallesExcepcion(e);
 
                     Console.ForegroundColor = ConsoleColor.Red;
                     VistasUtil.MostrarCentrado("-*- Presione una tecla para volver al menú -*-");
                     Console.ResetColor();
 
-                    Console.ReadKey();
+                    Console.ReadKey(true);
                 }
 
                 // Solo si el menú aún se sigue ejecutando, borro las lineas de lo escrito por los comandos
@@ -290,6 +292,12 @@ namespace Gui.Controladores
         public void MostrarPunto(LiveDisplayContext ctx, TipoEquipo equipo)
         {
             vista.MarcarPunto(ctx, equipo);
+        }
+
+        public void ActualizarMarcador(LiveDisplayContext ctx)
+        {
+            vista.ActualizarMarcador();
+            ctx.Refresh();
         }
     }
 }

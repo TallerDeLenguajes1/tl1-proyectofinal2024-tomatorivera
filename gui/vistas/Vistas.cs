@@ -93,6 +93,7 @@ namespace Gui.Vistas
             layout["abajo"].Ratio(3);
 
             // Y muestro por pantalla el layout
+            Console.CursorVisible = false;
             AnsiConsole.Write(layout);
         }
     }
@@ -631,13 +632,14 @@ namespace Gui.Vistas
 
                 tablaResultado.AddRow($"[tan]{InformacionPartido.Local.Nombre}[/]", $"[tan]{InformacionPartido.ScoreLocal}[/]", $"[tan]{InformacionPartido.SetActual.Resultado.PuntosLocal}[/]");
                 tablaResultado.AddRow($"[tan]{InformacionPartido.Visitante.Nombre}[/]", $"[tan]{InformacionPartido.ScoreVisitante}[/]", $"[tan]{InformacionPartido.SetActual.Resultado.PuntosVisitante}[/]");
-
+                
                 var filasInformacion = new Rows(
                     new Text(""), // separador
                     tablaResultado,
                     new Text(""), // separador
                     new Markup($":backhand_index_pointing_right: [tan]Set actual:[/] [yellow bold]{InformacionPartido.SetActual.NumeroSet}[/]"),
                     new Markup($":backhand_index_pointing_right: [tan]Sets a jugar:[/] [yellow bold]{InformacionPartido.SetMaximos}[/]"),
+                    new Markup($":backhand_index_pointing_right: [tan]Posesión del saque:[/] [yellow bold]{InformacionPartido.EquipoEnSaque.Nombre}[/]"),
                     new Markup($":backhand_index_pointing_right: [tan]Tipo de partido:[/] [yellow bold]{InformacionPartido.TipoPartido}[/]"),
                     new Text(""), // separador
                     new Markup($"[yellow]▮ Acciones de {InformacionPartido.Local.Nombre}[/]"),
@@ -955,6 +957,14 @@ namespace Gui.Vistas
             );
 
             ctx.Refresh();
+        }
+
+        /// <summary>
+        /// Actualiza el panel 'Información del partido' para actualizar el marcador
+        /// </summary>
+        public void ActualizarMarcador()
+        {
+            LayoutInformacion["info_partido"].Update(dibujarInformacionPartido());
         }
     }
 }

@@ -13,6 +13,7 @@ public class Partido
 
     private Equipo local;
     private Equipo visitante;
+    private Equipo equipoEnSaque;
     private TipoPartido tipoPartido;
     private Set setActual;
     private Dictionary<int, ResultadoSet> resultadoSets;
@@ -33,6 +34,7 @@ public class Partido
         scoreLocal = 0;
         scoreVisitante = 0;
         nombreGanador = string.Empty;
+        equipoEnSaque = local;
     }
 
     // Propiedades
@@ -45,6 +47,7 @@ public class Partido
     public Set SetActual { get => setActual; set => setActual = value; }
     public int SetMaximos { get => setMaximos ; set => setMaximos = value; }
     public Dictionary<int, ResultadoSet> ResultadoSets { get => resultadoSets; set => resultadoSets = value; }
+    public Equipo EquipoEnSaque { get => equipoEnSaque; set => equipoEnSaque = value; }
 
     // Métodos
     public Equipo ObtenerEquipoJugador()
