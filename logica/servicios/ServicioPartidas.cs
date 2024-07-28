@@ -18,6 +18,7 @@ namespace Logica.Servicios
         List<Partida> ObtenerPartidas();
         int ObtenerNuevoIdPartida();
         PartidaHandler ObtenerManejadorPartida(Partida partida);
+        void GuardarPartida(Partida partida);
     }
 
     public class PartidaServicioImpl : IPartidaServicio
@@ -170,11 +171,32 @@ namespace Logica.Servicios
         /// <summary>
         /// Crea un nuevo manejador de partida para una partida en específico
         /// </summary>
-        /// <param name="p">Partida mediante la cual generar</param>
+        /// <param name="partida">Partida mediante la cual generar</param>
         /// <returns>Nueva instancia de <c>PartidaHandler</c></returns>
-        public PartidaHandler ObtenerManejadorPartida(Partida p)
+        public PartidaHandler ObtenerManejadorPartida(Partida partida)
         {
-            return new PartidaHandler(p);
+            return new PartidaHandler(partida);
+        }
+
+        /// <summary>
+        /// Guarda los datos de una partida en los archivos de persistencia
+        /// </summary>
+        /// <param name="partida">Datos de la partida</param>
+        public void GuardarPartida(Partida partida)
+        {
+            try
+            {
+                // Actualizo la fecha de guardado de la partida
+                partida.FechaGuardado = DateTime.Now;
+
+                repositorio.Guardar(partida);
+                usuarioServicio.GuardarUsuario(partida.Usuario);
+                historialServicio.GuardarHistorial(partida.Historial);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

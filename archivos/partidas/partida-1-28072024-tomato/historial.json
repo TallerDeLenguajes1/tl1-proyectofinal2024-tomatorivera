@@ -1,0 +1,59 @@
+{
+  "total_partidos_jugados": 2,
+  "historial_partidos": [
+    {
+      "tipo_de_partido": "AMISTOSO",
+      "nombre_ganador": "La Rioja W",
+      "al_mejor_de": 3,
+      "equipo_local": {
+        "nombre_equipo": "La Rioja W",
+        "es_equipo_jugador": false,
+        "jugadores_convocados": []
+      },
+      "equipo_visitante": {
+        "nombre_equipo": "BokitaJr",
+        "es_equipo_jugador": true,
+        "jugadores_convocados": []
+      },
+      "score_local": 2,
+      "score_visitante": 0,
+      "resultados_sets": {
+        "1": {
+          "PuntosLocal": 2,
+          "PuntosVisitante": 0
+        },
+        "2": {
+          "PuntosLocal": 2,
+          "PuntosVisitante": 0
+        }
+      }
+    },
+    {
+      "tipo_de_partido": "AMISTOSO",
+      "nombre_ganador": "BokitaJr",
+      "al_mejor_de": 3,
+      "equipo_local": {
+        "nombre_equipo": "Univ. La Matanza W",
+        "es_equipo_jugador": false,
+        "jugadores_convocados": []
+      },
+      "equipo_visitante": {
+        "nombre_equipo": "BokitaJr",
+        "es_equipo_jugador": true,
+        "jugadores_convocados": []
+      },
+      "score_local": 0,
+      "score_visitante": 2,
+      "resultados_sets": {
+        "1": {
+          "PuntosLocal": 0,
+          "PuntosVisitante": 2
+        },
+        "2": {
+          "PuntosLocal": 0,
+          "PuntosVisitante": 2
+        }
+      }
+    }
+  ]
+}

@@ -5,6 +5,7 @@ using Gui.Vistas;
 using Logica.Comandos;
 using Logica.Excepciones;
 using Logica.Modelo;
+using Logica.Servicios;
 using Spectre.Console;
 
 
@@ -59,6 +60,10 @@ public class PartidaHandler
 
             AnsiConsole.Clear();
         }
+
+        // Cuando sale de la partida, guardo todos los datos
+        var partidaServicio = new PartidaServicioImpl();
+        partidaServicio.GuardarPartida(partidaActual);
     }
 
     /// <summary>

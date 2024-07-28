@@ -15,6 +15,7 @@ namespace Logica.Servicios
         void CrearUsuario(Usuario usuario);
         Usuario ObtenerDatosUsuario();
         Usuario ObtenerDatosUsuario(int id);
+        void GuardarUsuario(Usuario usuario);
     }
 
     public class UsuarioServicioImpl : IUsuarioServicio
@@ -67,6 +68,22 @@ namespace Logica.Servicios
             try
             {
                 return repositorio.Cargar(id);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Guarda un usuario en los archivos de persistencia de la partida actual
+        /// </summary>
+        /// <param name="usuario">Datos del Usuario a guardar</param>
+        public void GuardarUsuario(Usuario usuario)
+        {
+            try
+            {
+                repositorio.Guardar(usuario);
             }
             catch (Exception)
             {

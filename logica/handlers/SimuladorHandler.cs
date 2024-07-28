@@ -196,7 +196,14 @@ public class SimuladorPartidoHandler
             */
 
         // Guardo el nombre del equipo ganador
-        partido.NombreGanador = (partido.ScoreLocal > partido.ScoreVisitante) ? partido.Local.Nombre : partido.Visitante.Nombre;
+        var ganador = (partido.ScoreLocal > partido.ScoreVisitante) ? partido.Local : partido.Visitante;
+        partido.NombreGanador = ganador.Nombre;
+
+        // Si el jugador gana el partido, puede generar de $15.000 a $30.000, caso contrario, genera de $1.000 a $10.000
+        var rnd = new Random();
+        var servicioJugador = new UsuarioServicioImpl();
+        servicioJugador.ObtenerDatosUsuario().Dinero += ganador.EsEquipoJugador ? rnd.Next(15000, 30001)
+                                                                                : rnd.Next(1000, 10001);
     }
 
     /// <summary>

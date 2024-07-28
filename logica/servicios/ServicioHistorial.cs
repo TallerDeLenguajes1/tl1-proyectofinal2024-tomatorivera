@@ -9,6 +9,7 @@ public interface IHistorialServicio
     Historial ObtenerDatosHistorial();
     Historial ObtenerDatosHistorial(int id);
     void GuardarPartido(Partido partido);
+    void GuardarHistorial(Historial historial);
 }
 
 public class HistorialServicioImpl : IHistorialServicio
@@ -81,6 +82,22 @@ public class HistorialServicioImpl : IHistorialServicio
             historialPartidaActual.AgregarPartido(partido);
 
             repositorio.Guardar(historialPartidaActual);
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
+    /// <summary>
+    /// Guarda un historial en los archivos de persistencia de la partida actual
+    /// </summary>
+    /// <param name="historial">Datos del historial</param>
+    public void GuardarHistorial(Historial historial)
+    {
+        try
+        {
+            repositorio.Guardar(historial);
         }
         catch (Exception)
         {

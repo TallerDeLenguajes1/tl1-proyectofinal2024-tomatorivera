@@ -1,0 +1,164 @@
+{
+  "nombre_usuario": "tomato",
+  "ganancias": 35177.0,
+  "equipo": {
+    "nombre_equipo": "BokitaJr",
+    "total_jugadores": 14,
+    "jugadores": [
+      {
+        "nombre_jugador": "John Franklin",
+        "numero_camiseta": 19,
+        "tipo_jugador": "ARMADOR",
+        "experiencia": 2.62,
+        "habilidad_saque": 5.18,
+        "habilidad_remate": 5.98,
+        "habilidad_recepcion": 4.24,
+        "habilidad_colocacion": 6.27,
+        "habilidad_bloqueo": 3.17
+      },
+      {
+        "nombre_jugador": "Jeremiah Romero",
+        "numero_camiseta": 6,
+        "tipo_jugador": "ARMADOR",
+        "experiencia": 8.59,
+        "habilidad_saque": 5.35,
+        "habilidad_remate": 5.25,
+        "habilidad_recepcion": 5.22,
+        "habilidad_colocacion": 7.14,
+        "habilidad_bloqueo": 2.45
+      },
+      {
+        "nombre_jugador": "Álvaro Ramírez",
+        "numero_camiseta": 2,
+        "tipo_jugador": "CENTRAL",
+        "experiencia": 2.56,
+        "habilidad_saque": 5.9,
+        "habilidad_remate": 4.06,
+        "habilidad_recepcion": 4.84,
+        "habilidad_colocacion": 2.56,
+        "habilidad_bloqueo": 6.82
+      },
+      {
+        "nombre_jugador": "Cristobal Laureano",
+        "numero_camiseta": 36,
+        "tipo_jugador": "PUNTA",
+        "experiencia": 2.03,
+        "habilidad_saque": 6.29,
+        "habilidad_remate": 7.46,
+        "habilidad_recepcion": 4.86,
+        "habilidad_colocacion": 3.84,
+        "habilidad_bloqueo": 5.32
+      },
+      {
+        "nombre_jugador": "Flavio Bahena",
+        "numero_camiseta": 31,
+        "tipo_jugador": "OPUESTO",
+        "experiencia": 9.34,
+        "habilidad_saque": 5.56,
+        "habilidad_remate": 7.66,
+        "habilidad_recepcion": 4.85,
+        "habilidad_colocacion": 3.21,
+        "habilidad_bloqueo": 3.2
+      },
+      {
+        "nombre_jugador": "Pablo Sánchez",
+        "numero_camiseta": 14,
+        "tipo_jugador": "LIBERO",
+        "experiencia": 7.84,
+        "habilidad_saque": 2.58,
+        "habilidad_remate": 1.71,
+        "habilidad_recepcion": 6.43,
+        "habilidad_colocacion": 1.56,
+        "habilidad_bloqueo": 1.83
+      },
+      {
+        "nombre_jugador": "Josep Ibáñez",
+        "numero_camiseta": 15,
+        "tipo_jugador": "CENTRAL",
+        "experiencia": 3.29,
+        "habilidad_saque": 6.14,
+        "habilidad_remate": 3.18,
+        "habilidad_recepcion": 4.77,
+        "habilidad_colocacion": 3.52,
+        "habilidad_bloqueo": 6.27
+      },
+      {
+        "nombre_jugador": "Valentino Mota",
+        "numero_camiseta": 25,
+        "tipo_jugador": "CENTRAL",
+        "experiencia": 2.1,
+        "habilidad_saque": 5.39,
+        "habilidad_remate": 3.18,
+        "habilidad_recepcion": 5.19,
+        "habilidad_colocacion": 2.95,
+        "habilidad_bloqueo": 6.23
+      },
+      {
+        "nombre_jugador": "Darryl Stevens",
+        "numero_camiseta": 32,
+        "tipo_jugador": "LIBERO",
+        "experiencia": 4.7,
+        "habilidad_saque": 3.46,
+        "habilidad_remate": 1.97,
+        "habilidad_recepcion": 6.43,
+        "habilidad_colocacion": 1.7,
+        "habilidad_bloqueo": 0.69
+      },
+      {
+        "nombre_jugador": "David Giménez",
+        "numero_camiseta": 38,
+        "tipo_jugador": "CENTRAL",
+        "experiencia": 4.81,
+        "habilidad_saque": 5.99,
+        "habilidad_remate": 4.51,
+        "habilidad_recepcion": 4.59,
+        "habilidad_colocacion": 3.91,
+        "habilidad_bloqueo": 6.08
+      },
+      {
+        "nombre_jugador": "José Emilio Bustos",
+        "numero_camiseta": 23,
+        "tipo_jugador": "PUNTA",
+        "experiencia": 3.07,
+        "habilidad_saque": 6.46,
+        "habilidad_remate": 7.14,
+        "habilidad_recepcion": 4.75,
+        "habilidad_colocacion": 2.26,
+        "habilidad_bloqueo": 4.3
+      },
+      {
+        "nombre_jugador": "Modesto Lucero",
+        "numero_camiseta": 28,
+        "tipo_jugador": "PUNTA",
+        "experiencia": 7.02,
+        "habilidad_saque": 5.56,
+        "habilidad_remate": 6.2,
+        "habilidad_recepcion": 5.29,
+        "habilidad_colocacion": 2.43,
+        "habilidad_bloqueo": 4.78
+      },
+      {
+        "nombre_jugador": "Eddie Wilson",
+        "numero_camiseta": 12,
+        "tipo_jugador": "CENTRAL",
+        "experiencia": 8.25,
+        "habilidad_saque": 5.26,
+        "habilidad_remate": 3.16,
+        "habilidad_recepcion": 3.9,
+        "habilidad_colocacion": 3.66,
+        "habilidad_bloqueo": 5.14
+      },
+      {
+        "nombre_jugador": "Juan Manuel Rocha",
+        "numero_camiseta": 37,
+        "tipo_jugador": "CENTRAL",
+        "experiencia": 8.21,
+        "habilidad_saque": 6.41,
+        "habilidad_remate": 4.86,
+        "habilidad_recepcion": 4.02,
+        "habilidad_colocacion": 3.84,
+        "habilidad_bloqueo": 5.54
+      }
+    ]
+  }
+}

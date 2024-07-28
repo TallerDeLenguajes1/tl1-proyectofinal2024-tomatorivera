@@ -161,7 +161,7 @@ public class ComandoNuevaPartida : IComando
         Equipo nuevoEquipo = await equipoServicio.GenerarEquipoAsync(nombreEquipo);
         Usuario nuevoUsuario = new Usuario(nombreUsuario, nuevoEquipo);
         Historial nuevoHistorial = new Historial();
-        Partida nuevaPartida = new Partida(id, DateTime.Now, nuevoUsuario, nuevoHistorial);
+        Partida nuevaPartida = new Partida(id, DateTime.Now, DateTime.Now, nuevoUsuario, nuevoHistorial);
 
         // Creo la partida
         partidaServicio.CrearPartida(nuevaPartida);

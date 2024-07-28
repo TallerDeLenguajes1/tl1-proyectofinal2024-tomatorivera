@@ -32,9 +32,9 @@ public class Inicio : Vista
 | | / / __ \/ / / _ \/ / / / __ \/ __ `/ / / 
 | |/ / /_/ / / /  __/ /_/ / /_/ / /_/ / / /  
 |___/\____/_/_/\___/\__, /_.___/\__,_/_/_/   
-/  |/  /___ ____/____/_ _____ ____  _____ 
-/ /|_/ / __ `/ __ \/ __ `/ __ `/ _ \/ ___/ 
-/ /  / / /_/ / / / / /_/ / /_/ /  __/ /     
+   /  |/  /___ ____/____/_ _____ ____  _____ 
+  / /|_/ / __ `/ __ \/ __ `/ __ `/ _ \/ ___/ 
+ / /  / / /_/ / / / / /_/ / /_/ /  __/ /     
 /_/  /_/\__,_/_/ /_/\__,_/\__, /\___/_/      
                         /____/              
 ";
@@ -916,7 +916,7 @@ public class PanelPartido : Vista
     /// <param name="segundosDelay">Segundos de delay entre la aparición de cada acción en pantalla (por defecto, 0 segs)</param>
     public void ActualizarAcciones(LiveDisplayContext ctx, List<string> acciones, int segundosDelay = 0)
     {
-        int maxLineasVentana = Console.WindowHeight / 3 * 2 - 8;
+        int maxLineasVentana = 20 /*Console.WindowHeight / 3 * 2 - 8*/;
 
         // En esta variable acumulo las acciones que van mostrandose para realizar la animación
         // de que lo que pasa va dibujandose una línea debajo de otra
