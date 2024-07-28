@@ -12,7 +12,6 @@ namespace Logica.Modelo
     {
         private string nombre;
         private int numeroCamiseta;
-        [JsonConverter(typeof(StringEnumConverter))]
         private TipoJugador tipoJugador;
         private float experiencia;
         private float habilidadSaque;
@@ -43,18 +42,36 @@ namespace Logica.Modelo
         }
 
         // Propiedades
+
+        [JsonProperty("nombre_jugador")]
         public string Nombre { get => nombre; set => nombre = value; }
+
+        [JsonProperty("numero_camiseta")]
         public int NumeroCamiseta { get => numeroCamiseta; set => numeroCamiseta = value; }
 
+        [JsonProperty("tipo_jugador")]
         [JsonConverter(typeof(StringEnumConverter))] // Para guardar el ENUM en json con su nombre y no su ID
         public TipoJugador TipoJugador { get => tipoJugador; set => tipoJugador = value; }
 
+        [JsonProperty("experiencia")]
         public float Experiencia { get => experiencia; set => experiencia = value; }
+
+        [JsonProperty("habilidad_saque")]
         public float HabilidadSaque { get => habilidadSaque; set => habilidadSaque = value; }
+
+        [JsonProperty("habilidad_remate")]
         public float HabilidadRemate { get => habilidadRemate; set => habilidadRemate = value; }
+
+        [JsonProperty("habilidad_recepcion")]
         public float HabilidadRecepcion { get => habilidadRecepcion; set => habilidadRecepcion = value; }
+
+        [JsonProperty("habilidad_colocacion")]
         public float HabilidadColocacion { get => habilidadColocacion; set => habilidadColocacion = value; }
+
+        [JsonProperty("habilidad_bloqueo")]
         public float HabilidadBloqueo { get => habilidadBloqueo; set => habilidadBloqueo = value; }
+
+        [JsonIgnore]
         public float Cansancio { get => (float)Math.Round(cansancio, 2); set => cansancio = value; }
         
         // Métodos

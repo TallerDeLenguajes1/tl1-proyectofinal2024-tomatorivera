@@ -51,10 +51,14 @@ namespace Logica.Modelo
         }
 
         // Propiedades
+
+        [JsonProperty("id_partida")]
         public int Id { get => id; set => id = value; }
+
+        [JsonProperty("ultimo_guardado")]
         public DateTime FechaGuardado { get => fechaGuardado; set => fechaGuardado = value; }
 
-        [JsonProperty("NombreDT")] // En el json de la partida solo mostraré el nombre del usuario
+        [JsonProperty("nombre_dt")] // En el json de la partida solo mostraré el nombre del usuario
         public string NombreUsuario => Usuario.Nombre;
 
         [JsonIgnore] // El usuario será mostrado en otro JSON

@@ -49,9 +49,29 @@ namespace Persistencia.Repositorios
             partidaActual = obj;
         }
 
+        /// <summary>
+        /// Sobreescribe el archivo de persistencia de la partida
+        /// </summary>
+        /// <param name="obj">Objeto <c>Partida</c> con datos actualizados</param>
+        /// <exception cref="PartidaInvalidaException">En caso de que no se haya cargado la ruta de la partida actual a la configuración</exception>
         public void Guardar(Partida obj)
         {
-            throw new NotImplementedException();
+            // Si por alguna razón no se ha configurado el directorio de la partida actual al cargar/crear
+            // la partida, entonces se lanzará una excepción puesto que no hay carpeta donde persistir
+            if (string.IsNullOrWhiteSpace(Config.DirectorioPartidaActual))
+                throw new PartidaInvalidaException("No se pudo cargar el directorio de la partida actual de la configuración");
+            
+            string nombreArchivo = @$"{Config.DirectorioPartidaActual}\{Config.NombreJsonPartida}";
+
+            // Creo el archivo del historial
+            using (FileStream partidaJson = new FileStream(nombreArchivo, FileMode.Create))
+            {
+                using (StreamWriter partidaWriter = new StreamWriter(partidaJson))
+                {
+                    string partidaSerializada = JsonConvert.SerializeObject(obj, new JsonSerializerSettings { StringEscapeHandling = StringEscapeHandling.EscapeHtml, Formatting = Formatting.Indented });
+                    partidaWriter.WriteLine(partidaSerializada);
+                }
+            }
         }
 
         /// <summary>

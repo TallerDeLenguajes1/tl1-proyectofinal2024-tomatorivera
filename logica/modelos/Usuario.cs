@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+
 namespace Logica.Modelo
 {
     /// <summary>
@@ -10,9 +12,9 @@ namespace Logica.Modelo
         private Equipo equipo;
         
         public Usuario() {
-            this.nombre = string.Empty;
-            this.dinero = 0f;
-            this.equipo = new Equipo();
+            nombre = string.Empty;
+            dinero = 0f;
+            equipo = new Equipo();
         }
 
         /// <summary>
@@ -34,11 +36,14 @@ namespace Logica.Modelo
         }
 
         // Propiedades
+
+        [JsonProperty("nombre_usuario")]
         public string Nombre { get => nombre; set => nombre = value; }
+
+        [JsonProperty("ganancias")]
         public float Dinero { get => dinero; set => dinero = value; } 
+
+        [JsonProperty("equipo")]
         public Equipo Equipo { get => equipo; set => equipo = value; }
-
-        // Métodos
-
     }
 }

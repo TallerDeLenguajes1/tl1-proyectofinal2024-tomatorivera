@@ -1,3 +1,5 @@
+using Gui.Controladores;
+using Gui.Vistas;
 using Logica.Excepciones;
 using Logica.Handlers;
 using Logica.Modelo;
@@ -231,10 +233,22 @@ public class ComandoConsultarPlantilla : IComando
 public class ComandoConsultarHistorial : IComando
 {
     public string Titulo => "Consultar historial de partidos";
+    private string nombreEquipoJugador;
+
+    public ComandoConsultarHistorial(string nombreEquipoJugador)
+    {
+        this.nombreEquipoJugador = nombreEquipoJugador;
+    }
 
     public void Ejecutar()
     {
-        throw new NotImplementedException("Esta función no ha sido implementada aún");
+        // Obtengo el historial de la partida actual
+        var servicioHistorial = new HistorialServicioImpl();
+        var historial = servicioHistorial.ObtenerDatosHistorial();
+        
+        // Genero un panel de información del historial y lo muestro por pantalla
+        var controladorPanelHistorial = new PanelHistorialControlador(new PanelHistorial(), historial, nombreEquipoJugador);
+        controladorPanelHistorial.MostrarVista();
     }
 }
 

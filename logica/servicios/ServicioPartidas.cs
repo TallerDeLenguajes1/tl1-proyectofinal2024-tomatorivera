@@ -28,9 +28,9 @@ namespace Logica.Servicios
 
         public PartidaServicioImpl()
         {
-            this.repositorio = new PartidaRepositorioImpl();
-            this.usuarioServicio = new UsuarioServicioImpl();
-            this.historialServicio = new HistorialServicioImpl();
+            repositorio = new PartidaRepositorioImpl();
+            usuarioServicio = new UsuarioServicioImpl();
+            historialServicio = new HistorialServicioImpl();
         }
 
         /// <summary>

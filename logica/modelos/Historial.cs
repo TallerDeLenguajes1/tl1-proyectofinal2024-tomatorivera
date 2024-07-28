@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+
 namespace Logica.Modelo
 {
     /// <summary>
@@ -11,17 +13,21 @@ namespace Logica.Modelo
 
         public Historial()
         {
-            this.historialPartidos = new List<Partido>();
+            historialPartidos = new List<Partido>();
         }
 
         // Propiedades
+
+        [JsonProperty("total_partidos_jugados")]
         public int TotalPartidosJugados { get => nPartidosJugados; set => nPartidosJugados = value;}
+
+        [JsonProperty("historial_partidos")]
         public List<Partido> HistorialPartidos { get => historialPartidos; set => HistorialPartidos = value; }  
 
         // Métodos 
         public void AgregarPartido(Partido partido)
         {
-            this.historialPartidos.Add(partido);
+            historialPartidos.Add(partido);
             nPartidosJugados++;
         }
     }

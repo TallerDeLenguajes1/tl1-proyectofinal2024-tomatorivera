@@ -7,297 +7,318 @@ using Logica.Modelo;
 using Logica.Servicios;
 using Spectre.Console;
 
-namespace Gui.Controladores
+namespace Gui.Controladores;
+
+/// <summary>
+/// Representa una clase controladora. Dichas clases
+/// se encargan de controlar el funcionamiento de una vista
+/// </summary>
+public abstract class Controlador<V> where V : Vista
 {
+    protected V vista;
+
     /// <summary>
-    /// Representa una clase controladora. Dichas clases
-    /// se encargan de controlar el funcionamiento de una vista
+    /// Constructor de una clase controladora
     /// </summary>
-    public abstract class Controlador<V> where V : Vista
+    /// <param name="vista">Instancia de la clase vista a controlar</param>
+    public Controlador(V vista)
     {
-        protected V vista;
-
-        /// <summary>
-        /// Constructor de una clase controladora
-        /// </summary>
-        /// <param name="vista">Instancia de la clase vista a controlar</param>
-        public Controlador(V vista)
-        {
-            this.vista = vista;
-        }
-
-        /// <summary>
-        /// Muestra la vista vinculada al controlador y se encarga de manejar su lógica
-        /// </summary>
-        public abstract void MostrarVista();
+        this.vista = vista;
     }
 
-    public class InicioControlador : Controlador<Inicio>
+    /// <summary>
+    /// Muestra la vista vinculada al controlador y se encarga de manejar su lógica
+    /// </summary>
+    public abstract void MostrarVista();
+}
+
+public class InicioControlador : Controlador<Inicio>
+{
+    private IUsuarioServicio servicio;
+
+    public InicioControlador(Inicio vista) : base(vista)
     {
-        private IUsuarioServicio servicio;
+        servicio = new UsuarioServicioImpl();
+    }
 
-        public InicioControlador(Inicio vista) : base(vista)
+    /// <summary>
+    /// Muestra la vista de inicio y solicita al usuario su nombre de DT
+    /// </summary>
+    public override void MostrarVista()
+    {
+        var servicio = new RecursoServicioImpl();
+        
+        try
         {
-            servicio = new UsuarioServicioImpl();
+            // El servicio me devuelve el Path de la imagen Logo, si hubiese un 
+            // error con el directorio o el archivo lanza una excepción
+            string logo = servicio.ObtenerLogo();
+            vista.Logo = new CanvasImage(logo) { MaxWidth = 38 };
         }
-
-        /// <summary>
-        /// Muestra la vista de inicio y solicita al usuario su nombre de DT
-        /// </summary>
-        public override void MostrarVista()
+        catch (Exception)
         {
-            var servicio = new RecursoServicioImpl();
-            
-            try
-            {
-                // El servicio me devuelve el Path de la imagen Logo, si hubiese un 
-                // error con el directorio o el archivo lanza una excepción
-                string logo = servicio.ObtenerLogo();
-                vista.Logo = new CanvasImage(logo) { MaxWidth = 38 };
-            }
-            catch (Exception)
-            {
-                // En caso de no poder cargar la imagen, muestro el logo de respaldo en ASCII art para que quede bonito :)
-                string logoRespaldoAscii = @"░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-                                        ██████████                                    ░░
-                                    ██████▓▓▓▓▓▓▓▓████                                ░░
+            // En caso de no poder cargar la imagen, muestro el logo de respaldo en ASCII art para que quede bonito :)
+            string logoRespaldoAscii = @"░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+                                    ██████████                                    ░░
+                                ██████▓▓▓▓▓▓▓▓████                                ░░
 ░░      ░░    ░░      ░░      ░░  ██▓▓██    ████▓▓▓▓▓▓██  ░░      ░░      ░░    ░░    ░░
-        ░░      ░░    ░░      ░░████▓▓▓▓██      ████▓▓▓▓██  ░░    ░░      ░░      ░░  ░░
-                                ██  ██▓▓▓▓██        ██▓▓██                            ░░
+    ░░      ░░    ░░      ░░████▓▓▓▓██      ████▓▓▓▓██  ░░    ░░      ░░      ░░  ░░
+                            ██  ██▓▓▓▓██        ██▓▓██                            ░░
 ░░                            ██    ██▓▓▓▓▓▓████      ██▓▓██                          ░░
 ░░      ░░    ░░░░    ░░      ██      ████▓▓▓▓▓▓██      ████░░    ░░      ░░    ░░░░  ░░
-        ░░      ░░    ░░      ██    ████▓▓██▓▓▓▓▓▓██    ████      ░░      ░░      ░░  ░░
-                              ██  ██▓▓▓▓▓▓▓▓██▓▓▓▓▓▓████  ██                          ░░
-                              ██  ██▓▓▓▓▓▓▓▓██▓▓▓▓▓▓▓▓██████                          ░░
+    ░░      ░░    ░░      ██    ████▓▓██▓▓▓▓▓▓██    ████      ░░      ░░      ░░  ░░
+                            ██  ██▓▓▓▓▓▓▓▓██▓▓▓▓▓▓████  ██                          ░░
+                            ██  ██▓▓▓▓▓▓▓▓██▓▓▓▓▓▓▓▓██████                          ░░
 ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░████▓▓▓▓▓▓██  ██▓▓▓▓██  ██░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 ░░      ░░      ░░    ░░      ░░██████▓▓██      ████  ████  ░░    ░░      ░░      ░░  ░░
-                                  ████▓▓████        ████                                
+                                ████▓▓████        ████                                
 ░░                                  ████▓▓██      ████                                  
 ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░    ██████████      ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 ";
 
-                vista.Logo = new Markup("[bold red]" + logoRespaldoAscii + "[/]");
-            }
-
-            vista.Dibujar();
-
-            // Leo una tecla para iniciar el juego
-            Console.ReadKey();
+            vista.Logo = new Markup("[bold red]" + logoRespaldoAscii + "[/]");
         }
+
+        vista.Dibujar();
+
+        // Leo una tecla para iniciar el juego
+        Console.ReadKey();
+    }
+}
+
+public class MenuControlador : Controlador<Menu>
+{
+    private bool estaSeleccionando;
+    private int indiceSeleccionado;
+    private IUsuarioServicio servicio;
+
+    public MenuControlador(Menu vista) : base(vista)
+    {
+        this.indiceSeleccionado = 0;
+        this.estaSeleccionando = true;
+        this.servicio = new UsuarioServicioImpl();
+        configurarComandoSalida();
     }
 
-    public class MenuControlador : Controlador<Menu>
+    /// <summary>
+    /// Muestra lo necesario del menu y controla su funcionamiento
+    /// </summary>
+    public override void MostrarVista()
     {
-        private bool estaSeleccionando;
-        private int indiceSeleccionado;
-        private IUsuarioServicio servicio;
+        ConsoleKeyInfo teclaPresionada;
+        vista.IndiceSeleccionado = this.indiceSeleccionado;
 
-        public MenuControlador(Menu vista) : base(vista)
+        // El menú se mostrará mientras no se seleccione la opción Salir
+        while (estaSeleccionando)
         {
-            this.indiceSeleccionado = 0;
-            this.estaSeleccionando = true;
-            this.servicio = new UsuarioServicioImpl();
-            configurarComandoSalida();
-        }
+            vista.MostrarTitulo();
+            vista.Dibujar();
 
-        /// <summary>
-        /// Muestra lo necesario del menu y controla su funcionamiento
-        /// </summary>
-        public override void MostrarVista()
-        {
-            ConsoleKeyInfo teclaPresionada;
-            vista.IndiceSeleccionado = this.indiceSeleccionado;
-
-            // El menú se mostrará mientras no se seleccione la opción Salir
-            while (estaSeleccionando)
+            // Este while mantiene al usuario en el menú hasta que presione enter
+            while ((teclaPresionada = Console.ReadKey(true)).Key != ConsoleKey.Enter)
             {
-                vista.MostrarTitulo();
+                switch (teclaPresionada.Key)
+                {
+                    case ConsoleKey.DownArrow:
+                        if (indiceSeleccionado == (vista.Comandos.Count() - 1))
+                            continue;
+                        indiceSeleccionado++;
+                        break;
+
+                    case ConsoleKey.UpArrow:
+                        if (indiceSeleccionado == 0) 
+                            continue;
+                        indiceSeleccionado--;
+                        break;
+
+                    default:
+                        break;
+                }
+
+                // Actualizo el indice seleccionado y vuelvo a dibujar el menu
+                vista.IndiceSeleccionado = this.indiceSeleccionado;
                 vista.Dibujar();
-
-                // Este while mantiene al usuario en el menú hasta que presione enter
-                while ((teclaPresionada = Console.ReadKey(true)).Key != ConsoleKey.Enter)
-                {
-                    switch (teclaPresionada.Key)
-                    {
-                        case ConsoleKey.DownArrow:
-                            if (indiceSeleccionado == (vista.Comandos.Count() - 1))
-                                continue;
-                            indiceSeleccionado++;
-                            break;
-
-                        case ConsoleKey.UpArrow:
-                            if (indiceSeleccionado == 0) 
-                                continue;
-                            indiceSeleccionado--;
-                            break;
-
-                        default:
-                            break;
-                    }
-
-                    // Actualizo el indice seleccionado y vuelvo a dibujar el menu
-                    vista.IndiceSeleccionado = this.indiceSeleccionado;
-                    vista.Dibujar();
-                }
-
-                // Almaceno la posición del cursor para borrar desde ahí los registros visuales del comando
-                int lineaInicio = Console.CursorTop;
-
-                // Ejecuto el comando seleccionado manejando los posibles errores que pueden lanzar
-                try
-                {
-                    vista.Comandos.ElementAt(indiceSeleccionado).Ejecutar();
-                }
-                catch (Exception e)
-                {
-                    VistasUtil.MostrarError(e.Message);
-                    if (!(e is VoleyballManagerRuntimeException)) VistasUtil.MostrarDetallesExcepcion(e);
-
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    VistasUtil.MostrarCentrado("-*- Presione una tecla para volver al menú -*-");
-                    Console.ResetColor();
-
-                    Console.ReadKey(true);
-                }
-
-                // Solo si el menú aún se sigue ejecutando, borro las lineas de lo escrito por los comandos
-                if (estaSeleccionando) VistasUtil.BorrarDesdeLinea(lineaInicio);
             }
-        }
 
-        /// <summary>
-        /// Agrega la acción de modificar el atributo "estaSeleccionado" en el comando salir
-        /// para que detenga la ejecución del WHILE que mantiene activo el menú
-        /// </summary>
-        private void configurarComandoSalida() {
-            var cmdSalir = (ComandoSalir) vista.Comandos.Where(cmd => cmd is ComandoSalir).First();
-            cmdSalir.AccionSalida = () => { this.estaSeleccionando = false; };
+            // Almaceno la posición del cursor para borrar desde ahí los registros visuales del comando
+            int lineaInicio = Console.CursorTop;
+
+            // Ejecuto el comando seleccionado manejando los posibles errores que pueden lanzar
+            try
+            {
+                vista.Comandos.ElementAt(indiceSeleccionado).Ejecutar();
+            }
+            catch (Exception e)
+            {
+                VistasUtil.MostrarError(e.Message);
+                if (!(e is VoleyballManagerRuntimeException)) VistasUtil.MostrarDetallesExcepcion(e);
+
+                Console.ForegroundColor = ConsoleColor.Red;
+                VistasUtil.MostrarCentrado("-*- Presione una tecla para volver al menú -*-");
+                Console.ResetColor();
+
+                Console.ReadKey(true);
+            }
+
+            // Solo si el menú aún se sigue ejecutando, borro las lineas de lo escrito por los comandos
+            if (estaSeleccionando) VistasUtil.BorrarDesdeLinea(lineaInicio);
         }
     }
 
-    public class DashboardControlador : Controlador<Dashboard>
+    /// <summary>
+    /// Agrega la acción de modificar el atributo "estaSeleccionado" en el comando salir
+    /// para que detenga la ejecución del WHILE que mantiene activo el menú
+    /// </summary>
+    private void configurarComandoSalida() {
+        var cmdSalir = (ComandoSalir) vista.Comandos.Where(cmd => cmd is ComandoSalir).First();
+        cmdSalir.AccionSalida = () => { this.estaSeleccionando = false; };
+    }
+}
+
+public class DashboardControlador : Controlador<Dashboard>
+{
+    public DashboardControlador(Dashboard vista) : base(vista)
+    {}
+
+    public override void MostrarVista()
     {
-        public DashboardControlador(Dashboard vista) : base(vista)
-        {}
+        /*
+        // Muestro un spinner mientras cargan las novedades
+        AnsiConsole.Status()
+            .Spinner(Spinner.Known.BouncingBall)
+            .SpinnerStyle(Style.Parse("yellow bold"))
+            .Start("[yellow]Cargando últimos datos...[/]", ctx => 
+            {
+                // Cargo las novedades para ser mostradas en el dashboard
+                var novedades = obtenerNovedades().GetAwaiter().GetResult();
+                vista.InformacionNovedades = novedades;
+            }
+        );
+        */
 
-        public override void MostrarVista()
+        // Limpio la consola
+        AnsiConsole.Clear();
+
+        // Si ocurrieron errores durante la carga de novedades las muestro por pantalla
+        if (ErroresIgnorablesHandler.ObtenerInstancia().Errores.Any()) MostrarErrores();
+        
+        vista.Dibujar();
+    }
+    
+    /// <summary>
+    /// Obtiene novedades para ser mostradas en el dashboard
+    /// </summary>
+    /// <returns>Diccionario con información de la liga y de sus respectivos partidos a mostrar en novedades</returns>
+    private async Task<(LeagueResponse, List<GamesResponse>)> obtenerNovedades()
+    {
+        var random = new Random();
+        var servicioNovedades = new NovedadesServicioImpl();
+        var temporada = 2024;
+
+        // Obtengo las ligas del servicio, si no devuelve nada entonces retorno
+        // datos vacíos para luego mostrar el mensaje por pantalla
+        var ligas = await servicioNovedades.ObtenerLigasAsync(temporada);
+        if (!ligas.Any())
         {
-            /*
-            // Muestro un spinner mientras cargan las novedades
-            AnsiConsole.Status()
-                .Spinner(Spinner.Known.BouncingBall)
-                .SpinnerStyle(Style.Parse("yellow bold"))
-                .Start("[yellow]Cargando últimos datos...[/]", ctx => 
-                {
-                    // Cargo las novedades para ser mostradas en el dashboard
-                    var novedades = obtenerNovedades().GetAwaiter().GetResult();
-                    vista.InformacionNovedades = novedades;
-                }
-            );
-            */
-
-            // Limpio la consola
-            AnsiConsole.Clear();
-
-            // Si ocurrieron errores durante la carga de novedades las muestro por pantalla
-            if (ErroresIgnorablesHandler.ObtenerInstancia().Errores.Any()) MostrarErrores();
-            
-            vista.Dibujar();
+            return (new LeagueResponse(), new List<GamesResponse>());
         }
         
-        /// <summary>
-        /// Obtiene novedades para ser mostradas en el dashboard
-        /// </summary>
-        /// <returns>Diccionario con información de la liga y de sus respectivos partidos a mostrar en novedades</returns>
-        private async Task<(LeagueResponse, List<GamesResponse>)> obtenerNovedades()
-        {
-            var random = new Random();
-            var servicioNovedades = new NovedadesServicioImpl();
-            var temporada = 2024;
+        // Selecciono una liga aleatoria y obtengo datos de sus partidos recientes
+        var ligaSeleccionada = ligas[random.Next(ligas.Count())];
+        var partidos = await servicioNovedades.ObtenerPartidosAsync(ligaSeleccionada.Id, temporada);
 
-            // Obtengo las ligas del servicio, si no devuelve nada entonces retorno
-            // datos vacíos para luego mostrar el mensaje por pantalla
-            var ligas = await servicioNovedades.ObtenerLigasAsync(temporada);
-            if (!ligas.Any())
-            {
-                return (new LeagueResponse(), new List<GamesResponse>());
-            }
-            
-            // Selecciono una liga aleatoria y obtengo datos de sus partidos recientes
-            var ligaSeleccionada = ligas[random.Next(ligas.Count())];
-            var partidos = await servicioNovedades.ObtenerPartidosAsync(ligaSeleccionada.Id, temporada);
-
-            return (ligaSeleccionada, partidos);
-        }
-
-        /// <summary>
-        /// Muestra los errores guardados en <c>ErroresIgnorablesHandler</c>
-        /// </summary>
-        private void MostrarErrores()
-        {
-            var titulo = new Rule("[bold red] Se han producido uno o más errores [/]");
-            titulo.LeftJustified();
-            titulo.Style = Style.Parse("bold red");
-            AnsiConsole.Write(titulo);
-            
-            foreach (var error in ErroresIgnorablesHandler.ObtenerInstancia().Errores)
-            {
-                AnsiConsole.Write(new Markup($"[gray]Durante la operación [/][red underline]{error.Key}[/][gray]: [/][gray]{error.Value.Message}.[/]"));
-            }
-
-            System.Console.WriteLine("\n");
-            ErroresIgnorablesHandler.ObtenerInstancia().LimpiarErrores();
-        }
+        return (ligaSeleccionada, partidos);
     }
 
-    public class PanelPartidoControlador : Controlador<PanelPartido>
+    /// <summary>
+    /// Muestra los errores guardados en <c>ErroresIgnorablesHandler</c>
+    /// </summary>
+    private void MostrarErrores()
     {
-        private Partido informacionPartido;
-
-        public PanelPartidoControlador(PanelPartido vista, Partido informacionPartido) : base(vista)
+        var titulo = new Rule("[bold red] Se han producido uno o más errores [/]");
+        titulo.LeftJustified();
+        titulo.Style = Style.Parse("bold red");
+        AnsiConsole.Write(titulo);
+        
+        foreach (var error in ErroresIgnorablesHandler.ObtenerInstancia().Errores)
         {
-            this.informacionPartido = informacionPartido;
+            AnsiConsole.Write(new Markup($"[gray]Durante la operación [/][red underline]{error.Key}[/][gray]: [/][gray]{error.Value.Message}.[/]"));
         }
 
-        public override void MostrarVista()
-        {
-            vista.InformacionPartido = informacionPartido;
-            vista.Dibujar();
-        }
+        System.Console.WriteLine("\n");
+        ErroresIgnorablesHandler.ObtenerInstancia().LimpiarErrores();
+    }
+}
 
-        /// <summary>
-        /// Obtiene el layout sobre el cual se despliega la información del partido
-        /// </summary>
-        /// <returns>Objeto <c>Layout</c></returns>
-        public Layout ObtenerLayoutInformacion()
-        {
-            return vista.LayoutInformacion;
-        }
+public class PanelPartidoControlador : Controlador<PanelPartido>
+{
+    private Partido informacionPartido;
 
-        /// <summary>
-        /// Muestra una secuencia de acciones sucedidas en el partido en el layout correspondiente
-        /// </summary>
-        /// <param name="ctx">Contexto del objeto Live que actualiza el Layout</param>
-        /// <param name="acciones">Lista de acciones a mostrar por pantalla</param>
-        public void MostrarAcciones(LiveDisplayContext ctx, List<string> acciones)
-        {
-            vista.ActualizarAcciones(ctx, acciones, 1);
-        }
+    public PanelPartidoControlador(PanelPartido vista, Partido informacionPartido) : base(vista)
+    {
+        this.informacionPartido = informacionPartido;
+    }
 
-        /// <summary>
-        /// Muestra en el panel correspondiente qué equipo ha marcado un punto
-        /// </summary>
-        /// <param name="ctx">Contexto del objeto Live que actualiza el Layout</param>
-        /// <param name="equipo">Tipo de equipo que ha marcado el punto (Local o Visitante)</param>
-        public void MostrarPunto(LiveDisplayContext ctx, TipoEquipo equipo)
-        {
-            vista.MarcarPunto(ctx, equipo);
-        }
+    public override void MostrarVista()
+    {
+        vista.InformacionPartido = informacionPartido;
+        vista.Dibujar();
+    }
 
-        public void ActualizarMarcador(LiveDisplayContext ctx)
-        {
-            vista.ActualizarMarcador();
-            ctx.Refresh();
-        }
+    /// <summary>
+    /// Obtiene el layout sobre el cual se despliega la información del partido
+    /// </summary>
+    /// <returns>Objeto <c>Layout</c></returns>
+    public Layout ObtenerLayoutInformacion()
+    {
+        return vista.LayoutInformacion;
+    }
+
+    /// <summary>
+    /// Muestra una secuencia de acciones sucedidas en el partido en el layout correspondiente
+    /// </summary>
+    /// <param name="ctx">Contexto del objeto Live que actualiza el Layout</param>
+    /// <param name="acciones">Lista de acciones a mostrar por pantalla</param>
+    public void MostrarAcciones(LiveDisplayContext ctx, List<string> acciones)
+    {
+        vista.ActualizarAcciones(ctx, acciones, 1);
+    }
+
+    /// <summary>
+    /// Muestra en el panel correspondiente qué equipo ha marcado un punto
+    /// </summary>
+    /// <param name="ctx">Contexto del objeto Live que actualiza el Layout</param>
+    /// <param name="equipo">Tipo de equipo que ha marcado el punto (Local o Visitante)</param>
+    public void MostrarPunto(LiveDisplayContext ctx, TipoEquipo equipo)
+    {
+        vista.MarcarPunto(ctx, equipo);
+    }
+
+    public void ActualizarMarcador(LiveDisplayContext ctx)
+    {
+        vista.ActualizarMarcador();
+        ctx.Refresh();
+    }
+}
+
+public class PanelHistorialControlador : Controlador<PanelHistorial>
+{
+    private Historial informacionHistorial;
+    private string nombreEquipo;
+
+    public PanelHistorialControlador(PanelHistorial vista, Historial informacionHistorial, string nombreEquipo) : base(vista)
+    {
+        this.informacionHistorial = informacionHistorial;
+        this.nombreEquipo = nombreEquipo;
+    }
+
+    public override void MostrarVista()
+    {
+        vista.InformacionHistorial = informacionHistorial;
+        vista.NombreEquipo = nombreEquipo;
+        vista.Dibujar();
+
+        // Solicito una tecla para que la vista no desaparezca
+        Console.ReadKey(true);
     }
 }

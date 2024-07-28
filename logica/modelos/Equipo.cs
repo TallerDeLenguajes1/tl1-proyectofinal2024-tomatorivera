@@ -14,7 +14,6 @@ public class Equipo
     private List<Jugador> jugadores;
     private Formacion? formacionPartido;
     private bool esEquipoJugador;
-    private Color colorConsola;
 
     public Equipo() 
     {
@@ -22,15 +21,20 @@ public class Equipo
         jugadores = new List<Jugador>();
         nJugadores = 0;
         EsEquipoJugador = false;
-        colorConsola = Color.White;
     }
 
     // Propiedades
     
-    [JsonProperty("NombreEquipo")]
+    [JsonProperty("nombre_equipo")]
     public string Nombre { get => nombre; set => nombre = value; }
+
+    [JsonProperty("total_jugadores")]
     public int TotalJugadores { get => nJugadores; set => nJugadores = value; }
+
+    [JsonProperty("es_equipo_jugador")]
     public bool EsEquipoJugador { get => esEquipoJugador; set => esEquipoJugador = value; }
+
+    [JsonProperty("jugadores")]
     public List<Jugador> Jugadores 
     { 
         get => jugadores; 
@@ -39,8 +43,12 @@ public class Equipo
             nJugadores = jugadores.Count(); 
         }
     }
+
+    [JsonIgnore]
     public Formacion? FormacionPartido { get => formacionPartido; set => formacionPartido = value; }
-    public Color ColorConsola { get => colorConsola; set => colorConsola = value; }
+
+    [JsonProperty("jugadores_convocados")]
+    public List<string> JugadoresConvocados { get => (formacionPartido != null) ? formacionPartido.ObtenerListaJugadores().Select(j => $"{j.Nombre} ({j.NumeroCamiseta})").ToList() : new List<string>(); }
 }
 
 // Modelos para API's relacionadas al equipo

@@ -1,6 +1,7 @@
 using Logica.Excepciones;
 using Logica.Modelo;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Persistencia.Infraestructura;
 using Persistencia.Util;
 
@@ -9,6 +10,9 @@ namespace Persistencia.Repositorios
     public class UsuarioRepositorioImpl : IRepositorio<Usuario>
     {
         private static Usuario? usuarioActual;
+
+        /// <value>Contiene las propiedades que se excluirán del JSON correspondiente al usuario</value>
+        private DefaultContractResolver usuarioContractResolver = new ExclusionPropiedadesJson(["jugadores_convocados", "es_equipo_jugador"]);
 
         /// <summary>
         /// Crea un nuevo archivo de persistencia para <paramref name="obj"/>
@@ -30,7 +34,12 @@ namespace Persistencia.Repositorios
             {
                 using (StreamWriter writer = new StreamWriter(usuarioJson))
                 {
-                    string usuarioSerializado = JsonConvert.SerializeObject(obj, new JsonSerializerSettings { StringEscapeHandling = StringEscapeHandling.EscapeHtml, Formatting = Formatting.Indented });
+                    string usuarioSerializado = JsonConvert.SerializeObject(obj, 
+                                                                            new JsonSerializerSettings {
+                                                                                StringEscapeHandling = StringEscapeHandling.EscapeHtml,
+                                                                                Formatting = Formatting.Indented,
+                                                                                ContractResolver = usuarioContractResolver
+                                                                            });
                     writer.WriteLine(usuarioSerializado);
                 }
             }
@@ -82,9 +91,34 @@ namespace Persistencia.Repositorios
             return usuario;
         }
 
+        /// <summary>
+        /// Sobreescribe los datos del usuario en los archivos de persistencia
+        /// </summary>
+        /// <param name="obj">Objeto <c>Usuario</c> con los datos del usuario actualizados</param>
+        /// <exception cref="PartidaInvalidaException">En caso de que no se haya cargado la ruta de la carpeta a la configuración</exception>S
         public void Guardar(Usuario obj)
         {
-            throw new NotImplementedException();
+            // Si por alguna razón no se ha configurado el directorio de la partida actual al cargar/crear
+            // la partida, entonces se lanzará una excepción puesto que no hay carpeta donde persistir
+            if (string.IsNullOrWhiteSpace(Config.DirectorioPartidaActual))
+                throw new PartidaInvalidaException("No se pudo cargar el directorio de la partida actual de la configuración");
+            
+            string nombreArchivo = @$"{Config.DirectorioPartidaActual}\{Config.NombreJsonUsuario}";
+
+            // Creo el archivo del historial
+            using (FileStream usuarioJson = new FileStream(nombreArchivo, FileMode.Create))
+            {
+                using (StreamWriter usuarioWriter = new StreamWriter(usuarioJson))
+                {
+                    string usuarioSerializado = JsonConvert.SerializeObject(obj, 
+                                                                            new JsonSerializerSettings {
+                                                                                StringEscapeHandling = StringEscapeHandling.EscapeHtml,
+                                                                                Formatting = Formatting.Indented,
+                                                                                ContractResolver = usuarioContractResolver
+                                                                            });
+                    usuarioWriter.WriteLine(usuarioSerializado);
+                }
+            }
         }
 
         /// <summary>

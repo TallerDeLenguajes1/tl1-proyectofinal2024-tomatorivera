@@ -8,6 +8,7 @@ using Logica.Comandos;
 using Gui.Controladores;
 using Gui.Util;
 using Gui.Vistas;
+using Logica.Servicios;
 
 namespace Logica.Handlers;
 
@@ -54,6 +55,10 @@ public class SimuladorPartidoHandler
         
         // Inicializo la lógica del partido
         jugarPartido();
+
+        // Guardo el partido jugado en el historial
+        var servicioHistorial = new HistorialServicioImpl();
+        servicioHistorial.GuardarPartido(partido);
 
         // Temporal: para que no finalice je
         Console.ReadKey();
@@ -189,6 +194,9 @@ public class SimuladorPartidoHandler
             // Muestro las opciones del partido al usuario y ejecuto la que elija
             ejecutarMenu();
             */
+
+        // Guardo el nombre del equipo ganador
+        partido.NombreGanador = (partido.ScoreLocal > partido.ScoreVisitante) ? partido.Local.Nombre : partido.Visitante.Nombre;
     }
 
     /// <summary>

@@ -1,6 +1,7 @@
 using Logica.Excepciones;
 using Logica.Modelo;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Persistencia.Infraestructura;
 using Persistencia.Util;
 
@@ -8,7 +9,10 @@ namespace Persistencia.Repositorios
 {
     public class HistorialRepositorio : IRepositorio<Historial>
     {
-        public Historial? HistorialActual { get; set; }
+        private static Historial? historialActual { get; set; }
+
+        /// <value>Contiene las propiedades que se excluirán del JSON correspondiente al usuario</value>
+        private DefaultContractResolver historialContractResolver = new ExclusionPropiedadesJson(["jugadores", "total_jugadores"]);
 
         /// <summary>
         /// Crea un nuevo historial en los archivos de persistencia
@@ -29,13 +33,18 @@ namespace Persistencia.Repositorios
             {
                 using (StreamWriter historialWriter = new StreamWriter(historialJson))
                 {
-                    string historialSerializado = JsonConvert.SerializeObject(obj, new JsonSerializerSettings { StringEscapeHandling = StringEscapeHandling.EscapeHtml, Formatting = Formatting.Indented });
+                    string historialSerializado = JsonConvert.SerializeObject(obj,
+                                                                              new JsonSerializerSettings {
+                                                                                StringEscapeHandling = StringEscapeHandling.EscapeHtml,
+                                                                                Formatting = Formatting.Indented,
+                                                                                ContractResolver = historialContractResolver
+                                                                              });
                     historialWriter.WriteLine(historialSerializado);
                 }
             }
 
             // Actualizo la instancia del historial actual
-            this.HistorialActual = obj;
+            historialActual = obj;
         }
         
         /// <summary>
@@ -69,17 +78,53 @@ namespace Persistencia.Repositorios
                 }
             }
 
+            // Actualizo la instancia del historial actual en el repositorio
+            historialActual = historial;
+
             return historial;
         }
 
+        /// <summary>
+        /// Guarda el historial en los archivos de persistencia
+        /// </summary>
+        /// <param name="obj">Objeto <c>Historial</c> a almacenar</param>
+        /// <exception cref="PartidaInvalidaException">En caso de que no haya una partida actual de la cual obtener archivos de persistencia</exception>
         public void Guardar(Historial obj)
         {
-            throw new NotImplementedException();
+            // Si por alguna razón no se ha configurado el directorio de la partida actual al cargar/crear
+            // la partida, entonces se lanzará una excepción puesto que no hay carpeta donde persistir
+            if (string.IsNullOrWhiteSpace(Config.DirectorioPartidaActual))
+                throw new PartidaInvalidaException("No se pudo cargar el directorio de la partida actual de la configuración");
+            
+            string nombreArchivo = @$"{Config.DirectorioPartidaActual}\{Config.NombreJsonHistorial}";
+
+            // Creo el archivo del historial
+            using (FileStream historialJson = new FileStream(nombreArchivo, FileMode.Create))
+            {
+                using (StreamWriter historialWriter = new StreamWriter(historialJson))
+                {
+                    string historialSerializado = JsonConvert.SerializeObject(obj,
+                                                                              new JsonSerializerSettings {
+                                                                                StringEscapeHandling = StringEscapeHandling.EscapeHtml,
+                                                                                Formatting = Formatting.Indented,
+                                                                                ContractResolver = historialContractResolver
+                                                                              });
+                    historialWriter.WriteLine(historialSerializado);
+                }
+            }
         }
 
+        /// <summary>
+        /// Obtiene la instancia del historial correspondiente a la partida actual
+        /// </summary>
+        /// <returns>Objeto <c>Historial</c></returns>
+        /// <exception cref="HistorialInvalidoException">Cuando la instancia del historial sea nula</exception>
         public Historial ObtenerActual()
         {
-            throw new NotImplementedException();
+            if (historialActual == null)
+                throw new HistorialInvalidoException("No existe una instancia del historial actual en el repositorio");
+
+            return historialActual;
         }
     }
 }

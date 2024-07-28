@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Persistencia.Infraestructura;
 
 namespace Logica.Modelo;
@@ -38,15 +39,36 @@ public class Partido
     }
 
     // Propiedades
-    public Equipo Local { get => local; set => local = value; }
-    public Equipo Visitante { get => visitante; set => visitante = value; }
+
+    [JsonProperty("tipo_de_partido")]
+    [JsonConverter(typeof(StringEnumConverter))]
     public TipoPartido TipoPartido { get => tipoPartido; set => tipoPartido = value; }
+
+    [JsonProperty("nombre_ganador")]
     public string NombreGanador { get => nombreGanador; set => nombreGanador = value; }
-    public int ScoreLocal { get => scoreLocal; set => scoreLocal = value; }
-    public int ScoreVisitante { get => scoreVisitante; set => scoreVisitante = value; }
-    public Set SetActual { get => setActual; set => setActual = value; }
+
+    [JsonProperty("al_mejor_de")]
     public int SetMaximos { get => setMaximos ; set => setMaximos = value; }
+
+    [JsonProperty("equipo_local")]
+    public Equipo Local { get => local; set => local = value; }
+
+    [JsonProperty("equipo_visitante")]
+    public Equipo Visitante { get => visitante; set => visitante = value; }
+
+    [JsonProperty("score_local")]
+    public int ScoreLocal { get => scoreLocal; set => scoreLocal = value; }
+
+    [JsonProperty("score_visitante")]
+    public int ScoreVisitante { get => scoreVisitante; set => scoreVisitante = value; }
+
+    [JsonProperty("resultados_sets")]
     public Dictionary<int, ResultadoSet> ResultadoSets { get => resultadoSets; set => resultadoSets = value; }
+
+    [JsonIgnore]
+    public Set SetActual { get => setActual; set => setActual = value; }
+
+    [JsonIgnore]
     public Equipo EquipoEnSaque { get => equipoEnSaque; set => equipoEnSaque = value; }
 
     // Métodos

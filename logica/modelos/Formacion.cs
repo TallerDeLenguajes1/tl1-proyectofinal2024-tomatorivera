@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+
 namespace Logica.Modelo;
 
 /// <summary>
@@ -77,5 +79,24 @@ public class Formacion
         }
 
         return zona + 1;
+    }
+
+    /// <summary>
+    /// Genera una lista con todos los jugadores de la formación, tanto titulares como suplentes
+    /// </summary>
+    /// <returns><c>List</c> de <c>Jugador</c></returns>
+    public List<Jugador> ObtenerListaJugadores()
+    {
+        var lista = new List<Jugador>();
+
+        // Agrego los titulares
+        foreach (var jugador in JugadoresCancha)
+            lista.Add(jugador);
+
+        // Agrego los suplentes
+        foreach (var jugador in JugadoresSuplentes)
+            lista.Add(jugador);
+
+        return lista;
     }
 }

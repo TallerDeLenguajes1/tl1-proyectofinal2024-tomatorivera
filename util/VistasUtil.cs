@@ -85,7 +85,7 @@ namespace Gui.Util
 
             AnsiConsole.Write(new Panel(
                 Align.Center(
-                    new Markup("[red]× " + mensaje + " ×[/]")
+                    new Markup($"[red]× {mensaje} ×[/]")
                 )
             ).Border(BoxBorder.None));
 

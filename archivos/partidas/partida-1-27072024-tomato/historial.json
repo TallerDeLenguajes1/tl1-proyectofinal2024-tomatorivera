@@ -1,0 +1,93 @@
+{
+  "total_partidos_jugados": 2,
+  "historial_partidos": [
+    {
+      "tipo_de_partido": "AMISTOSO",
+      "nombre_ganador": "Univ. La Matanza W",
+      "al_mejor_de": 3,
+      "equipo_local": {
+        "nombre_equipo": "Mun. La Matanza W",
+        "es_equipo_jugador": true,
+        "jugadores_convocados": []
+      },
+      "equipo_visitante": {
+        "nombre_equipo": "Univ. La Matanza W",
+        "es_equipo_jugador": false,
+        "jugadores_convocados": []
+      },
+      "score_local": 1,
+      "score_visitante": 2,
+      "resultados_sets": {
+        "1": {
+          "PuntosLocal": 0,
+          "PuntosVisitante": 2
+        },
+        "2": {
+          "PuntosLocal": 3,
+          "PuntosVisitante": 1
+        },
+        "3": {
+          "PuntosLocal": 2,
+          "PuntosVisitante": 4
+        }
+      }
+    },
+    {
+      "tipo_de_partido": "AMISTOSO",
+      "nombre_ganador": "Club Rosario W",
+      "al_mejor_de": 3,
+      "equipo_local": {
+        "nombre_equipo": "Club Rosario W",
+        "es_equipo_jugador": false,
+        "jugadores_convocados": [
+          "Alejandro Ramos (42)",
+          "Federico Espinoza (8)",
+          "Borja Reyes (2)",
+          "Jeffrey Perkins (44)",
+          "Bruno Alcaraz (34)",
+          "George Bradley (48)",
+          "John Nieto (10)",
+          "Cristobal Salgado (40)",
+          "Arthur Castillo (5)",
+          "Jordi Ortiz (33)",
+          "Reynaldo Gutiérrez (14)",
+          "Tommy Collins (21)",
+          "Lloyd Ryan (16)",
+          "Adrián Velasco (22)"
+        ]
+      },
+      "equipo_visitante": {
+        "nombre_equipo": "Mun. La Matanza W",
+        "es_equipo_jugador": true,
+        "jugadores_convocados": [
+          "Adrian Chapman (40)",
+          "Hugh Evans (8)",
+          "Dwight Sanchez (35)",
+          "Joaquín Benavídez (31)",
+          "Ramon Martin (12)",
+          "Pablo Peña (23)",
+          "Adolfo Carrasco (18)",
+          "Cristian Lorenzo (30)",
+          "Eloy Fuentes (38)",
+          "Jaime Calvo (34)",
+          "Pilar Ocasio (17)",
+          "Tomas Soler (33)",
+          "Leonel Lemus (25)",
+          "Ramon Vázquez (45)"
+        ]
+      },
+      "score_local": 2,
+      "score_visitante": 0,
+      "resultados_sets": {
+        "1": {
+          "PuntosLocal": 2,
+          "PuntosVisitante": 0
+        },
+        "2": {
+          "PuntosLocal": 2,
+          "PuntosVisitante": 0
+        }
+      }
+    }
+  ]
+}
