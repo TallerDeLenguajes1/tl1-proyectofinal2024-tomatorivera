@@ -1,4 +1,5 @@
 using Gui.Controladores;
+using Gui.Util;
 using Gui.Vistas;
 using Logica.Excepciones;
 using Logica.Handlers;
@@ -263,3 +264,34 @@ public class ComandoConsultarHistorial : IComando
     }
 }
 
+public class ComandoEliminarPartida : IComando
+{
+    public string Titulo => "Salir y eliminar partida";
+    public Action? AccionCancelacion { get; set; }
+
+    public void Ejecutar()
+    {
+        if (pregunta("¿Está seguro de que desea eliminar esta partida? [si/no]: "))
+        {
+            var partidaServicio = new PartidaServicioImpl();
+            partidaServicio.EliminarPartida();
+
+            if (AccionCancelacion != null) AccionCancelacion.Invoke();
+        }
+    }
+
+    /// <summary>
+    /// Realiza una pregunta de sí o no al usuario
+    /// </summary>
+    /// <param name="textoPregunta">Pregunta a realizar</param>
+    /// <returns><c>True</c> si el primer caracter de la cadena es 's', <c>False</c> en caso contrario</returns>
+    private bool pregunta(string textoPregunta) 
+    {
+        System.Console.WriteLine();
+
+        VistasUtil.MostrarCentradoSinSalto(textoPregunta);
+        string respuesta = Console.ReadLine() ?? string.Empty;
+
+        return !string.IsNullOrWhiteSpace(respuesta) && respuesta.ToLower()[0].Equals('s');
+    }
+}

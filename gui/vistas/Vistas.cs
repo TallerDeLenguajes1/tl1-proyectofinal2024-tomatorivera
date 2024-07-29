@@ -1068,6 +1068,56 @@ public class PanelPartido : Vista
         );
         AnsiConsole.Write(layoutPantallaFinal);
     }
+
+    /// <summary>
+    /// Muestra una animación para el encabezado del partido
+    /// </summary>
+    /// <param name="figletLocal">Figlet text a mostrar del equipo local</param>
+    /// <param name="figletVisitante">Figlet text a mostrar del equipo visitante</param>
+    /// <param name="tipoPartido">Tipo de partido a disputarse</param>
+    public void MostrarEncabezadoPartido(FigletText figletLocal, FigletText figletVisitante, TipoPartido tipoPartido)
+    {
+        AnsiConsole.Clear(); 
+
+        var layout = new Layout("raiz")
+            .SplitRows(new Layout("arriba"));
+        
+        // Textos a mostrarse por pantalla
+        var textos = new IRenderable[] {
+            new Markup("Se va a disputar..."),
+            figletLocal,
+            new Rule("[orange1 bold]VS[/]") { Style = Style.Parse("bold gray"), Justification = Justify.Center },
+            figletVisitante,
+            new Markup($"En un partido [orange1]{tipoPartido}[/]")
+        };
+
+        // Muestro el layout con el componente Live para que se vaya actualizando de a poco
+        AnsiConsole.Live(layout)
+            .Start(controladorDisplay => {
+                // En esta lista almaceno los objetos que voy mostrando por pantalla para dar el efecto
+                // de que van apareciendo uno por uno
+                var textosMostrados = new List<IRenderable>();
+
+                foreach (var linea in textos)
+                {
+                    textosMostrados.Add(linea);
+                    layout["arriba"].Update(
+                        new Panel(Align.Center(
+                            new Rows(textosMostrados),
+                            VerticalAlignment.Middle
+                        ))
+                        .Expand()
+                        .Border(BoxBorder.None)
+                    );
+                    
+                    textosMostrados.Add(new Text(""));
+                    controladorDisplay.Refresh();
+                    VistasUtil.PausarVistas(1);
+                }
+
+                VistasUtil.PausarVistas(3);
+            });
+    }
 }
 
 /// <summary>

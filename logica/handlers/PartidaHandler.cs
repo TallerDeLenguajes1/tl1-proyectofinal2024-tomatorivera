@@ -8,7 +8,6 @@ using Logica.Modelo;
 using Logica.Servicios;
 using Spectre.Console;
 
-
 namespace Logica.Handlers;
 
 /// <summary>
@@ -19,11 +18,13 @@ public class PartidaHandler
 {
     private Partida partidaActual;
     private bool deseaSalir;
+    private bool partidaEliminada;
 
     public PartidaHandler(Partida partidaActual)
     {
         this.partidaActual = partidaActual;
-        this.deseaSalir = false;
+        deseaSalir = false;
+        partidaEliminada = false;
     }
     
     /// <summary>
@@ -33,7 +34,7 @@ public class PartidaHandler
         var vistaDashboard = new Dashboard(partidaActual);
         var controladorDashboard = new DashboardControlador(vistaDashboard);
         
-        while (!deseaSalir)
+        while (!deseaSalir && !partidaEliminada)
         {
             // Muestro el dashboard
             controladorDashboard.MostrarVista();
@@ -61,9 +62,13 @@ public class PartidaHandler
             AnsiConsole.Clear();
         }
 
-        // Cuando sale de la partida, guardo todos los datos
-        var partidaServicio = new PartidaServicioImpl();
-        partidaServicio.GuardarPartida(partidaActual);
+        // Cuando sale de la partida guardo todos los datos (solo en caso
+        // de que la partida no haya sido eliminada) 
+        if (!partidaEliminada)
+        {
+            var partidaServicio = new PartidaServicioImpl();
+            partidaServicio.GuardarPartida(partidaActual);
+        }
     }
 
     /// <summary>
@@ -86,9 +91,10 @@ public class PartidaHandler
                                 .HighlightStyle("yellow")
                                 .AddChoices(new List<IComando>() {
                                     new ComandoJugarAmistoso(),
-                                    new ComandoConsultarPlantilla(datosUsuario.Equipo.Jugadores, datosUsuario.Nombre),
+                                    new ComandoConsultarPlantilla(datosUsuario.Equipo.Jugadores, datosUsuario.Equipo.Nombre),
                                     new ComandoConsultarHistorial(datosUsuario.Equipo.Nombre),
-                                    new ComandoSalir(TipoMenu.SECUNDARIO) { AccionSalida = () => this.deseaSalir = true }
+                                    new ComandoSalir(TipoMenu.SECUNDARIO) { AccionSalida = () => this.deseaSalir = true },
+                                    new ComandoEliminarPartida() { AccionCancelacion = () => { this.partidaEliminada = true; } }
                                 })
                                 .UseConverter(comando => comando.Titulo)
                             );

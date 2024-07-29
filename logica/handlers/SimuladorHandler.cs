@@ -47,7 +47,7 @@ public class SimuladorPartidoHandler
     public void IniciarSimulacionPartido()
     {
         // Muestro un encabezado
-        mostrarEncabezadoPartido(partido.Local.Nombre, partido.Visitante.Nombre, partido.TipoPartido);
+        mostrarEncabezadoPartido();
 
         // Determino qué equipo hará el saque (probabilidad de 50/50)
         partido.EquipoEnSaque = determinarSaque();
@@ -69,16 +69,8 @@ public class SimuladorPartidoHandler
     /// <summary>
     /// Muestra una animación para el encabezado del partido
     /// </summary>
-    /// <param name="nombreLocal">Nombre del equipo local</param>
-    /// <param name="nombreVisitante">Nombre del equipo visitante</param>
-    /// <param name="tipoPartido">Tipo de partido a disputarse</param>
-    private void mostrarEncabezadoPartido(string nombreLocal, string nombreVisitante, TipoPartido tipoPartido)
+    private void mostrarEncabezadoPartido()
     {
-        AnsiConsole.Clear(); 
-
-        var layout = new Layout("raiz")
-            .SplitRows(new Layout("arriba"));
-
         // Los nombres del local y el visitante se mostrarán como texto figlet con una fuente de ascii personalizada
         // En caso de no poder cargar dicha fuente, se mostrarán con la fuente figlet por defecto.
         FigletText figletLocal, figletVisitante;
@@ -87,50 +79,17 @@ public class SimuladorPartidoHandler
             RecursosUtil.VerificarArchivo(Config.DirectorioFuentes + @"\" + Config.NombreFuentePagga);
 
             var figletFont = FigletFont.Load(Config.DirectorioFuentes + @"\" + Config.NombreFuentePagga);
-            figletLocal = new FigletText(figletFont, nombreLocal).Color(Color.Red1);
-            figletVisitante = new FigletText(figletFont, nombreVisitante).Color(Color.Red1);
+            figletLocal = new FigletText(figletFont, partido.Local.Nombre).Color(Color.Red1);
+            figletVisitante = new FigletText(figletFont, partido.Visitante.Nombre).Color(Color.Red1);
         }
         catch (Exception)
         {
-            figletLocal = new FigletText(nombreLocal).Color(Color.Red);
-            figletVisitante = new FigletText(nombreVisitante).Color(Color.Red);
+            figletLocal = new FigletText(partido.Local.Nombre).Color(Color.Red);
+            figletVisitante = new FigletText(partido.Visitante.Nombre).Color(Color.Red);
         }
 
-        // Textos a mostrarse por pantalla
-        var textos = new IRenderable[] {
-            new Markup("Se va a disputar..."),
-            figletLocal,
-            new Rule("[orange1 bold]VS[/]") { Style = Style.Parse("bold gray"), Justification = Justify.Center },
-            figletVisitante,
-            new Markup($"En un partido [orange1]{tipoPartido}[/]")
-        };
-
-        // Muestro el layout con el componente Live para que se vaya actualizando de a poco
-        AnsiConsole.Live(layout)
-            .Start(controladorDisplay => {
-                // En esta lista almaceno los objetos que voy mostrando por pantalla para dar el efecto
-                // de que van apareciendo uno por uno
-                var textosMostrados = new List<IRenderable>();
-
-                foreach (var linea in textos)
-                {
-                    textosMostrados.Add(linea);
-                    layout["arriba"].Update(
-                        new Panel(Align.Center(
-                            new Rows(textosMostrados),
-                            VerticalAlignment.Middle
-                        ))
-                        .Expand()
-                        .Border(BoxBorder.None)
-                    );
-                    
-                    textosMostrados.Add(new Text(""));
-                    controladorDisplay.Refresh();
-                    VistasUtil.PausarVistas(1);
-                }
-
-                VistasUtil.PausarVistas(3);
-            });
+        // Solicito a la vista que muestre por pantalla el encabezado
+        panelPartidoControlador.MostrarEncabezadoPartido(figletLocal, figletVisitante, partido.TipoPartido);
     }
 
     /// <summary>

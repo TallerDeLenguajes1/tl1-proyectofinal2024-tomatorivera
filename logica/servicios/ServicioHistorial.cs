@@ -10,6 +10,7 @@ public interface IHistorialServicio
     Historial ObtenerDatosHistorial(int id);
     void GuardarPartido(Partido partido);
     void GuardarHistorial(Historial historial);
+    void EliminarHistorial();
 }
 
 public class HistorialServicioImpl : IHistorialServicio
@@ -98,6 +99,21 @@ public class HistorialServicioImpl : IHistorialServicio
         try
         {
             repositorio.Guardar(historial);
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
+    /// <summary>
+    /// Elimina el historial actual
+    /// </summary>
+    public void EliminarHistorial()
+    {
+        try
+        {
+            repositorio.Eliminar();
         }
         catch (Exception)
         {

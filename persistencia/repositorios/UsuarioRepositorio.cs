@@ -122,6 +122,19 @@ namespace Persistencia.Repositorios
         }
 
         /// <summary>
+        /// Elimina el archivo del usuario actual de la persistencia
+        /// </summary>
+        public void Eliminar()
+        {
+            RecursosUtil.EliminarArchivo(Config.DirectorioPartidaActual + @"\" + Config.NombreJsonUsuario);
+
+            // Actualizo la instancia del usuario actual y su nombre en la configuración
+            usuarioActual = null;
+            Config.NombreUsuarioActual = null;
+            Config.NombreEquipoUsuario = null;
+        }
+
+        /// <summary>
         /// Obtiene la instancia del usuario actual correspondiente a la partida que se está jugando
         /// </summary>
         /// <returns>Objeto <c>Usuario</c> con los datos del usuario actual</returns>

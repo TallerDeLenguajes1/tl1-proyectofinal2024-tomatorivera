@@ -16,6 +16,7 @@ namespace Logica.Servicios
         Usuario ObtenerDatosUsuario();
         Usuario ObtenerDatosUsuario(int id);
         void GuardarUsuario(Usuario usuario);
+        void EliminarUsuario();
     }
 
     public class UsuarioServicioImpl : IUsuarioServicio
@@ -24,7 +25,7 @@ namespace Logica.Servicios
 
         public UsuarioServicioImpl()
         {
-            this.repositorio = new UsuarioRepositorioImpl();
+            repositorio = new UsuarioRepositorioImpl();
         }
 
         /// <summary>
@@ -84,6 +85,21 @@ namespace Logica.Servicios
             try
             {
                 repositorio.Guardar(usuario);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Elimina el usuario actual
+        /// </summary>
+        public void EliminarUsuario()
+        {
+            try
+            {
+                repositorio.Eliminar();
             }
             catch (Exception)
             {

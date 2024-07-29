@@ -139,6 +139,19 @@ namespace Persistencia.Repositorios
         }
 
         /// <summary>
+        /// Elimina el directorio y el archivo de la partida actual de la persistencia
+        /// </summary>
+        public void Eliminar()
+        {
+            RecursosUtil.EliminarArchivo(Config.DirectorioPartidaActual + @"\" + Config.NombreJsonPartida);
+            RecursosUtil.EliminarDirectorio(Config.DirectorioPartidaActual!);
+
+            // Actualizo la instancia de la partida actual y el directorio
+            partidaActual = null;
+            Config.DirectorioPartidaActual = null;
+        }
+
+        /// <summary>
         /// Obtiene una lista de string con los nombres válidos de directorios de partidas
         /// </summary>
         /// <returns><c>List</c> de <c>string</c> con los nombres de los directorios</returns>

@@ -115,6 +115,17 @@ namespace Persistencia.Repositorios
         }
 
         /// <summary>
+        /// Elimina el archivo del historial actual de la persitencia
+        /// </summary>
+        public void Eliminar()
+        {
+            RecursosUtil.EliminarArchivo(Config.DirectorioPartidaActual + @"\" + Config.NombreJsonHistorial);
+
+            // Actualizo la instancia del historial actual
+            historialActual = null;
+        }
+
+        /// <summary>
         /// Obtiene la instancia del historial correspondiente a la partida actual
         /// </summary>
         /// <returns>Objeto <c>Historial</c></returns>

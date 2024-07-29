@@ -303,6 +303,17 @@ public class PanelPartidoControlador : Controlador<PanelPartido>
         vista.ActualizarMarcador();
         ctx.Refresh();
     }
+    
+    /// <summary>
+    /// Muestra una animación para el encabezado del partido
+    /// </summary>
+    /// <param name="figletLocal">Figlet text a mostrar del equipo local</param>
+    /// <param name="figletVisitante">Figlet text a mostrar del equipo visitante</param>
+    /// <param name="tipoPartido">Tipo de partido a disputarse</param>
+    public void MostrarEncabezadoPartido(FigletText figletLocal, FigletText figletVisitante, TipoPartido tipoPartido)
+    {
+        vista.MostrarEncabezadoPartido(figletLocal, figletVisitante, tipoPartido);
+    }
 
     /// <summary>
     /// Solicita mostrar una pantalla de cierre de partido a la vista

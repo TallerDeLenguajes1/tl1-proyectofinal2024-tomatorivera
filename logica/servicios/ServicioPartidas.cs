@@ -2,8 +2,8 @@ using Logica.Excepciones;
 using Logica.Handlers;
 using Logica.Modelo;
 using Persistencia;
+using Persistencia.Infraestructura;
 using Persistencia.Repositorios;
-using SixLabors.ImageSharp.ColorSpaces;
 
 namespace Logica.Servicios
 {
@@ -19,6 +19,7 @@ namespace Logica.Servicios
         int ObtenerNuevoIdPartida();
         PartidaHandler ObtenerManejadorPartida(Partida partida);
         void GuardarPartida(Partida partida);
+        void EliminarPartida();
     }
 
     public class PartidaServicioImpl : IPartidaServicio
@@ -192,6 +193,27 @@ namespace Logica.Servicios
                 repositorio.Guardar(partida);
                 usuarioServicio.GuardarUsuario(partida.Usuario);
                 historialServicio.GuardarHistorial(partida.Historial);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Elimina la partida actual
+        /// </summary>
+        /// <exception cref="DirectorioPartidaInvalidoException">Cuando no se ha cargado el directorio de la partida actual a la configuración</exception>
+        public void EliminarPartida()
+        {
+            try
+            {
+                if (Config.DirectorioPartidaActual == null)
+                    throw new DirectorioPartidaInvalidoException("No hay una partida actual para eliminar. El directorio es nulo");
+
+                usuarioServicio.EliminarUsuario();
+                historialServicio.EliminarHistorial();
+                repositorio.Eliminar();
             }
             catch (Exception)
             {
