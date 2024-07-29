@@ -1,5 +1,5 @@
 {
-  "total_partidos_jugados": 3,
+  "total_partidos_jugados": 4,
   "historial_partidos": [
     {
       "tipo_de_partido": "AMISTOSO",
@@ -62,42 +62,12 @@
       "equipo_local": {
         "nombre_equipo": "BokitaJr",
         "es_equipo_jugador": true,
-        "jugadores_convocados": [
-          "Cristobal Laureano (36)",
-          "Álvaro Ramírez (2)",
-          "Jeremiah Romero (6)",
-          "John Franklin (19)",
-          "Pablo Sánchez (14)",
-          "Flavio Bahena (31)",
-          "Darryl Stevens (32)",
-          "Juan Manuel Rocha (37)",
-          "Eddie Wilson (12)",
-          "David Giménez (38)",
-          "Valentino Mota (25)",
-          "Josep Ibáñez (15)",
-          "Modesto Lucero (28)",
-          "José Emilio Bustos (23)"
-        ]
+        "jugadores_convocados": []
       },
       "equipo_visitante": {
         "nombre_equipo": "UVT San Juan",
         "es_equipo_jugador": false,
-        "jugadores_convocados": [
-          "Lorenzo Herrera (7)",
-          "Pedro Matthews (21)",
-          "Maurice Holland (42)",
-          "Marco Ureña (49)",
-          "Benito Acosta (16)",
-          "Rogelio Laureano (36)",
-          "Ángel Gallego (15)",
-          "Nazario Collazo (31)",
-          "Jacinto Figueroa (22)",
-          "Gregorio Candelaria (5)",
-          "Víctor Velásquez (24)",
-          "Gordon Smith (32)",
-          "Phillip Hart (39)",
-          "Guillermo Álvarez (47)"
-        ]
+        "jugadores_convocados": []
       },
       "score_local": 2,
       "score_visitante": 1,
@@ -112,6 +82,59 @@
         },
         "3": {
           "PuntosLocal": 3,
+          "PuntosVisitante": 1
+        }
+      }
+    },
+    {
+      "tipo_de_partido": "AMISTOSO",
+      "nombre_ganador": "ABANDONADO",
+      "al_mejor_de": 3,
+      "equipo_local": {
+        "nombre_equipo": "Universitario de Cordoba W",
+        "es_equipo_jugador": false,
+        "jugadores_convocados": [
+          "Chris Alvarez (25)",
+          "Rodney Long (42)",
+          "René Villanueva (46)",
+          "Oswaldo Quiñones (30)",
+          "Rufino Llamas (36)",
+          "Same Barnes (39)",
+          "Tomas Carrasco (19)",
+          "Vicente Salgado (49)",
+          "Bernardo Esquivel (38)",
+          "Andrés Bravo (34)",
+          "Armando Hanson (28)",
+          "Wyatt Armstrong (48)",
+          "Gregorio López (29)",
+          "Víctor Molina (45)"
+        ]
+      },
+      "equipo_visitante": {
+        "nombre_equipo": "BokitaJr",
+        "es_equipo_jugador": true,
+        "jugadores_convocados": [
+          "Pablo Sánchez (14)",
+          "Flavio Bahena (31)",
+          "Cristobal Laureano (36)",
+          "Álvaro Ramírez (2)",
+          "Jeremiah Romero (6)",
+          "John Franklin (19)",
+          "Darryl Stevens (32)",
+          "Juan Manuel Rocha (37)",
+          "Eddie Wilson (12)",
+          "David Giménez (38)",
+          "Valentino Mota (25)",
+          "Josep Ibáñez (15)",
+          "Modesto Lucero (28)",
+          "José Emilio Bustos (23)"
+        ]
+      },
+      "score_local": 0,
+      "score_visitante": 0,
+      "resultados_sets": {
+        "1": {
+          "PuntosLocal": 0,
           "PuntosVisitante": 1
         }
       }

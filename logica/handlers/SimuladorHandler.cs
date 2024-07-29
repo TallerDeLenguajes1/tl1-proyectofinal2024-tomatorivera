@@ -21,6 +21,7 @@ public class SimuladorPartidoHandler
     private int setsRestantes;
     private TipoEquipo posesionPelota;
     private PanelPartidoControlador panelPartidoControlador;
+    private bool partidoAbandonado;
 
     public SimuladorPartidoHandler(Partido partido)
     {
@@ -29,6 +30,7 @@ public class SimuladorPartidoHandler
         // Valores iniciales por defecto
         setsRestantes = partido.SetMaximos;
         posesionPelota = TipoEquipo.LOCAL;
+        partidoAbandonado = false;
 
         // Inicializo el controlador del panel de la vista del partido
         panelPartidoControlador = new PanelPartidoControlador(new PanelPartido(), partido);
@@ -169,7 +171,7 @@ public class SimuladorPartidoHandler
         }
 
         // Paso los datos al controlador para que la vista se encargue de mostrar la información
-        panelPartidoControlador.MostrarPantallaFinal(nombreEquipoJugador, nombreEquipoRival, tipoEquipoJugador, esGanadorUsuario, fontTitulo);
+        panelPartidoControlador.MostrarPantallaFinal(nombreEquipoJugador, nombreEquipoRival, tipoEquipoJugador, esGanadorUsuario, fontTitulo, partidoAbandonado);
     }
 
     /// <summary>
@@ -178,8 +180,9 @@ public class SimuladorPartidoHandler
     private void jugarPartido()
     {
         // El partido termina cuando ya se hayan jugado todos los sets o cuando se pueda
-        // determinar un ganador según el puntaje de los equipos tras cada ronda
-        while (setsRestantes != 0 && !hayGanadorPartido(partido.ScoreLocal, partido.ScoreVisitante))
+        // determinar un ganador según el puntaje de los equipos tras cada ronda, o bien cuando
+        // el jugador decida abandonar el partido
+        while (!partidoAbandonado && setsRestantes != 0 && !hayGanadorPartido(partido.ScoreLocal, partido.ScoreVisitante))
         {
             // Comienza un set
             jugarSet();
@@ -189,6 +192,23 @@ public class SimuladorPartidoHandler
 
             almacenarResultadoSetActual();
             partido.SetActual.SiguienteSet();
+        }
+
+        if (partidoAbandonado)
+        {
+            partido.NombreGanador = "ABANDONADO";
+        }
+        else
+        {
+            // Guardo el nombre del equipo ganador
+            var ganador = (partido.ScoreLocal > partido.ScoreVisitante) ? partido.Local : partido.Visitante;
+            partido.NombreGanador = ganador.Nombre;
+
+            // Si el jugador gana el partido, puede generar de $15.000 a $30.000, caso contrario, genera de $1.000 a $10.000
+            var rnd = new Random();
+            var servicioJugador = new UsuarioServicioImpl();
+            servicioJugador.ObtenerDatosUsuario().Dinero += ganador.EsEquipoJugador ? rnd.Next(15000, 30001)
+                                                                                    : rnd.Next(1000, 10001);
         }
 
         /*
@@ -235,16 +255,6 @@ public class SimuladorPartidoHandler
             // Muestro las opciones del partido al usuario y ejecuto la que elija
             ejecutarMenu();
             */
-
-        // Guardo el nombre del equipo ganador
-        var ganador = (partido.ScoreLocal > partido.ScoreVisitante) ? partido.Local : partido.Visitante;
-        partido.NombreGanador = ganador.Nombre;
-
-        // Si el jugador gana el partido, puede generar de $15.000 a $30.000, caso contrario, genera de $1.000 a $10.000
-        var rnd = new Random();
-        var servicioJugador = new UsuarioServicioImpl();
-        servicioJugador.ObtenerDatosUsuario().Dinero += ganador.EsEquipoJugador ? rnd.Next(15000, 30001)
-                                                                                : rnd.Next(1000, 10001);
     }
 
     /// <summary>
@@ -266,7 +276,7 @@ public class SimuladorPartidoHandler
 
         // El set termina cuando uno de los equipos cuente con el puntaje requerido
         // para ganarlo con una diferencia de dos puntos por encima del rival
-        while (!set.HayGanadorSet())
+        while (!partidoAbandonado && !set.HayGanadorSet())
         {
             rally.JugadorActual = partido.EquipoEnSaque.FormacionPartido.ObtenerJugadorZona(1);
 
@@ -290,12 +300,7 @@ public class SimuladorPartidoHandler
             ejecutarMenu();
         }
 
-        // El ganador del set siempre es el último que hizo el punto, entonces sumo el score
-        // a ese equipo si se determinó que hay un ganador del set
-        if (posesionPelota == TipoEquipo.LOCAL)
-            partido.ScoreLocal++;
-        else    
-            partido.ScoreVisitante++;
+        incrementarScore();
     }
 
     /// <summary>
@@ -410,6 +415,11 @@ public class SimuladorPartidoHandler
 
             comandosDisponibles.Add(new ComandoVisualizarPlantilla(equipoJugador.FormacionPartido!));  
             comandosDisponibles.Add(new ComandoContinuarPartido());
+            comandosDisponibles.Add(new ComandoSalir("Abandonar el partido")
+            {
+                MostrarMensajeSalida = false,
+                AccionSalida = () => { this.partidoAbandonado = true; }
+            });
 
             comando = AnsiConsole.Prompt(
                 new SelectionPrompt<IComando>()
@@ -433,9 +443,25 @@ public class SimuladorPartidoHandler
                 Console.ReadKey(true);
             }
         } 
-        while (!(comando is ComandoContinuarPartido));
+        while (!(comando is ComandoContinuarPartido) && (!(comando is ComandoSalir) || !partidoAbandonado));
     }
     
+    /// <summary>
+    /// Incrementa el score al equipo que corresponda luego de finalizar un set. Si el partido
+    /// fue abandonado, el resultado se queda como estaba previo al abandono.
+    /// </summary>
+    private void incrementarScore()
+    {
+        if (partidoAbandonado) return;
+
+        // El ganador del set siempre es el último que hizo el punto, entonces sumo el score
+        // a ese equipo si se determinó que hay un ganador del set
+        if (posesionPelota == TipoEquipo.LOCAL)
+            partido.ScoreLocal++;
+        else    
+            partido.ScoreVisitante++;
+    }
+
     /// <summary>
     /// Realiza una sustitución en alguno de los equipos
     /// </summary>

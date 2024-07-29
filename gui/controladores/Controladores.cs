@@ -312,9 +312,10 @@ public class PanelPartidoControlador : Controlador<PanelPartido>
     /// <param name="tipoEquipoJugador">Tipo de equipo del jugador (Local o visitante)</param>
     /// <param name="usuarioEsGanador">Indica si el usuario ha ganado o no la partida</param>
     /// <param name="fontTitulo">Fuente utilizada para desplegar el titulo de la pantalla final</param>
-    public void MostrarPantallaFinal(string nombreEquipoJugador, string nombreEquipoRival, TipoEquipo tipoEquipoJugador, bool usuarioEsGanador, FigletFont? fontTitulo)
+    /// <param name="partidoAbandonado">Indica si el partido ha sido abandonado, en dado caso muestro un mensaje diferente</param>
+    public void MostrarPantallaFinal(string nombreEquipoJugador, string nombreEquipoRival, TipoEquipo tipoEquipoJugador, bool usuarioEsGanador, FigletFont? fontTitulo, bool partidoAbandonado)
     {
-        vista.MostrarPantallaFinal(nombreEquipoJugador, tipoEquipoJugador, nombreEquipoRival, usuarioEsGanador, fontTitulo);
+        vista.MostrarPantallaFinal(nombreEquipoJugador, tipoEquipoJugador, nombreEquipoRival, usuarioEsGanador, fontTitulo, partidoAbandonado);
 
         // Pauso la pantalla final unos segundos antes de continuar
         VistasUtil.PausarVistas(3);
@@ -323,19 +324,25 @@ public class PanelPartidoControlador : Controlador<PanelPartido>
 
 public class PanelHistorialControlador : Controlador<PanelHistorial>
 {
-    private Historial informacionHistorial;
-    private string nombreEquipo;
-
-    public PanelHistorialControlador(PanelHistorial vista, Historial informacionHistorial, string nombreEquipo) : base(vista)
-    {
-        this.informacionHistorial = informacionHistorial;
-        this.nombreEquipo = nombreEquipo;
-    }
+    public PanelHistorialControlador(PanelHistorial vista) : base(vista)
+    {}
 
     public override void MostrarVista()
     {
-        vista.InformacionHistorial = informacionHistorial;
-        vista.NombreEquipo = nombreEquipo;
+        vista.Dibujar();
+
+        // Solicito una tecla para que la vista no desaparezca
+        Console.ReadKey(true);
+    }
+}
+
+public class PanelPlantillaControlador : Controlador<PanelPlantilla>
+{
+    public PanelPlantillaControlador(PanelPlantilla vista) : base(vista)
+    {}
+
+    public override void MostrarVista()
+    {
         vista.Dibujar();
 
         // Solicito una tecla para que la vista no desaparezca

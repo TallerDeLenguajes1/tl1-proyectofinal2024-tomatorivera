@@ -996,7 +996,8 @@ public class PanelPartido : Vista
     /// <param name="nombreEquipoRival">Nombre del equipo rival</param>
     /// <param name="usuarioEsGanador">Indica si el usuario ha ganado o no la partida</param>
     /// <param name="fontTitulo">Fuente utilizada para desplegar el titulo de la pantalla final</param>
-    public void MostrarPantallaFinal(string nombreEquipoJugador, TipoEquipo tipoEquipoJugador, string nombreEquipoRival, bool usuarioEsGanador, FigletFont? fontTitulo)
+    /// <param name="partidoAbandonado">Indica si el partido ha sido abandonado, en dado caso muestro un mensaje diferente</param>
+    public void MostrarPantallaFinal(string nombreEquipoJugador, TipoEquipo tipoEquipoJugador, string nombreEquipoRival, bool usuarioEsGanador, FigletFont? fontTitulo, bool partidoAbandonado)
     {
         // Solicito al usuario una tecla para luego mostrar la pantalla final
         AnsiConsole.Write(new Markup("\n[grey70 italic](( El partido ha finalizado, presione una tecla para continuar al dashboard... ))[/]").Centered());
@@ -1013,7 +1014,17 @@ public class PanelPartido : Vista
         string descripcion;
         string encabezadoTitulo;
 
-        if (usuarioEsGanador)
+        if (partidoAbandonado)
+        {
+            encabezadoTitulo = "\nAbandonaste";
+            colorSeparador = "red3";
+            colorTitulo = Color.Red;
+            colorNombreEquipos = "red1";
+            colorTipoEquipo = "red3_1";
+            colorTexto = "indianred_1";
+            descripcion = "ha abandonado";
+        }
+        else if (usuarioEsGanador)
         {
             encabezadoTitulo = "\nYou win!";
             colorSeparador = "orange1";
@@ -1037,7 +1048,7 @@ public class PanelPartido : Vista
         var separador = new Rule().RuleStyle(Style.Parse(colorSeparador)).Border(BoxBorder.Double);
         var titulo = (fontTitulo != null) ? new FigletText(fontTitulo, encabezadoTitulo) : new FigletText("\n" + encabezadoTitulo);
         titulo.Color(colorTitulo);
-        var texto = new Markup($"[{colorNombreEquipos} underline]{nombreEquipoJugador}[/] [{colorTexto}]{descripcion}[/] [{colorTipoEquipo}]{tipoEquipoJugador}[/] [{colorTexto}]ante el equipo[/] [{colorNombreEquipos}]{nombreEquipoRival}[/]\n\n");
+        var texto = new Markup($"[{colorNombreEquipos} underline]{nombreEquipoJugador}[/] [{colorTexto}]{descripcion}[/][{colorTipoEquipo}]{(partidoAbandonado ? "" : $" {tipoEquipoJugador}")}[/] [{colorTexto}]ante el equipo[/] [{colorNombreEquipos}]{nombreEquipoRival}[/]\n\n");
 
         var layoutPantallaFinal = new Layout("raiz");
         layoutPantallaFinal["raiz"].Update(
@@ -1064,25 +1075,34 @@ public class PanelPartido : Vista
 /// </summary>
 public class PanelHistorial : Vista
 {
-    public string? NombreEquipo { get; set ;}
-    public Historial? InformacionHistorial { get; set; }
+    private string nombreEquipo;
+    private Historial informacionHistorial;
+
+    public PanelHistorial(Historial informacionHistorial, string nombreEquipo)
+    {
+        this.informacionHistorial = informacionHistorial;
+        this.nombreEquipo = nombreEquipo;
+    }
 
     public override void Dibujar()
     {
-        if (InformacionHistorial == null || !InformacionHistorial.HistorialPartidos.Any())
+        if (!informacionHistorial.HistorialPartidos.Any())
         {
-            AnsiConsole.Write($":warning: [tan]El equipo {NombreEquipo ?? string.Empty} no ha jugado partidos aún[/]");
+            AnsiConsole.Write($":warning: [tan]El equipo {nombreEquipo} no ha jugado partidos aún[/]");
         }
         else
         {
             var separador = new Rule().RuleStyle(Style.Parse("gray"));
-            var arbolPartidos = new Tree($":newspaper: [red bold]Historial de {NombreEquipo ?? "equipo"}[/]").Style(Style.Parse("gray"));
+            var arbolPartidos = new Tree($":newspaper: [red bold]Historial de {nombreEquipo}[/]").Style(Style.Parse("gray"));
             var indicaciones = new Markup("\n[gray italic](( Presione una tecla para volver al dashboard))[/]");
 
-            foreach (var partido in InformacionHistorial.HistorialPartidos)
+            foreach (var partido in informacionHistorial.HistorialPartidos)
             {
+                var resultado = partido.NombreGanador.Equals("ABANDONADO") ? "[red3_1]ABANDONADO[/]"
+                                                                           : nombreEquipo.Equals(partido.NombreGanador) ? "[greenyellow]GANADO[/]" : "[red3_1]PERDIDO[/]";
+
                 var nodoPartido = arbolPartidos.AddNode(
-                    $"[navajowhite1]• Partido[/] [lightgoldenrod2_2]{partido.TipoPartido}[/][navajowhite1]:[/] [cornsilk1]{partido.Local.Nombre}[/] [grey78](LOCAL)[/] :vs_button: [cornsilk1]{partido.Visitante.Nombre}[/] [grey78](VISITANTE)[/]"
+                    $"{resultado} [navajowhite1]• Partido[/] [lightgoldenrod2_2]{partido.TipoPartido}[/][navajowhite1]:[/] [cornsilk1]{partido.Local.Nombre}[/] [grey78](LOCAL)[/] :vs_button: [cornsilk1]{partido.Visitante.Nombre}[/] [grey78](VISITANTE)[/]"
                 );
 
                 nodoPartido.AddNode(
@@ -1143,5 +1163,62 @@ public class PanelHistorial : Vista
                 )
             );
         }        
+    }
+}
+
+/// <summary>
+/// Clase vista que se encarga de mostrar los datos de la plantilla de jugadores de un equipo
+/// </summary>
+public class PanelPlantilla : Vista
+{
+    private string nombreEquipo;
+    private List<Jugador> jugadores;
+
+    public PanelPlantilla(List<Jugador> jugadores, string nombreEquipo)
+    {
+        this.jugadores = jugadores;
+        this.nombreEquipo = nombreEquipo;
+    }
+
+    public override void Dibujar()
+    {
+        if (!jugadores.Any())
+        {
+            AnsiConsole.Write($":warning: [navajowhite1]El equipo[/] [cornsilk1]{nombreEquipo}[/] [navajowhite1]no tiene jugadores[/]");
+        }
+        else
+        {
+            var separador = new Rule().RuleStyle(Style.Parse("gray"));
+            var arbolJugadores = new Tree($":newspaper: [red bold]Jugadores del equipo {nombreEquipo}[/]").Style(Style.Parse("gray"));
+            var indicaciones = new Markup("\n[gray italic](( Presione una tecla para volver al dashboard))[/]");
+
+            foreach (var jugador in jugadores)
+            {
+                var nodoJugador = arbolJugadores.AddNode(
+                    $"[cornsilk1]{jugador.NumeroCamiseta}[/] :t_shirt: [navajowhite1]{jugador.Nombre}[/]"
+                );
+
+                nodoJugador.AddNode($"[grey70]Posición de preferencia:[/] [gold1]{jugador.TipoJugador}[/]");
+                nodoJugador.AddNode($"[grey70]Experiencia en juego:[/] [gold1]{jugador.Experiencia} pts.[/]");
+
+                var nodoHabilidades = nodoJugador.AddNode($"[grey70]Habilidades:[/]");
+                nodoHabilidades.AddNode(
+                    $"[gray]SAQUE:[/] {jugador.HabilidadSaque}" +
+                    $"[gray], REMATE:[/] {jugador.HabilidadRemate}" +
+                    $"[gray], RECEPCION:[/] {jugador.HabilidadRecepcion}" +
+                    $"[gray], COLOCACION:[/] {jugador.HabilidadColocacion}" +
+                    $"[gray], BLOQUEO:[/] {jugador.HabilidadBloqueo}"
+                );
+            }
+
+            AnsiConsole.Write(
+                new Rows(
+                    separador,
+                    arbolJugadores,
+                    indicaciones,
+                    separador
+                )
+            );
+        }
     }
 }

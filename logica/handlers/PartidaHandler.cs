@@ -79,14 +79,15 @@ public class PartidaHandler
         };
         AnsiConsole.Write(separador);
 
+        var datosUsuario = partidaActual.Usuario;
         var seleccion = AnsiConsole.Prompt(
                             new SelectionPrompt<IComando>()
                                 .Title("")
                                 .HighlightStyle("yellow")
                                 .AddChoices(new List<IComando>() {
                                     new ComandoJugarAmistoso(),
-                                    new ComandoConsultarPlantilla(),
-                                    new ComandoConsultarHistorial(partidaActual.Usuario.Equipo.Nombre),
+                                    new ComandoConsultarPlantilla(datosUsuario.Equipo.Jugadores, datosUsuario.Nombre),
+                                    new ComandoConsultarHistorial(datosUsuario.Equipo.Nombre),
                                     new ComandoSalir(TipoMenu.SECUNDARIO) { AccionSalida = () => this.deseaSalir = true }
                                 })
                                 .UseConverter(comando => comando.Titulo)

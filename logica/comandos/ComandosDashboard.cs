@@ -224,9 +224,20 @@ public class ComandoConsultarPlantilla : IComando
 {
     public string Titulo => "Consultar plantilla de jugadores";
 
+    private List<Jugador> jugadores;
+    private string nombreEquipo;
+
+    public ComandoConsultarPlantilla(List<Jugador> jugadores, string nombreEquipo)
+    {
+        this.jugadores = jugadores;
+        this.nombreEquipo = nombreEquipo;
+    }
+
     public void Ejecutar()
     {
-        throw new NotImplementedException("Esta función no ha sido implementada aún");
+        // Genero el panel de información de la plantilla y lo muestro al usuario
+        var controladorPanelPlantilla = new PanelPlantillaControlador(new PanelPlantilla(jugadores, nombreEquipo));
+        controladorPanelPlantilla.MostrarVista();
     }
 }
 
@@ -247,7 +258,7 @@ public class ComandoConsultarHistorial : IComando
         var historial = servicioHistorial.ObtenerDatosHistorial();
         
         // Genero un panel de información del historial y lo muestro por pantalla
-        var controladorPanelHistorial = new PanelHistorialControlador(new PanelHistorial(), historial, nombreEquipoJugador);
+        var controladorPanelHistorial = new PanelHistorialControlador(new PanelHistorial(historial, nombreEquipoJugador));
         controladorPanelHistorial.MostrarVista();
     }
 }

@@ -11,15 +11,26 @@ namespace Logica.Comandos;
 public class ComandoSalir : IComando
 {
     private TipoMenu tipoMenu;
+    private string? otroTitulo;
     private Action? accionSalida;
-
-    public string Titulo => tipoMenu.Descripcion();
-    public Action? AccionSalida { get => accionSalida; set => accionSalida = value; } 
+    private bool mostrarMensajeSalida;
 
     public ComandoSalir(TipoMenu tipoMenu)
     {
         this.tipoMenu = tipoMenu;
+        otroTitulo = null;
+        mostrarMensajeSalida = true;
     }
+
+    public ComandoSalir(string otroTitulo)
+    {
+        this.otroTitulo = otroTitulo;
+        mostrarMensajeSalida = true;
+    }
+
+    public string Titulo => (otroTitulo != null) ? otroTitulo : tipoMenu.Descripcion();
+    public Action? AccionSalida { get => accionSalida; set => accionSalida = value; } 
+    public bool MostrarMensajeSalida { get => mostrarMensajeSalida; set => mostrarMensajeSalida = value; }
 
     public void Ejecutar()
     {
@@ -34,13 +45,15 @@ public class ComandoSalir : IComando
         // anterior dependiendo del tipo del menú en el que estemos
         if (primerCaracter(seleccion).Equals('s'))
         {
-            System.Console.WriteLine();
-
-            if (tipoMenu == TipoMenu.PRINCIPAL)
+            if (mostrarMensajeSalida)
             {
-                AnsiConsole.Clear();
+                System.Console.WriteLine();
 
-                string mensajeDespedida = @"
+                if (tipoMenu == TipoMenu.PRINCIPAL)
+                {
+                    AnsiConsole.Clear();
+
+                    string mensajeDespedida = @"
     ___       ___            __
    /   | ____/ (_)___  _____/ /
   / /| |/ __  / / __ \/ ___/ / 
@@ -52,22 +65,23 @@ Espero que te hayas divertido :)
 -*-
 ";
 
-                // Muestro el msg de salida centrado vertical y horizontalmente usando el componente 'layout' de Spectre.Console
-                var layout = new Layout("raiz");
-                layout["raiz"].Update(
-                    new Panel(Align.Center(
-                        new Markup("[red]" + mensajeDespedida + "[/]"), VerticalAlignment.Middle
-                    ))
-                    .Border(BoxBorder.None)
-                    .Expand()
-                );
+                    // Muestro el msg de salida centrado vertical y horizontalmente usando el componente 'layout' de Spectre.Console
+                    var layout = new Layout("raiz");
+                    layout["raiz"].Update(
+                        new Panel(Align.Center(
+                            new Markup("[red]" + mensajeDespedida + "[/]"), VerticalAlignment.Middle
+                        ))
+                        .Border(BoxBorder.None)
+                        .Expand()
+                    );
 
-                AnsiConsole.Write(layout);
-            }
-            else
-            {
-                AnsiConsole.Write(Align.Center(new Markup("[gray italic]Volviendo al menú anterior...[/]")));
-                VistasUtil.PausarVistas(1);
+                    AnsiConsole.Write(layout);
+                }
+                else
+                {
+                    AnsiConsole.Write(Align.Center(new Markup("[gray italic]Volviendo al menú anterior...[/]")));
+                    VistasUtil.PausarVistas(1);
+                }
             }
 
             if (accionSalida != null) accionSalida.Invoke();
