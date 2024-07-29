@@ -986,6 +986,77 @@ public class PanelPartido : Vista
     {
         LayoutInformacion["info_partido"].Update(dibujarInformacionPartido());
     }
+
+    /// <summary>
+    /// Actualiza el layout de información para únicamente desplegar una pantalla final en
+    /// la que se le indica al usuario si ha ganado o ha perdido
+    /// </summary>
+    /// <param name="nombreEquipoJugador">Nombre del equipo del jugador</param>
+    /// <param name="tipoEquipoJugador">Tipo de equipo del jugador (Local o visitante)</param>
+    /// <param name="nombreEquipoRival">Nombre del equipo rival</param>
+    /// <param name="usuarioEsGanador">Indica si el usuario ha ganado o no la partida</param>
+    /// <param name="fontTitulo">Fuente utilizada para desplegar el titulo de la pantalla final</param>
+    public void MostrarPantallaFinal(string nombreEquipoJugador, TipoEquipo tipoEquipoJugador, string nombreEquipoRival, bool usuarioEsGanador, FigletFont? fontTitulo)
+    {
+        // Solicito al usuario una tecla para luego mostrar la pantalla final
+        AnsiConsole.Write(new Markup("\n[grey70 italic](( El partido ha finalizado, presione una tecla para continuar al dashboard... ))[/]").Centered());
+        Console.ReadKey(true);
+
+        AnsiConsole.Clear();
+
+        // Según si el usuario ha ganado o no el partido, algunos mensajes y colores cambian
+        Color colorTitulo;
+        string colorSeparador;
+        string colorNombreEquipos;
+        string colorTipoEquipo;
+        string colorTexto;
+        string descripcion;
+        string encabezadoTitulo;
+
+        if (usuarioEsGanador)
+        {
+            encabezadoTitulo = "\nYou win!";
+            colorSeparador = "orange1";
+            colorTitulo = Color.Yellow;
+            colorNombreEquipos = "gold1";
+            colorTipoEquipo = "lightgoldenrod2_1";
+            colorTexto = "lightgoldenrod2_2";
+            descripcion = "le ha ganado como";
+        }
+        else
+        {
+            encabezadoTitulo = "\nGame over :(";
+            colorSeparador = "red3";
+            colorTitulo = Color.Red;
+            colorNombreEquipos = "red1";
+            colorTipoEquipo = "red3_1";
+            colorTexto = "indianred_1";
+            descripcion = "ha caido como";
+        }
+
+        var separador = new Rule().RuleStyle(Style.Parse(colorSeparador)).Border(BoxBorder.Double);
+        var titulo = (fontTitulo != null) ? new FigletText(fontTitulo, encabezadoTitulo) : new FigletText("\n" + encabezadoTitulo);
+        titulo.Color(colorTitulo);
+        var texto = new Markup($"[{colorNombreEquipos} underline]{nombreEquipoJugador}[/] [{colorTexto}]{descripcion}[/] [{colorTipoEquipo}]{tipoEquipoJugador}[/] [{colorTexto}]ante el equipo[/] [{colorNombreEquipos}]{nombreEquipoRival}[/]\n\n");
+
+        var layoutPantallaFinal = new Layout("raiz");
+        layoutPantallaFinal["raiz"].Update(
+            new Panel(Align.Center(
+                new Rows(
+                    separador,
+                    new Text(""), // separador
+                    new Text(""), // separador
+                    titulo,
+                    texto,
+                    separador
+                ),
+                VerticalAlignment.Middle
+            ))
+            .Expand()
+            .Border(BoxBorder.None)
+        );
+        AnsiConsole.Write(layoutPantallaFinal);
+    }
 }
 
 /// <summary>

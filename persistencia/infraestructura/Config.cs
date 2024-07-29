@@ -21,6 +21,7 @@ namespace Persistencia.Infraestructura
         public static string? NombreJsonHistorial { get; set; }
         public static string? NombreImgLogo { get; set; }
         public static string? NombreFuentePagga { get; set; }
+        public static string? NombreFuenteDosRebel { get; set; }
 
         public static string? ApiSportsKey { get; set; }
         public static string? ApiSportsUrl { get; set; }
@@ -49,6 +50,7 @@ namespace Persistencia.Infraestructura
             NombreJsonHistorial = "historial.json";
             NombreImgLogo = "logo.png";
             NombreFuentePagga = "Pagga.flf";
+            NombreFuenteDosRebel = "DOSRebel.flf";
             
             ApiSportsKey = "03028e54f1f00215f6bb821f0b260a6d";
             ApiSportsUrl = "https://v1.volleyball.api-sports.io";

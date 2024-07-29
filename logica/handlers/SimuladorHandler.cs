@@ -60,8 +60,8 @@ public class SimuladorPartidoHandler
         var servicioHistorial = new HistorialServicioImpl();
         servicioHistorial.GuardarPartido(partido);
 
-        // Temporal: para que no finalice je
-        Console.ReadKey();
+        // Muestro una pantalla final del partido
+        mostrarPantallaFinal();
     }
 
     /// <summary>
@@ -129,6 +129,47 @@ public class SimuladorPartidoHandler
 
                 VistasUtil.PausarVistas(3);
             });
+    }
+
+    /// <summary>
+    /// Despliega una pantalla final al terminar de jugar un partido
+    /// </summary>
+    private void mostrarPantallaFinal()
+    {
+        // Cargo los datos a desplegar en la pantalla final
+        FigletFont? fontTitulo;
+        try
+        {
+            var fontPath = Config.DirectorioFuentes + @"\" + Config.NombreFuenteDosRebel;
+            RecursosUtil.VerificarArchivo(fontPath);
+            fontTitulo = FigletFont.Load(fontPath);
+        }
+        catch (Exception)
+        {
+            fontTitulo = null;
+        }
+
+        string nombreEquipoJugador;
+        string nombreEquipoRival;
+        bool esGanadorUsuario;
+        TipoEquipo tipoEquipoJugador;
+        if (partido.Local.EsEquipoJugador)
+        {
+            nombreEquipoJugador = partido.Local.Nombre;
+            nombreEquipoRival = partido.Visitante.Nombre;
+            esGanadorUsuario = partido.ScoreLocal > partido.ScoreVisitante;
+            tipoEquipoJugador = TipoEquipo.LOCAL;
+        }
+        else
+        {
+            nombreEquipoJugador = partido.Visitante.Nombre;
+            nombreEquipoRival = partido.Local.Nombre;
+            esGanadorUsuario = partido.ScoreVisitante > partido.ScoreLocal;
+            tipoEquipoJugador = TipoEquipo.VISITANTE;
+        }
+
+        // Paso los datos al controlador para que la vista se encargue de mostrar la información
+        panelPartidoControlador.MostrarPantallaFinal(nombreEquipoJugador, nombreEquipoRival, tipoEquipoJugador, esGanadorUsuario, fontTitulo);
     }
 
     /// <summary>

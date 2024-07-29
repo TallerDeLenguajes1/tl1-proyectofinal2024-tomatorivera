@@ -1,5 +1,5 @@
 {
-  "total_partidos_jugados": 2,
+  "total_partidos_jugados": 3,
   "historial_partidos": [
     {
       "tipo_de_partido": "AMISTOSO",
@@ -52,6 +52,67 @@
         "2": {
           "PuntosLocal": 0,
           "PuntosVisitante": 2
+        }
+      }
+    },
+    {
+      "tipo_de_partido": "AMISTOSO",
+      "nombre_ganador": "BokitaJr",
+      "al_mejor_de": 3,
+      "equipo_local": {
+        "nombre_equipo": "BokitaJr",
+        "es_equipo_jugador": true,
+        "jugadores_convocados": [
+          "Cristobal Laureano (36)",
+          "Álvaro Ramírez (2)",
+          "Jeremiah Romero (6)",
+          "John Franklin (19)",
+          "Pablo Sánchez (14)",
+          "Flavio Bahena (31)",
+          "Darryl Stevens (32)",
+          "Juan Manuel Rocha (37)",
+          "Eddie Wilson (12)",
+          "David Giménez (38)",
+          "Valentino Mota (25)",
+          "Josep Ibáñez (15)",
+          "Modesto Lucero (28)",
+          "José Emilio Bustos (23)"
+        ]
+      },
+      "equipo_visitante": {
+        "nombre_equipo": "UVT San Juan",
+        "es_equipo_jugador": false,
+        "jugadores_convocados": [
+          "Lorenzo Herrera (7)",
+          "Pedro Matthews (21)",
+          "Maurice Holland (42)",
+          "Marco Ureña (49)",
+          "Benito Acosta (16)",
+          "Rogelio Laureano (36)",
+          "Ángel Gallego (15)",
+          "Nazario Collazo (31)",
+          "Jacinto Figueroa (22)",
+          "Gregorio Candelaria (5)",
+          "Víctor Velásquez (24)",
+          "Gordon Smith (32)",
+          "Phillip Hart (39)",
+          "Guillermo Álvarez (47)"
+        ]
+      },
+      "score_local": 2,
+      "score_visitante": 1,
+      "resultados_sets": {
+        "1": {
+          "PuntosLocal": 0,
+          "PuntosVisitante": 2
+        },
+        "2": {
+          "PuntosLocal": 2,
+          "PuntosVisitante": 0
+        },
+        "3": {
+          "PuntosLocal": 3,
+          "PuntosVisitante": 1
         }
       }
     }

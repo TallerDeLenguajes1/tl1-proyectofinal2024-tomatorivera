@@ -1,0 +1,128 @@
+{
+  "total_partidos_jugados": 3,
+  "historial_partidos": [
+    {
+      "tipo_de_partido": "AMISTOSO",
+      "nombre_ganador": "Policial Voley",
+      "al_mejor_de": 3,
+      "equipo_local": {
+        "nombre_equipo": "La Matanza W",
+        "es_equipo_jugador": false,
+        "jugadores_convocados": []
+      },
+      "equipo_visitante": {
+        "nombre_equipo": "Policial Voley",
+        "es_equipo_jugador": true,
+        "jugadores_convocados": []
+      },
+      "score_local": 1,
+      "score_visitante": 2,
+      "resultados_sets": {
+        "1": {
+          "PuntosLocal": 3,
+          "PuntosVisitante": 1
+        },
+        "2": {
+          "PuntosLocal": 2,
+          "PuntosVisitante": 4
+        },
+        "3": {
+          "PuntosLocal": 0,
+          "PuntosVisitante": 2
+        }
+      }
+    },
+    {
+      "tipo_de_partido": "AMISTOSO",
+      "nombre_ganador": "Policial Voley",
+      "al_mejor_de": 3,
+      "equipo_local": {
+        "nombre_equipo": "Policial Voley",
+        "es_equipo_jugador": true,
+        "jugadores_convocados": []
+      },
+      "equipo_visitante": {
+        "nombre_equipo": "AMUVOCA Voley",
+        "es_equipo_jugador": false,
+        "jugadores_convocados": []
+      },
+      "score_local": 2,
+      "score_visitante": 1,
+      "resultados_sets": {
+        "1": {
+          "PuntosLocal": 2,
+          "PuntosVisitante": 0
+        },
+        "2": {
+          "PuntosLocal": 1,
+          "PuntosVisitante": 3
+        },
+        "3": {
+          "PuntosLocal": 5,
+          "PuntosVisitante": 3
+        }
+      }
+    },
+    {
+      "tipo_de_partido": "AMISTOSO",
+      "nombre_ganador": "Policial Voley",
+      "al_mejor_de": 3,
+      "equipo_local": {
+        "nombre_equipo": "UNTREF",
+        "es_equipo_jugador": false,
+        "jugadores_convocados": [
+          "José Gutiérrez (39)",
+          "Eduardo Sáez (25)",
+          "Roland George (20)",
+          "Uriel Roybal (3)",
+          "Mariano Tapia (22)",
+          "Dustin Dunn (23)",
+          "Alberto Soto (47)",
+          "Rubén Díaz (15)",
+          "Adolfo Herrero (11)",
+          "Nicolas Sánchez (16)",
+          "Santiago Garza (26)",
+          "Gabriel Carmona (31)",
+          "Leonel Gallegos (29)",
+          "Chester Shaw (24)"
+        ]
+      },
+      "equipo_visitante": {
+        "nombre_equipo": "Policial Voley",
+        "es_equipo_jugador": true,
+        "jugadores_convocados": [
+          "Herman James (15)",
+          "Melvin Anderson (22)",
+          "Alfredo Rivas (31)",
+          "Julio Mesa (1)",
+          "Karl Rose (9)",
+          "Cristian González (26)",
+          "Gene Washington (4)",
+          "Javier Carpenter (29)",
+          "Julio Parra (6)",
+          "Michael Jordan (30)",
+          "Mariano Bustos (13)",
+          "Carlos Hernández (21)",
+          "Liam Lane (35)",
+          "Gordon Castillo (40)"
+        ]
+      },
+      "score_local": 1,
+      "score_visitante": 2,
+      "resultados_sets": {
+        "1": {
+          "PuntosLocal": 2,
+          "PuntosVisitante": 0
+        },
+        "2": {
+          "PuntosLocal": 2,
+          "PuntosVisitante": 4
+        },
+        "3": {
+          "PuntosLocal": 0,
+          "PuntosVisitante": 2
+        }
+      }
+    }
+  ]
+}

@@ -294,10 +294,30 @@ public class PanelPartidoControlador : Controlador<PanelPartido>
         vista.MarcarPunto(ctx, equipo);
     }
 
+    /// <summary>
+    /// Actualiza la tabla de puntajes en la vista
+    /// </summary>
+    /// <param name="ctx">Contexto del objeto Live que actualiza el Layout</param>
     public void ActualizarMarcador(LiveDisplayContext ctx)
     {
         vista.ActualizarMarcador();
         ctx.Refresh();
+    }
+
+    /// <summary>
+    /// Solicita mostrar una pantalla de cierre de partido a la vista
+    /// </summary>
+    /// <param name="nombreEquipoJugador">Nombre del equipo del jugador</param>
+    /// <param name="nombreEquipoRival">Nombre del equipo rival</param>
+    /// <param name="tipoEquipoJugador">Tipo de equipo del jugador (Local o visitante)</param>
+    /// <param name="usuarioEsGanador">Indica si el usuario ha ganado o no la partida</param>
+    /// <param name="fontTitulo">Fuente utilizada para desplegar el titulo de la pantalla final</param>
+    public void MostrarPantallaFinal(string nombreEquipoJugador, string nombreEquipoRival, TipoEquipo tipoEquipoJugador, bool usuarioEsGanador, FigletFont? fontTitulo)
+    {
+        vista.MostrarPantallaFinal(nombreEquipoJugador, tipoEquipoJugador, nombreEquipoRival, usuarioEsGanador, fontTitulo);
+
+        // Pauso la pantalla final unos segundos antes de continuar
+        VistasUtil.PausarVistas(3);
     }
 }
 
