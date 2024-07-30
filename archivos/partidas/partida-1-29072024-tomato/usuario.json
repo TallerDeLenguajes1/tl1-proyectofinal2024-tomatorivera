@@ -1,0 +1,164 @@
+{
+  "nombre_usuario": "tomato",
+  "ganancias": 29624.0,
+  "equipo": {
+    "nombre_equipo": "Jesus Maria",
+    "total_jugadores": 14,
+    "jugadores": [
+      {
+        "nombre_jugador": "Nicolas Arias",
+        "numero_camiseta": 42,
+        "tipo_jugador": "OPUESTO",
+        "experiencia": 3.05,
+        "habilidad_saque": 6.09,
+        "habilidad_remate": 6.7,
+        "habilidad_recepcion": 4.37,
+        "habilidad_colocacion": 2.76,
+        "habilidad_bloqueo": 4.5
+      },
+      {
+        "nombre_jugador": "Levi Harrison",
+        "numero_camiseta": 1,
+        "tipo_jugador": "CENTRAL",
+        "experiencia": 7.67,
+        "habilidad_saque": 5.47,
+        "habilidad_remate": 3.5,
+        "habilidad_recepcion": 4.53,
+        "habilidad_colocacion": 3.19,
+        "habilidad_bloqueo": 6.24
+      },
+      {
+        "nombre_jugador": "Adolfo Román",
+        "numero_camiseta": 18,
+        "tipo_jugador": "LIBERO",
+        "experiencia": 6.9,
+        "habilidad_saque": 3.46,
+        "habilidad_remate": 1.96,
+        "habilidad_recepcion": 6.81,
+        "habilidad_colocacion": 2.14,
+        "habilidad_bloqueo": 1.26
+      },
+      {
+        "nombre_jugador": "Gabriel Marrero",
+        "numero_camiseta": 12,
+        "tipo_jugador": "ARMADOR",
+        "experiencia": 5.66,
+        "habilidad_saque": 6.43,
+        "habilidad_remate": 4.7,
+        "habilidad_recepcion": 3.62,
+        "habilidad_colocacion": 6.73,
+        "habilidad_bloqueo": 3.49
+      },
+      {
+        "nombre_jugador": "Mitchell Morrison",
+        "numero_camiseta": 24,
+        "tipo_jugador": "OPUESTO",
+        "experiencia": 5.88,
+        "habilidad_saque": 6.87,
+        "habilidad_remate": 7.18,
+        "habilidad_recepcion": 4.83,
+        "habilidad_colocacion": 2.88,
+        "habilidad_bloqueo": 3.84
+      },
+      {
+        "nombre_jugador": "Valentino Fernández",
+        "numero_camiseta": 25,
+        "tipo_jugador": "OPUESTO",
+        "experiencia": 4.19,
+        "habilidad_saque": 6.26,
+        "habilidad_remate": 7.41,
+        "habilidad_recepcion": 4.42,
+        "habilidad_colocacion": 3.12,
+        "habilidad_bloqueo": 3.68
+      },
+      {
+        "nombre_jugador": "Ramses Véliz",
+        "numero_camiseta": 28,
+        "tipo_jugador": "LIBERO",
+        "experiencia": 4.2,
+        "habilidad_saque": 2.48,
+        "habilidad_remate": 1.4,
+        "habilidad_recepcion": 6.8,
+        "habilidad_colocacion": 2.5,
+        "habilidad_bloqueo": 1.58
+      },
+      {
+        "nombre_jugador": "Ramon Jiménez",
+        "numero_camiseta": 20,
+        "tipo_jugador": "PUNTA",
+        "experiencia": 6.96,
+        "habilidad_saque": 5.83,
+        "habilidad_remate": 5.66,
+        "habilidad_recepcion": 6.26,
+        "habilidad_colocacion": 3.36,
+        "habilidad_bloqueo": 5.1
+      },
+      {
+        "nombre_jugador": "Félix Castillo",
+        "numero_camiseta": 38,
+        "tipo_jugador": "OPUESTO",
+        "experiencia": 2.27,
+        "habilidad_saque": 5.46,
+        "habilidad_remate": 6.89,
+        "habilidad_recepcion": 4.72,
+        "habilidad_colocacion": 3.03,
+        "habilidad_bloqueo": 4.82
+      },
+      {
+        "nombre_jugador": "Valentín Caballero",
+        "numero_camiseta": 17,
+        "tipo_jugador": "ARMADOR",
+        "experiencia": 9.58,
+        "habilidad_saque": 6.29,
+        "habilidad_remate": 4.08,
+        "habilidad_recepcion": 4.42,
+        "habilidad_colocacion": 6.84,
+        "habilidad_bloqueo": 2.65
+      },
+      {
+        "nombre_jugador": "Tomas Gómez",
+        "numero_camiseta": 13,
+        "tipo_jugador": "OPUESTO",
+        "experiencia": 5.59,
+        "habilidad_saque": 5.5,
+        "habilidad_remate": 7.0,
+        "habilidad_recepcion": 4.6,
+        "habilidad_colocacion": 2.15,
+        "habilidad_bloqueo": 4.04
+      },
+      {
+        "nombre_jugador": "Iker Peña",
+        "numero_camiseta": 5,
+        "tipo_jugador": "OPUESTO",
+        "experiencia": 3.37,
+        "habilidad_saque": 5.98,
+        "habilidad_remate": 6.95,
+        "habilidad_recepcion": 3.17,
+        "habilidad_colocacion": 2.77,
+        "habilidad_bloqueo": 4.0
+      },
+      {
+        "nombre_jugador": "Jerónimo Molina",
+        "numero_camiseta": 2,
+        "tipo_jugador": "PUNTA",
+        "experiencia": 9.36,
+        "habilidad_saque": 6.45,
+        "habilidad_remate": 7.3,
+        "habilidad_recepcion": 6.7,
+        "habilidad_colocacion": 2.4,
+        "habilidad_bloqueo": 4.82
+      },
+      {
+        "nombre_jugador": "Jorge Luis Cedillo",
+        "numero_camiseta": 30,
+        "tipo_jugador": "OPUESTO",
+        "experiencia": 8.18,
+        "habilidad_saque": 6.72,
+        "habilidad_remate": 7.11,
+        "habilidad_recepcion": 3.26,
+        "habilidad_colocacion": 3.35,
+        "habilidad_bloqueo": 3.71
+      }
+    ]
+  }
+}

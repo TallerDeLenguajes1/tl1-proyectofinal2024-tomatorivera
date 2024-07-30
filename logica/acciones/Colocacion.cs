@@ -57,10 +57,12 @@ namespace Logica.Acciones
         /// </summary>
         /// <returns>Objeto <c>CalidadAccion</c></returns>
         private CalidadAccion calcularCalidad()
-        {
+        {  
+            var habilidadJugador = realizador.HabilidadColocacion + calcularBonificacionColocacion() - realizador.Cansancio;
+
             // La facilidad para alcanzar la pelota es la 1.5 parte de la habilidad de colocación del jugador más o
             // menos una bonificación que puede recibir según la calidad del pase anterior menos el cansancio del colocador
-            var facilidadAlcancePelota = (realizador.HabilidadColocacion + calcularBonificacionColocacion() - realizador.Cansancio) / 1.5f / 10;
+            var facilidadAlcancePelota = habilidadJugador / 1.5f / 10;
             var rndNum = Math.Round(rnd.NextDouble(), 3);
 
             //System.Console.WriteLine($"CALIDAD COL.: {realizador.Nombre} - {rndNum} - {facilidadAlcancePelota}");
@@ -74,7 +76,7 @@ namespace Logica.Acciones
 
             // Si el número aleatorio es mayor que la facilidad de alcance pero menor que la habilidad
             // de colocación del jugador, la colocación es no tan buena
-            else if (rndNum <= (realizador.HabilidadColocacion / 10))
+            else if (rndNum <= habilidadJugador)
             {
                 calidad = CalidadAccion.MEDIA;
             }
@@ -100,10 +102,8 @@ namespace Logica.Acciones
             {
                 CalidadAccion.EXCELENTE => 1.5f + rnd.NextDouble(),
                 CalidadAccion.MEDIA => 0.5f + rnd.NextDouble(),
-                _ => 0 - rnd.NextDouble()
+                _ => 0.5f - rnd.NextDouble()
             };
         }
     }
-
-
 }

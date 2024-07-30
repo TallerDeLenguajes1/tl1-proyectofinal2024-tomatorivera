@@ -15,17 +15,15 @@ public class ComandoJugarAmistoso : IComando
 
     public void Ejecutar()
     {
+        var equipoJugador = seleccionarJugadoresConvocados();
+
         Partido? p = null;
         AnsiConsole.Status()
             .Spinner(Spinner.Known.BouncingBall)
             .SpinnerStyle(Style.Parse("yellow bold"))
-            .Start("[yellow]Esperando al jugador...[/]", ctx => 
+            .Start("[yellow]Buscando rival...[/]", ctx => 
             {
-                var equipoJugador = seleccionarJugadoresConvocados();
-
-                ctx.Status("[yellow]Buscando rival...[/]");
-
-                p = generarDatosPartidoAsync(equipoJugador).GetAwaiter().GetResult();
+               p = generarDatosPartidoAsync(equipoJugador).GetAwaiter().GetResult();
             }
         );
 

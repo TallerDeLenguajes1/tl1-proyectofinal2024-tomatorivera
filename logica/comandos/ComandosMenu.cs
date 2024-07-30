@@ -35,6 +35,7 @@ public class ComandoSalir : IComando
     public void Ejecutar()
     {
         System.Console.WriteLine();
+        Console.CursorVisible = false;
 
         // Realizo una verificación para salir del menú
         // Cualquier primer caracter distinto de "s" será tomado como "n" para evitar bugs en la vista del menú  

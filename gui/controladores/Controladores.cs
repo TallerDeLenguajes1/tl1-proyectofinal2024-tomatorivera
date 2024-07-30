@@ -34,12 +34,8 @@ public abstract class Controlador<V> where V : Vista
 
 public class InicioControlador : Controlador<Inicio>
 {
-    private IUsuarioServicio servicio;
-
     public InicioControlador(Inicio vista) : base(vista)
-    {
-        servicio = new UsuarioServicioImpl();
-    }
+    {}
 
     /// <summary>
     /// Muestra la vista de inicio y solicita al usuario su nombre de DT
@@ -82,7 +78,7 @@ public class InicioControlador : Controlador<Inicio>
         vista.Dibujar();
 
         // Leo una tecla para iniciar el juego
-        Console.ReadKey();
+        Console.ReadKey(false);
     }
 }
 
@@ -177,12 +173,29 @@ public class MenuControlador : Controlador<Menu>
 
 public class DashboardControlador : Controlador<Dashboard>
 {
-    public DashboardControlador(Dashboard vista) : base(vista)
-    {}
+    public DashboardControlador(Dashboard vista, float dineroPrePartido) : base(vista)
+    {
+        vista.DineroPrePartido = dineroPrePartido;
+    }
+
+    public float DineroPrePartido { get => vista.DineroPrePartido; set => vista.DineroPrePartido = value; }
 
     public override void MostrarVista()
     {
-        /*
+        // Limpio la consola
+        AnsiConsole.Clear();
+
+        // Si ocurrieron errores durante la carga de novedades las muestro por pantalla
+        if (ErroresIgnorablesHandler.ObtenerInstancia().Errores.Any()) MostrarErrores();
+        
+        vista.Dibujar();
+    }
+
+    /// <summary>
+    /// Carga las novedades
+    /// </summary>
+    public void CargarNovedades()
+    {
         // Muestro un spinner mientras cargan las novedades
         AnsiConsole.Status()
             .Spinner(Spinner.Known.BouncingBall)
@@ -194,15 +207,6 @@ public class DashboardControlador : Controlador<Dashboard>
                 vista.InformacionNovedades = novedades;
             }
         );
-        */
-
-        // Limpio la consola
-        AnsiConsole.Clear();
-
-        // Si ocurrieron errores durante la carga de novedades las muestro por pantalla
-        if (ErroresIgnorablesHandler.ObtenerInstancia().Errores.Any()) MostrarErrores();
-        
-        vista.Dibujar();
     }
     
     /// <summary>

@@ -6,7 +6,7 @@ namespace Logica.Modelo;
 /// </summary>
 public class Set
 {
-    public const int PuntosParaSet = 1;
+    public const int PuntosParaSet = 10;
     public const int SustitucionesPorSet = 12;
 
     public int NumeroSet { get; set; }

@@ -25,9 +25,9 @@ public class Formacion
     {
         return new List<Jugador>()
         {
-            JugadoresCancha.ElementAt(0), // Jugador en zona de servicio (1)
-            JugadoresCancha.ElementAt(4), // Jugador en zona de zaguero lateral (5)
-            JugadoresCancha.ElementAt(5)  // Jugador en zona de zaguero medio (6)
+            ObtenerJugadorZona(1), // Jugador en zona de servicio (1)
+            ObtenerJugadorZona(5), // Jugador en zona de zaguero lateral (5)
+            ObtenerJugadorZona(6)  // Jugador en zona de zaguero medio (6)
         };
     }
 
@@ -39,9 +39,9 @@ public class Formacion
     {
         return new List<Jugador>()
         {
-            JugadoresCancha.ElementAt(1), // Jugador en zona de opuesto (2)
-            JugadoresCancha.ElementAt(2), // Jugador en zona de armador (3)
-            JugadoresCancha.ElementAt(3)  // Jugador en zona de lateral (4)
+            ObtenerJugadorZona(2), // Jugador en zona de opuesto (2)
+            ObtenerJugadorZona(3), // Jugador en zona de armador (3)
+            ObtenerJugadorZona(4)  // Jugador en zona de lateral (4)
         };
     }
 

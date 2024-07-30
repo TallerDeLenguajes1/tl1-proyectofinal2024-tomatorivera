@@ -81,12 +81,12 @@ namespace Logica.Acciones
             // La probabilidad del jugador de llegar depende de su habilidad de remate más o menos
             // un bonus de remate que depende de la calidad de la colocación, todo esto restado por
             // el cansancio del jugador en este momento
-            var probabilidadLlegar = Math.Round((realizador.HabilidadRemate + bonificacionRemate - realizador.Cansancio) / 10, 3);
-            var rndNum = Math.Clamp(Math.Round(rnd.NextDouble(), 3), 0.0f, 1.0f);
+            var probabilidadLlegar = Math.Clamp(Math.Round((realizador.HabilidadRemate + bonificacionRemate - realizador.Cansancio) / 10, 3), 0.0f, 1.0f);
+            var rndNum = Math.Round(rnd.NextDouble(), 3);
             
             //System.Console.WriteLine($"LLEGA REMATE: {rndNum} - {Math.Clamp(probabilidadLlegar, 0.0f, 1.0f)}");
 
-            return rndNum <= Math.Clamp(probabilidadLlegar, 0.0f, 1.0f);
+            return rndNum <= probabilidadLlegar;
         }
 
         /// <summary>
@@ -95,15 +95,15 @@ namespace Logica.Acciones
         /// <returns>Número <c>double</c> de aumento o disminución de habilidad para el rematador</returns>
         private double calcularBonificacionRemate()
         {
-            this.bonificacionRemate = calidadColocacion switch
+            bonificacionRemate = calidadColocacion switch
             {
-                CalidadAccion.EXCELENTE => 2 + rnd.NextDouble(),
+                CalidadAccion.EXCELENTE => 2f + rnd.NextDouble(),
                 CalidadAccion.MEDIA => 1 + rnd.NextDouble(),
-                CalidadAccion.MALA => 0 - rnd.NextDouble(),
+                CalidadAccion.MALA => 0.5f - rnd.NextDouble(),
                 _ => realizador.HabilidadRemate
             };
 
-            return this.bonificacionRemate;
+            return bonificacionRemate;
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace Logica.Acciones
             // Si el nivel de remate es menor a tres, fue malo. Si es menor a 7, fue un remate normal
             // y si es mayor a 7 entonces fue excelente
             return (nivelRemate <= 3) ? CalidadAccion.MALA 
-                                      : (nivelRemate <= 7) ? CalidadAccion.MEDIA
+                                      : (nivelRemate <= 8) ? CalidadAccion.MEDIA
                                                            : CalidadAccion.EXCELENTE;
         }
 

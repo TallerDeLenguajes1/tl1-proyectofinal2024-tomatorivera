@@ -19,12 +19,14 @@ public class PartidaHandler
     private Partida partidaActual;
     private bool deseaSalir;
     private bool partidaEliminada;
+    private bool recargarNovedades;
 
     public PartidaHandler(Partida partidaActual)
     {
         this.partidaActual = partidaActual;
         deseaSalir = false;
         partidaEliminada = false;
+        recargarNovedades = true;
     }
     
     /// <summary>
@@ -32,15 +34,26 @@ public class PartidaHandler
     /// </summary>
     public void IniciarPartida() {
         var vistaDashboard = new Dashboard(partidaActual);
-        var controladorDashboard = new DashboardControlador(vistaDashboard);
+        var controladorDashboard = new DashboardControlador(vistaDashboard, partidaActual.Usuario.Dinero);
         
+        IComando comandoEjecutar;
         while (!deseaSalir && !partidaEliminada)
         {
+            // Las novedades se recargan solo si se ejecutaron algunos comandos o es la primera vez
+            // que ingresa al bucle. Esto para evitar que se recarguen con comandos sencillos como
+            // consultar la plantilla o consultar el historial, ya que implica una llamada a una API
+            if (recargarNovedades)
+            {
+                controladorDashboard.CargarNovedades();
+                recargarNovedades = false;
+            }
+
             // Muestro el dashboard
             controladorDashboard.MostrarVista();
+            controladorDashboard.DineroPrePartido = partidaActual.Usuario.Dinero;
 
             // Solicito un comando a ejecutar al usuario desde un menú de opciones
-            var comandoEjecutar = mostrarMenu();
+            comandoEjecutar = mostrarMenu();
 
             // Ejecuto la acción seleccionada por el usuario (partido amistoso, iniciar liga, iniciar torneo, consultar historial...)
             try
@@ -93,11 +106,14 @@ public class PartidaHandler
                                     new ComandoJugarAmistoso(),
                                     new ComandoConsultarPlantilla(datosUsuario.Equipo.Jugadores, datosUsuario.Equipo.Nombre),
                                     new ComandoConsultarHistorial(datosUsuario.Equipo.Nombre),
-                                    new ComandoSalir(TipoMenu.SECUNDARIO) { AccionSalida = () => this.deseaSalir = true },
-                                    new ComandoEliminarPartida() { AccionCancelacion = () => { this.partidaEliminada = true; } }
+                                    new ComandoEliminarPartida() { AccionCancelacion = () => { this.partidaEliminada = true; } },
+                                    new ComandoSalir(TipoMenu.SECUNDARIO) { AccionSalida = () => this.deseaSalir = true }
                                 })
                                 .UseConverter(comando => comando.Titulo)
                             );
+
+        // Si el comando seleccionado es uno de estos, la partida recargará las novedades luego de su ejecución
+        recargarNovedades = seleccion is ComandoJugarAmistoso;
 
         return seleccion;
     }

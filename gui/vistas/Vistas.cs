@@ -93,8 +93,8 @@ public class Inicio : Vista
         layout["abajo"].Ratio(3);
 
         // Y muestro por pantalla el layout
-        Console.CursorVisible = false;
         AnsiConsole.Write(layout);
+        Console.CursorVisible = false;
     }
 }
 
@@ -130,7 +130,7 @@ public class Menu : Vista
     public void MostrarTitulo()
     {
         Console.Clear();
-        Console.OutputEncoding = System.Text.Encoding.UTF8;
+        Console.CursorVisible = false;
         AnsiConsole.Write(
             new Panel(
                 Align.Center(
@@ -205,6 +205,8 @@ public class Dashboard : Vista
     {
         this.informacionPartida = informacionPartida;
     }
+
+    public float DineroPrePartido { get; set; }
 
     // Propiedades
     public (LeagueResponse, List<GamesResponse>) InformacionNovedades { get => informacionNovedades; set => informacionNovedades = value; }
@@ -387,10 +389,20 @@ public class Dashboard : Vista
     private Panel obtenerInformacionUsuario()
     {
         /*********************
-            * SECCIÓN HISTORIAL *
-            *********************/
+         * SECCIÓN HISTORIAL *
+         *********************/
 
-        var dineroClub = new Markup($"\n:small_orange_diamond: [orange1]Dinero actual:[/] [yellow]$ {informacionPartida.Usuario.Dinero}[/]");
+        // Calculo la diferencia de dinero que hay luego de que el usuario realice una actividad
+        float dineroActualUsuario = informacionPartida.Usuario.Dinero;
+        var diferenciaDinero = dineroActualUsuario - DineroPrePartido;
+        string strDiferenciaDinero = diferenciaDinero switch
+        {
+            > 0 => $"[gray]([/][greenyellow]+ ${Math.Round(diferenciaDinero, 2)}[/][gray])[/]",
+            < 0 => $"[gray]([/][red3_1]- ${Math.Round(diferenciaDinero, 2)}[/][gray])[/]",
+            _ => string.Empty
+        };
+
+        var dineroClub = new Markup($"\n:small_orange_diamond: [orange1]Dinero actual:[/] [yellow]$ {informacionPartida.Usuario.Dinero}[/] {strDiferenciaDinero}");
         var arbolHistorial = new Tree(":small_orange_diamond: [orange1]Últimos partidos jugados:[/]")
         {
             Style = Style.Parse("orange3")
@@ -794,7 +806,7 @@ public class PanelPartido : Vista
     private Panel dibujarInformacionAdicional()
     {
         // Si por alguna razón la información del partido es nula, no muestro detalles
-        if (InformacionPartido == null)
+        if (InformacionPartido == null || InformacionPartido.Local.FormacionPartido == null || InformacionPartido.Visitante.FormacionPartido == null)
         {
             return 
                 new Panel(Align.Left(
@@ -810,7 +822,7 @@ public class PanelPartido : Vista
         else
         {
             // Armo las formaciones en una matriz
-            var formacionLocal = InformacionPartido.Local.FormacionPartido!;
+            var formacionLocal = InformacionPartido.Local.FormacionPartido;
             Markup[,] locales = 
             {
                 {
@@ -825,7 +837,7 @@ public class PanelPartido : Vista
                 }
             };
 
-            var formacionVisitante = InformacionPartido.Visitante.FormacionPartido!;
+            var formacionVisitante = InformacionPartido.Visitante.FormacionPartido;
             Markup[,] visitantes = 
             {
                 {
@@ -848,7 +860,7 @@ public class PanelPartido : Vista
             tablaFormaciones.AddColumn(new TableColumn("visitante").Centered());
             tablaFormaciones.HideHeaders();
             tablaFormaciones.Border(TableBorder.Heavy);
-            tablaFormaciones.BorderColor(Color.LightSkyBlue1);
+            tablaFormaciones.BorderColor(Color.Grey);
             
             // Genero dos tablas para almacenar las formaciones, una de local y otra para visitantes
             var tablaLocal = new Table();
@@ -856,7 +868,7 @@ public class PanelPartido : Vista
             tablaLocal.AddColumn(new TableColumn("o").Centered());
             tablaLocal.HideHeaders();
             tablaLocal.Border(TableBorder.Minimal);
-            tablaLocal.BorderColor(Color.DarkSlateGray1);
+            tablaLocal.BorderColor(Color.Grey70);
             tablaLocal.AddRow(locales[0,0], locales[0,1]);
             tablaLocal.AddRow(locales[1,0], locales[1,1]);
             tablaLocal.AddRow(locales[2,0], locales[2,1]);
@@ -866,7 +878,7 @@ public class PanelPartido : Vista
             tablaVisitante.AddColumn(new TableColumn("d").Centered());
             tablaVisitante.HideHeaders();
             tablaVisitante.Border(TableBorder.Minimal);
-            tablaVisitante.BorderColor(Color.DarkSlateGray1);
+            tablaVisitante.BorderColor(Color.Grey70);
             tablaVisitante.AddRow(visitantes[0,0], visitantes[0,1]);
             tablaVisitante.AddRow(visitantes[1,0], visitantes[1,1]);
             tablaVisitante.AddRow(visitantes[2,0], visitantes[2,1]);
@@ -1138,7 +1150,7 @@ public class PanelHistorial : Vista
     {
         if (!informacionHistorial.HistorialPartidos.Any())
         {
-            AnsiConsole.Write($":warning: [tan]El equipo {nombreEquipo} no ha jugado partidos aún[/]");
+            AnsiConsole.Write(new Markup($"\n:see_no_evil_monkey: [tan]El equipo {nombreEquipo} no ha jugado partidos aún[/]"));
         }
         else
         {
@@ -1234,7 +1246,7 @@ public class PanelPlantilla : Vista
     {
         if (!jugadores.Any())
         {
-            AnsiConsole.Write($":warning: [navajowhite1]El equipo[/] [cornsilk1]{nombreEquipo}[/] [navajowhite1]no tiene jugadores[/]");
+            AnsiConsole.Write(new Markup($"\n:warning: [navajowhite1]El equipo[/] [cornsilk1]{nombreEquipo}[/] [navajowhite1]no tiene jugadores[/]"));
         }
         else
         {
