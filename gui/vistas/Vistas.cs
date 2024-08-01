@@ -998,7 +998,7 @@ public class PanelPartido : Vista
     {
         LayoutInformacion["info_partido"].Update(dibujarInformacionPartido());
     }
-
+    
     /// <summary>
     /// Actualiza el layout de información para únicamente desplegar una pantalla final en
     /// la que se le indica al usuario si ha ganado o ha perdido
@@ -1011,10 +1011,6 @@ public class PanelPartido : Vista
     /// <param name="partidoAbandonado">Indica si el partido ha sido abandonado, en dado caso muestro un mensaje diferente</param>
     public void MostrarPantallaFinal(string nombreEquipoJugador, TipoEquipo tipoEquipoJugador, string nombreEquipoRival, bool usuarioEsGanador, FigletFont? fontTitulo, bool partidoAbandonado)
     {
-        // Solicito al usuario una tecla para luego mostrar la pantalla final
-        AnsiConsole.Write(new Markup("\n[grey70 italic](( El partido ha finalizado, presione una tecla para continuar al dashboard... ))[/]").Centered());
-        Console.ReadKey(true);
-
         AnsiConsole.Clear();
 
         // Según si el usuario ha ganado o no el partido, algunos mensajes y colores cambian
@@ -1082,6 +1078,14 @@ public class PanelPartido : Vista
     }
 
     /// <summary>
+    /// // Solicito al usuario una tecla para luego mostrar la pantalla final
+    /// </summary>
+    public void MostrarMensajeFinalizacionPrevisorio()
+    {
+        AnsiConsole.Write(new Markup("\n[grey70 italic](( El partido ha finalizado, presione una tecla para continuar al dashboard... ))[/]").Centered());
+    }
+
+    /// <summary>
     /// Muestra una animación para el encabezado del partido
     /// </summary>
     /// <param name="figletLocal">Figlet text a mostrar del equipo local</param>
@@ -1124,10 +1128,10 @@ public class PanelPartido : Vista
                     
                     textosMostrados.Add(new Text(""));
                     controladorDisplay.Refresh();
-                    VistasUtil.PausarVistas(1);
+                    VistasUtil.PausarVistas(0.8f);
                 }
 
-                VistasUtil.PausarVistas(3);
+                VistasUtil.PausarVistas(2);
             });
     }
 }

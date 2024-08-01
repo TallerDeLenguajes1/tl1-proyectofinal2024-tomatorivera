@@ -22,6 +22,7 @@ public class SimuladorPartidoHandler
     private TipoEquipo posesionPelota;
     private PanelPartidoControlador panelPartidoControlador;
     private bool partidoAbandonado;
+    private AudioHandler audioHandler;
 
     public SimuladorPartidoHandler(Partido partido)
     {
@@ -34,6 +35,7 @@ public class SimuladorPartidoHandler
 
         // Inicializo el controlador del panel de la vista del partido
         panelPartidoControlador = new PanelPartidoControlador(new PanelPartido(), partido);
+        audioHandler = new RecursoServicioImpl().ObtenerManejadorAudio();
     }
 
     /* Propiedades */
@@ -46,6 +48,9 @@ public class SimuladorPartidoHandler
     /// </summary>
     public void IniciarSimulacionPartido()
     {
+        audioHandler.Detener(Audio.MENU_BACKGROUND);
+        //audioHandler.Reproducir(Audio.MENU_SELECTION);
+
         // Muestro un encabezado
         mostrarEncabezadoPartido();
 
@@ -76,9 +81,9 @@ public class SimuladorPartidoHandler
         FigletText figletLocal, figletVisitante;
         try
         {
-            RecursosUtil.VerificarArchivo(Config.DirectorioFuentes + @"\" + Config.NombreFuentePagga);
+            RecursosUtil.VerificarArchivo(Config.DirectorioFuentes + @"\" + Config.FuentePagga);
 
-            var figletFont = FigletFont.Load(Config.DirectorioFuentes + @"\" + Config.NombreFuentePagga);
+            var figletFont = FigletFont.Load(Config.DirectorioFuentes + @"\" + Config.FuentePagga);
             figletLocal = new FigletText(figletFont, partido.Local.Nombre).Color(Color.Red1);
             figletVisitante = new FigletText(figletFont, partido.Visitante.Nombre).Color(Color.Red1);
         }
@@ -89,7 +94,7 @@ public class SimuladorPartidoHandler
         }
 
         // Solicito a la vista que muestre por pantalla el encabezado
-        panelPartidoControlador.MostrarEncabezadoPartido(figletLocal, figletVisitante, partido.TipoPartido);
+        panelPartidoControlador.MostrarEncabezadoPartido(figletLocal, figletVisitante, partido.TipoPartido, audioHandler);
     }
 
     /// <summary>
@@ -101,7 +106,7 @@ public class SimuladorPartidoHandler
         FigletFont? fontTitulo;
         try
         {
-            var fontPath = Config.DirectorioFuentes + @"\" + Config.NombreFuenteDosRebel;
+            var fontPath = Config.DirectorioFuentes + @"\" + Config.FuenteDosRebel;
             RecursosUtil.VerificarArchivo(fontPath);
             fontTitulo = FigletFont.Load(fontPath);
         }
@@ -130,7 +135,7 @@ public class SimuladorPartidoHandler
         }
 
         // Paso los datos al controlador para que la vista se encargue de mostrar la información
-        panelPartidoControlador.MostrarPantallaFinal(nombreEquipoJugador, nombreEquipoRival, tipoEquipoJugador, esGanadorUsuario, fontTitulo, partidoAbandonado);
+        panelPartidoControlador.MostrarPantallaFinal(nombreEquipoJugador, nombreEquipoRival, tipoEquipoJugador, esGanadorUsuario, fontTitulo, partidoAbandonado, audioHandler, esGanadorUsuario ? Audio.PARTIDO_GANADO : Audio.PARTIDO_PERDIDO);
     }
 
     /// <summary>
@@ -138,6 +143,8 @@ public class SimuladorPartidoHandler
     /// </summary>
     private void jugarPartido()
     {
+        audioHandler.Reproducir(Audio.PARTIDO_BACKGROUND, true);
+
         // El partido termina cuando ya se hayan jugado todos los sets o cuando se pueda
         // determinar un ganador según el puntaje de los equipos tras cada ronda, o bien cuando
         // el jugador decida abandonar el partido
@@ -152,6 +159,8 @@ public class SimuladorPartidoHandler
             almacenarResultadoSetActual();
             partido.SetActual.SiguienteSet();
         }
+
+        audioHandler.Detener(Audio.PARTIDO_BACKGROUND);
 
         if (partidoAbandonado)
         {

@@ -1,31 +1,41 @@
-namespace Logica.Modelo
+namespace Logica.Modelo;
+
+public enum TipoEquipo
 {
-    public enum TipoEquipo
-    {
-        LOCAL,
-        VISITANTE
-    }
+    LOCAL,
+    VISITANTE
+}
 
-    public enum TipoJugador
-    {
-        PUNTA,
-        OPUESTO,
-        ARMADOR,
-        CENTRAL,
-        LIBERO
-    }
+public enum TipoJugador
+{
+    PUNTA,
+    OPUESTO,
+    ARMADOR,
+    CENTRAL,
+    LIBERO
+}
 
-    public enum TipoPartido
-    {
-        AMISTOSO,
-        LIGA,
-        TORNEO
-    }
+public enum TipoPartido
+{
+    AMISTOSO,
+    LIGA,
+    TORNEO
+}
 
-    public enum CalidadAccion
-    {
-        EXCELENTE,
-        MEDIA,
-        MALA
-    }
+public enum CalidadAccion
+{
+    EXCELENTE,
+    MEDIA,
+    MALA
+}
+
+public enum Audio
+{
+    MENU_TICK,
+    MENU_SELECTION,
+    MENU_BACKGROUND,
+    PARTIDO_ENCABEZADO,
+    PARTIDO_BACKGROUND,
+    PARTIDO_GANADO,
+    PARTIDO_PERDIDO
 }

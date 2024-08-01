@@ -173,7 +173,7 @@ namespace Logica.Acciones
             var probabilidadPasarBloqueo = 0.5f + (diferenciaHabilidades / 20.0f);
 
             var rndNum =  Math.Round(rnd.NextDouble(), 2);
-            var skill = Math.Clamp(probabilidadPasarBloqueo, 0.0f, 1.0f);
+            var skill = Math.Clamp(Math.Round(probabilidadPasarBloqueo, 2), 0.0f, 1.0f);
 
             //System.Console.WriteLine($"ES BLOQUEADO: {bloqueador.Nombre} - {diferenciaHabilidades} - {probabilidadPasarBloqueo} - {rndNum} - {skill}");
 

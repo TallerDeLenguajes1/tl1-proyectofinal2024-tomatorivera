@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Reflection;
+using Logica.Modelo;
 
 namespace Gui.Util
 {
@@ -9,7 +10,7 @@ namespace Gui.Util
     public static class EnumUtil
     {
         /// <summary>
-        /// Obtiene la que contiene la flag Description de un campo de algún Enum
+        /// Obtiene lo que contiene la flag Description de un campo de algún Enum
         /// </summary>
         /// <param name="value">Valor de enumeración a evaluar</param>
         /// <returns>Lo que contenga la flag "Description", o el valor textual del campo si no tiene la flag Description</returns>

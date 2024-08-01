@@ -1,5 +1,3 @@
-using Logica.Modelo;
-
 namespace Persistencia.Infraestructura
 {
     /// <summary>
@@ -15,13 +13,23 @@ namespace Persistencia.Infraestructura
         public static string? DirectorioRecursos { get; set; }
         public static string? DirectorioImagenes { get; set; }
         public static string? DirectorioFuentes { get; set; }
+        public static string? DirectorioAudios { get; set; }
 
         public static string? NombreJsonPartida { get; set; }
         public static string? NombreJsonUsuario { get; set; }
         public static string? NombreJsonHistorial { get; set; }
         public static string? NombreImgLogo { get; set; }
-        public static string? NombreFuentePagga { get; set; }
-        public static string? NombreFuenteDosRebel { get; set; }
+
+        public static string? FuentePagga { get; set; }
+        public static string? FuenteDosRebel { get; set; }
+
+        public static string? AudioMenu { get; set; }
+        public static string? AudioMenuSelection { get; set; }
+        public static string? AudioMenuBackground { get; set; }
+        public static string? AudioPartidoEncabezado { get; set; }
+        public static string? AudioPartidoBackground { get; set; }
+        public static string? AudioPartidoGanado { get; set; }
+        public static string? AudioPartidoPerdido { get; set; }
 
         public static string? ApiSportsKey { get; set; }
         public static string? ApiSportsUrl { get; set; }
@@ -44,13 +52,23 @@ namespace Persistencia.Infraestructura
             DirectorioRecursos = "recursos";
             DirectorioImagenes = DirectorioRecursos + @"\img";
             DirectorioFuentes = DirectorioRecursos + @"\font";
+            DirectorioAudios = DirectorioRecursos + @"\audio";
 
             NombreJsonPartida = "partida.json";
             NombreJsonUsuario = "usuario.json";
             NombreJsonHistorial = "historial.json";
             NombreImgLogo = "logo.png";
-            NombreFuentePagga = "Pagga.flf";
-            NombreFuenteDosRebel = "DOSRebel.flf";
+
+            FuentePagga = "Pagga.flf";
+            FuenteDosRebel = "DOSRebel.flf";
+
+            AudioMenu = "MenuTickSound.wav";
+            AudioMenuSelection = "MenuSelectionSound.wav";
+            AudioMenuBackground = "MenuBackgroundSound.wav";
+            AudioPartidoEncabezado = "PartidoEncabezadoSound.wav";
+            AudioPartidoBackground = "PartidoBackgroundSound.wav";
+            AudioPartidoGanado = "PartidoWinSound.wav";
+            AudioPartidoPerdido = "PartidoLoserSound.wav";
             
             ApiSportsKey = "03028e54f1f00215f6bb821f0b260a6d";
             ApiSportsUrl = "https://v1.volleyball.api-sports.io";

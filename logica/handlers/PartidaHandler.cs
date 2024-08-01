@@ -33,6 +33,10 @@ public class PartidaHandler
     /// Inicia la lógica de una partida
     /// </summary>
     public void IniciarPartida() {
+        var servicioRecursos = new RecursoServicioImpl();
+        var audioHandler = servicioRecursos.ObtenerManejadorAudio();
+        audioHandler.Reproducir(Audio.MENU_SELECTION);
+        
         var vistaDashboard = new Dashboard(partidaActual);
         var controladorDashboard = new DashboardControlador(vistaDashboard, partidaActual.Usuario.Dinero);
         
@@ -51,6 +55,9 @@ public class PartidaHandler
             // Muestro el dashboard
             controladorDashboard.MostrarVista();
             controladorDashboard.DineroPrePartido = partidaActual.Usuario.Dinero;
+
+            // Reproduce el audio del menú si es que se canceló su reproducción
+            if (!audioHandler.EstaReproduciendose(Audio.MENU_BACKGROUND)) audioHandler.Reproducir(Audio.MENU_BACKGROUND, true);
 
             // Solicito un comando a ejecutar al usuario desde un menú de opciones
             comandoEjecutar = mostrarMenu();
@@ -74,6 +81,8 @@ public class PartidaHandler
 
             AnsiConsole.Clear();
         }
+
+        audioHandler.Detener(Audio.MENU_BACKGROUND);
 
         // Cuando sale de la partida guardo todos los datos (solo en caso
         // de que la partida no haya sido eliminada) 
@@ -113,7 +122,7 @@ public class PartidaHandler
                             );
 
         // Si el comando seleccionado es uno de estos, la partida recargará las novedades luego de su ejecución
-        recargarNovedades = seleccion is ComandoJugarAmistoso;
+        recargarNovedades = seleccion is ComandoJugarAmistoso && ((ComandoJugarAmistoso)seleccion).SeJugaraAmistoso;
 
         return seleccion;
     }

@@ -1,3 +1,5 @@
+using Logica.Handlers;
+using Logica.Modelo;
 using Persistencia.Infraestructura;
 using Persistencia.Util;
 
@@ -6,6 +8,7 @@ namespace Logica.Servicios
     public interface IRecursoServicio
     {
         string ObtenerLogo();
+        AudioHandler ObtenerManejadorAudio();
     }
 
     public class RecursoServicioImpl : IRecursoServicio
@@ -29,6 +32,15 @@ namespace Logica.Servicios
             {
                 throw;
             }
+        }
+
+        /// <summary>
+        /// Retorna la instancia del manejador de audio utilizado
+        /// </summary>
+        /// <returns>Instancia de <c>AudioHandler</c></returns>
+        public AudioHandler ObtenerManejadorAudio()
+        {
+            return AudioHandler.Instancia;
         }
     }
 }

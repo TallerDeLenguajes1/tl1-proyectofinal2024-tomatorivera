@@ -12,6 +12,14 @@ namespace Logica.Comandos;
 public class ComandoJugarAmistoso : IComando
 {
     public string Titulo => "Jugar partido amistoso";
+    private bool seJugaraAmistoso;
+
+    public ComandoJugarAmistoso()
+    {
+        seJugaraAmistoso = false;
+    }
+
+    public bool SeJugaraAmistoso { get => seJugaraAmistoso; }
 
     public void Ejecutar()
     {
@@ -33,6 +41,8 @@ public class ComandoJugarAmistoso : IComando
             // Solicito la cantidad de sets a jugarse. No lo hago en el live porque dicho componente no soporta TextPrompts
             var nSets = solicitarRondas();
             p.SetMaximos = nSets;
+
+            seJugaraAmistoso = true;
 
             var simuladorPartido = new SimuladorPartidoHandler(p);
             simuladorPartido.IniciarSimulacionPartido();

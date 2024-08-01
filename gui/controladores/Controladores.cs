@@ -86,13 +86,12 @@ public class MenuControlador : Controlador<Menu>
 {
     private bool estaSeleccionando;
     private int indiceSeleccionado;
-    private IUsuarioServicio servicio;
 
     public MenuControlador(Menu vista) : base(vista)
     {
-        this.indiceSeleccionado = 0;
-        this.estaSeleccionando = true;
-        this.servicio = new UsuarioServicioImpl();
+        indiceSeleccionado = 0;
+        estaSeleccionando = true;
+
         configurarComandoSalida();
     }
 
@@ -101,8 +100,11 @@ public class MenuControlador : Controlador<Menu>
     /// </summary>
     public override void MostrarVista()
     {
+        var recursosServicio = new RecursoServicioImpl();
+        var audioHandler = recursosServicio.ObtenerManejadorAudio();
+
         ConsoleKeyInfo teclaPresionada;
-        vista.IndiceSeleccionado = this.indiceSeleccionado;
+        vista.IndiceSeleccionado = indiceSeleccionado;
 
         // El menú se mostrará mientras no se seleccione la opción Salir
         while (estaSeleccionando)
@@ -113,6 +115,8 @@ public class MenuControlador : Controlador<Menu>
             // Este while mantiene al usuario en el menú hasta que presione enter
             while ((teclaPresionada = Console.ReadKey(true)).Key != ConsoleKey.Enter)
             {
+                audioHandler.Reproducir(Audio.MENU_TICK);
+
                 switch (teclaPresionada.Key)
                 {
                     case ConsoleKey.DownArrow:
@@ -132,9 +136,11 @@ public class MenuControlador : Controlador<Menu>
                 }
 
                 // Actualizo el indice seleccionado y vuelvo a dibujar el menu
-                vista.IndiceSeleccionado = this.indiceSeleccionado;
+                vista.IndiceSeleccionado = indiceSeleccionado;
                 vista.Dibujar();
             }
+        
+            audioHandler.Reproducir(Audio.MENU_TICK);
 
             // Almaceno la posición del cursor para borrar desde ahí los registros visuales del comando
             int lineaInicio = Console.CursorTop;
@@ -314,8 +320,12 @@ public class PanelPartidoControlador : Controlador<PanelPartido>
     /// <param name="figletLocal">Figlet text a mostrar del equipo local</param>
     /// <param name="figletVisitante">Figlet text a mostrar del equipo visitante</param>
     /// <param name="tipoPartido">Tipo de partido a disputarse</param>
-    public void MostrarEncabezadoPartido(FigletText figletLocal, FigletText figletVisitante, TipoPartido tipoPartido)
+    /// <param name="audioHandler">Controlador de audio</param>
+    public void MostrarEncabezadoPartido(FigletText figletLocal, FigletText figletVisitante, TipoPartido tipoPartido, AudioHandler audioHandler)
     {
+        VistasUtil.PausarVistas(1.5f);
+        audioHandler.Reproducir(Audio.PARTIDO_ENCABEZADO);
+        
         vista.MostrarEncabezadoPartido(figletLocal, figletVisitante, tipoPartido);
     }
 
@@ -328,12 +338,18 @@ public class PanelPartidoControlador : Controlador<PanelPartido>
     /// <param name="usuarioEsGanador">Indica si el usuario ha ganado o no la partida</param>
     /// <param name="fontTitulo">Fuente utilizada para desplegar el titulo de la pantalla final</param>
     /// <param name="partidoAbandonado">Indica si el partido ha sido abandonado, en dado caso muestro un mensaje diferente</param>
-    public void MostrarPantallaFinal(string nombreEquipoJugador, string nombreEquipoRival, TipoEquipo tipoEquipoJugador, bool usuarioEsGanador, FigletFont? fontTitulo, bool partidoAbandonado)
+    /// <param name="audioHandler">Manejador de audio</param>
+    /// <param name="audioPantallaFinal">Audio a reproducir en la pantalla final</param>
+    public void MostrarPantallaFinal(string nombreEquipoJugador, string nombreEquipoRival, TipoEquipo tipoEquipoJugador, bool usuarioEsGanador, FigletFont? fontTitulo, bool partidoAbandonado, AudioHandler audioHandler, Audio audioPantallaFinal)
     {
+        vista.MostrarMensajeFinalizacionPrevisorio();
+        Console.ReadKey(true);
+        
+        audioHandler.Reproducir(audioPantallaFinal);
         vista.MostrarPantallaFinal(nombreEquipoJugador, tipoEquipoJugador, nombreEquipoRival, usuarioEsGanador, fontTitulo, partidoAbandonado);
 
         // Pauso la pantalla final unos segundos antes de continuar
-        VistasUtil.PausarVistas(3);
+        VistasUtil.PausarVistas(5);
     }
 }
 
