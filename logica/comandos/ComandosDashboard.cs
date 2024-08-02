@@ -274,7 +274,7 @@ public class ComandoConsultarHistorial : IComando
 
 public class ComandoEliminarPartida : IComando
 {
-    public string Titulo => "Salir y eliminar partida";
+    public string Titulo => "Eliminar partida";
     public Action? AccionCancelacion { get; set; }
 
     public void Ejecutar()

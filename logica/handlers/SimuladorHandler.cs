@@ -34,7 +34,7 @@ public class SimuladorPartidoHandler
         partidoAbandonado = false;
 
         // Inicializo el controlador del panel de la vista del partido
-        panelPartidoControlador = new PanelPartidoControlador(new PanelPartido(), partido);
+        panelPartidoControlador = new PanelPartidoControlador(new PanelPartido(partido));
         audioHandler = new RecursoServicioImpl().ObtenerManejadorAudio();
     }
 
@@ -377,12 +377,13 @@ public class SimuladorPartidoHandler
             var cambiosRestantes = partido.SetActual.ObtenerSustitucionesRestantes(tipoEquipoJugador);
             var comandosDisponibles = new List<IComando>();
             
+            comandosDisponibles.Add(new ComandoContinuarPartido());
+            comandosDisponibles.Add(new ComandoVisualizarPlantilla(equipoJugador.FormacionPartido!));  
+
             // El comando para realizar una sustitución lo muestro al usuario solo si es que le quedan suficientes cambios en el set actual
             if (cambiosRestantes > 0) 
                 comandosDisponibles.Add(new ComandoRealizarSustitucion(this, equipoJugador, tipoEquipoJugador));
 
-            comandosDisponibles.Add(new ComandoVisualizarPlantilla(equipoJugador.FormacionPartido!));  
-            comandosDisponibles.Add(new ComandoContinuarPartido());
             comandosDisponibles.Add(new ComandoSalir("Abandonar el partido")
             {
                 MostrarMensajeSalida = false,

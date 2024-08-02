@@ -96,8 +96,9 @@ namespace Logica.Modelo
         /// <returns><c>string</c> Descripción del jugador con colores</returns>
         public string DescripcionPartido()
         {
-            return
-                $"[mistyrose3]{numeroCamiseta}[/] :t_shirt: [lightgoldenrod3]{nombre}[/] [tan]({tipoJugador})[/] [gray] - [/][mistyrose3]Cansancio {Math.Round(cansancio, 2)}[/]" +
+            return numeroCamiseta == -1
+                ? "[red3_1]:right_arrow_curving_left: Cancelar sustitución[/]"
+                : $"[mistyrose3]{numeroCamiseta}[/] :t_shirt: [lightgoldenrod3]{nombre}[/] [tan]({tipoJugador})[/] [gray] - [/][mistyrose3]Cansancio {Math.Round(cansancio, 2)}[/]" +
                 $"[gray] - SAQ:[/] {habilidadSaque} [gray]REM:[/] {habilidadRemate} [gray]REC:[/] {habilidadRecepcion} [gray]COL:[/] {habilidadColocacion} [gray]BLO:[/] {habilidadBloqueo}";
         }
 

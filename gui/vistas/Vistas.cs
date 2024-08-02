@@ -576,13 +576,19 @@ public class Dashboard : Vista
 public class PanelPartido : Vista
 {
     private const string nombrePanelAcciones = "info_acciones";
+    private string colorJugador;
+    private string colorRival;
 
-    public Partido? InformacionPartido { get; set; }
+    public Partido InformacionPartido { get; set; }
     public Layout LayoutInformacion { get; set; }
 
-    public PanelPartido()
+    public PanelPartido(Partido InformacionPartido)
     {
+        this.InformacionPartido = InformacionPartido;
         LayoutInformacion = generarLayout();
+
+        colorJugador = InformacionPartido.Local.EsEquipoJugador ? Color.Yellow.ToMarkup() : Color.Red.ToMarkup();
+        colorRival = InformacionPartido.Local.EsEquipoJugador ? Color.Red.ToMarkup() : Color.Yellow.ToMarkup();
     }
 
     // Métodos
@@ -714,9 +720,9 @@ public class PanelPartido : Vista
         else
         {
             /******************
-                * EQUIPO JUGADOR *
-                *****************/
-            var equipoJugadorSeparador = new Rule("[orange1]Su equipo[/]");
+             * EQUIPO JUGADOR *
+             *****************/
+            var equipoJugadorSeparador = new Rule($"[orange1]Su equipo[/] [gray]({InformacionPartido.ObtenerEquipoJugador().Nombre})[/]");
             equipoJugadorSeparador.RuleStyle(Style.Parse("gray bold"));
             equipoJugadorSeparador.LeftJustified();
 
@@ -734,7 +740,7 @@ public class PanelPartido : Vista
                 foreach (var jugador in formacionJugador.JugadoresSuplentes)
                 {
                     var nodoJugador = arbolSuplentes.AddNode(
-                        $"[yellow]{jugador.Nombre}[/] [orange3]({jugador.NumeroCamiseta})[/][gray] - [/][orange1]{jugador.TipoJugador}[/][gray] - [/][orange1]Cansancio: [/][orange3]{jugador.Cansancio}[/]"
+                        $"[{colorJugador}]{jugador.Nombre}[/] [orange3]({jugador.NumeroCamiseta})[/][gray] - [/][orange1]{jugador.TipoJugador}[/][gray] - [/][orange1]Cansancio: [/][orange3]{jugador.Cansancio}[/]"
                     );
 
                     nodoJugador.AddNode(
@@ -744,9 +750,9 @@ public class PanelPartido : Vista
             }
 
             /******************
-                * EQUIPO CONSOLA *
-                *****************/
-            var equipoConsolaSeparador = new Rule("[orange1]Equipo rival[/]");
+             * EQUIPO CONSOLA *
+             *****************/
+            var equipoConsolaSeparador = new Rule($"[orange1]Equipo rival[/] [gray]({InformacionPartido.ObtenerEquipoConsola().Nombre})[/]");
             equipoConsolaSeparador.RuleStyle(Style.Parse("gray bold"));
             equipoConsolaSeparador.LeftJustified();
 
@@ -766,7 +772,7 @@ public class PanelPartido : Vista
                     var jugador = formacionConsola.JugadoresCancha.ElementAt(i);
 
                     var nodoJugador = arbolTitulares.AddNode(
-                        $"[red]ZONA {i+1}:[/] [yellow]{jugador.Nombre}[/] [orange3]({jugador.NumeroCamiseta})[/]"
+                        $"[{colorRival}]{jugador.Nombre}[/] [orange3]({jugador.NumeroCamiseta})[/]"
                     );
                     nodoJugador.AddNode(
                         $"[gray]SAQ:[/] {jugador.HabilidadSaque} [gray]REM:[/] {jugador.HabilidadRemate} [gray]REC:[/] {jugador.HabilidadRecepcion} [gray]COL:[/] {jugador.HabilidadColocacion} [gray]BLO:[/] {jugador.HabilidadBloqueo}"

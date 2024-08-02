@@ -1,5 +1,5 @@
 {
-  "total_partidos_jugados": 2,
+  "total_partidos_jugados": 6,
   "historial_partidos": [
     {
       "tipo_de_partido": "AMISTOSO",
@@ -35,13 +35,109 @@
       "equipo_local": {
         "nombre_equipo": "Lomas",
         "es_equipo_jugador": true,
+        "jugadores_convocados": []
+      },
+      "equipo_visitante": {
+        "nombre_equipo": "UPCN",
+        "es_equipo_jugador": false,
+        "jugadores_convocados": []
+      },
+      "score_local": 2,
+      "score_visitante": 0,
+      "resultados_sets": {
+        "1": {
+          "PuntosLocal": 4,
+          "PuntosVisitante": 2
+        },
+        "2": {
+          "PuntosLocal": 2,
+          "PuntosVisitante": 0
+        }
+      }
+    },
+    {
+      "tipo_de_partido": "AMISTOSO",
+      "nombre_ganador": "ABANDONADO",
+      "al_mejor_de": 3,
+      "equipo_local": {
+        "nombre_equipo": "Lomas",
+        "es_equipo_jugador": true,
+        "jugadores_convocados": []
+      },
+      "equipo_visitante": {
+        "nombre_equipo": "Boca Juniors W",
+        "es_equipo_jugador": false,
+        "jugadores_convocados": []
+      },
+      "score_local": 0,
+      "score_visitante": 0,
+      "resultados_sets": {
+        "1": {
+          "PuntosLocal": 1,
+          "PuntosVisitante": 0
+        }
+      }
+    },
+    {
+      "tipo_de_partido": "AMISTOSO",
+      "nombre_ganador": "ABANDONADO",
+      "al_mejor_de": 3,
+      "equipo_local": {
+        "nombre_equipo": "Nuevo equipo",
+        "es_equipo_jugador": false,
+        "jugadores_convocados": []
+      },
+      "equipo_visitante": {
+        "nombre_equipo": "Lomas",
+        "es_equipo_jugador": true,
+        "jugadores_convocados": []
+      },
+      "score_local": 0,
+      "score_visitante": 0,
+      "resultados_sets": {
+        "1": {
+          "PuntosLocal": 1,
+          "PuntosVisitante": 0
+        }
+      }
+    },
+    {
+      "tipo_de_partido": "AMISTOSO",
+      "nombre_ganador": "ABANDONADO",
+      "al_mejor_de": 3,
+      "equipo_local": {
+        "nombre_equipo": "Lomas",
+        "es_equipo_jugador": true,
+        "jugadores_convocados": []
+      },
+      "equipo_visitante": {
+        "nombre_equipo": "Nuevo equipo",
+        "es_equipo_jugador": false,
+        "jugadores_convocados": []
+      },
+      "score_local": 0,
+      "score_visitante": 0,
+      "resultados_sets": {
+        "1": {
+          "PuntosLocal": 1,
+          "PuntosVisitante": 0
+        }
+      }
+    },
+    {
+      "tipo_de_partido": "AMISTOSO",
+      "nombre_ganador": "ABANDONADO",
+      "al_mejor_de": 3,
+      "equipo_local": {
+        "nombre_equipo": "Lomas",
+        "es_equipo_jugador": true,
         "jugadores_convocados": [
+          "Bruno Solorzano (28)",
+          "Emilio Centeno (49)",
           "Ismael Santiago (35)",
           "Joshua Burke (21)",
           "Ramiro Tafoya (23)",
           "Jacinto Camarillo (47)",
-          "Bruno Solorzano (28)",
-          "Emilio Centeno (49)",
           "Julio Crespo (25)",
           "Wilfrido Pulido (7)",
           "Ramon Daniels (46)",
@@ -53,34 +149,30 @@
         ]
       },
       "equipo_visitante": {
-        "nombre_equipo": "UPCN",
+        "nombre_equipo": "Personal Bolivar",
         "es_equipo_jugador": false,
         "jugadores_convocados": [
-          "Víctor Casares (49)",
-          "Lloyd Rose (40)",
-          "Jorge González (45)",
-          "Tomas Suarez (2)",
-          "Serafín Jimínez (46)",
-          "Joel Mitchell (11)",
-          "Ramón Fernández (25)",
-          "Emilio Herrero (20)",
-          "Borja Aguilar (7)",
-          "Albert Carlson (4)",
-          "Mariano Cantú (21)",
-          "Víctor Bustos (43)",
-          "Rafael Marín (23)",
-          "Guillermo Alemán (15)"
+          "Salvador Romero (34)",
+          "Tom Simmons (43)",
+          "Nathan Harrison (44)",
+          "Cristóbal Herrero (6)",
+          "Marco López (26)",
+          "Tony Jensen (27)",
+          "Flavio Guerrero (36)",
+          "Troy Nelson (20)",
+          "Vicente Torres (17)",
+          "Joaquin Arias (16)",
+          "Sergio Santos (14)",
+          "Yunnuel Carvajal (33)",
+          "Carlos Castro (37)",
+          "Albert Sánchez (4)"
         ]
       },
-      "score_local": 2,
+      "score_local": 0,
       "score_visitante": 0,
       "resultados_sets": {
         "1": {
-          "PuntosLocal": 4,
-          "PuntosVisitante": 2
-        },
-        "2": {
-          "PuntosLocal": 2,
+          "PuntosLocal": 1,
           "PuntosVisitante": 0
         }
       }

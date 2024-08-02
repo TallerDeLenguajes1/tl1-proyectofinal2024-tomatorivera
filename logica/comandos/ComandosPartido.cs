@@ -42,22 +42,36 @@ public class ComandoRealizarSustitucion : IComando
 
     private void ejecutarSustitucionUsuario(Formacion plantilla)
     {
-        // Falta implementar
+        var jugadoresCancha = new List<Jugador>(plantilla.JugadoresCancha)
+        {
+            new Jugador() // Opción de salida
+        };
+        var jugadoresSuplentes = new List<Jugador>(plantilla.JugadoresSuplentes)
+        {
+            new Jugador() // Opción de salida
+        };
+
         var jugadorSale = AnsiConsole.Prompt(
             new SelectionPrompt<Jugador>()
                 .Title("[orange1 bold]Seleccione el jugador a sustituir:[/]")
                 .HighlightStyle(Style.Parse("yellow"))
-                .AddChoices(plantilla.JugadoresCancha)
+                .AddChoices(jugadoresCancha)
                 .UseConverter(jugador => jugador.DescripcionPartido())
         );
+
+        // Si selecciona el jugador con id -1, es porque desea cancelar la sustitución
+        if (jugadorSale.NumeroCamiseta == -1) return;
 
         var jugadorIngresa = AnsiConsole.Prompt(
             new SelectionPrompt<Jugador>()
                 .Title($"[orange1 bold]Seleccione el jugador que ingresará en lugar de[/] [yellow]{jugadorSale.Nombre}[/]")
                 .HighlightStyle(Style.Parse("yellow"))
-                .AddChoices(plantilla.JugadoresSuplentes)
+                .AddChoices(jugadoresSuplentes)
                 .UseConverter(jugador => jugador.DescripcionPartido())
         );
+
+        // Si selecciona el jugador con id -1, es porque desea cancelar la sustitución
+        if (jugadorIngresa.NumeroCamiseta == -1) return;
 
         simulador.Partido.SetActual.Sustituciones.VerificarSustitucion(tipoEquipo, jugadorIngresa, jugadorSale);
         simulador.RealizarSustitucion(tipoEquipo, jugadorIngresa, jugadorSale);
@@ -94,7 +108,7 @@ public class ComandoVisualizarPlantilla : IComando
         };
         for (int i=0 ; i<plantilla.JugadoresCancha.Count() ; i++)
         {
-            arbolTitulares.AddNode($"[red bold]ZONA {i+1}:[/] {plantilla.JugadoresCancha.ElementAt(i).DescripcionPartido()}");
+            arbolTitulares.AddNode($"[greenyellow bold]ZONA {i+1}:[/] {plantilla.JugadoresCancha.ElementAt(i).DescripcionPartido()}");
         }
 
         // Muestro los suplentes

@@ -262,16 +262,11 @@ public class DashboardControlador : Controlador<Dashboard>
 
 public class PanelPartidoControlador : Controlador<PanelPartido>
 {
-    private Partido informacionPartido;
-
-    public PanelPartidoControlador(PanelPartido vista, Partido informacionPartido) : base(vista)
-    {
-        this.informacionPartido = informacionPartido;
-    }
+    public PanelPartidoControlador(PanelPartido vista) : base(vista)
+    {}
 
     public override void MostrarVista()
     {
-        vista.InformacionPartido = informacionPartido;
         vista.Dibujar();
     }
 
