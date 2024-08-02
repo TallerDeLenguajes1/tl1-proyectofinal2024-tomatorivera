@@ -1,4 +1,5 @@
 using Logica.Modelo;
+using Logica.Util;
 
 namespace Logica.Acciones
 {
@@ -14,8 +15,8 @@ namespace Logica.Acciones
         protected Accion(Rally rally)
         {
             this.rally = rally;
-            this.realizador = rally.JugadorActual;
-            this.rnd = new Random();
+            realizador = rally.JugadorActual;
+            rnd = new Random();
         }
 
         /// <summary>
@@ -23,5 +24,13 @@ namespace Logica.Acciones
         /// </summary>
         /// <returns>Objeto <c>ResultadoAccion</c> con datos del resultado de la accion que determinarán cómo continúa el partido</returns>
         public abstract ResultadoAccion Realizar();
+
+        /// <summary>
+        /// Realiza un incremento del cansancio en el realizador de la acción
+        /// </summary>
+        protected void IncrementarCansancio(float min, float max)
+        {
+            realizador.AumentarCansancio(ProbabilidadesUtil.ValorAleatorioEntre(min, max));
+        }
     }
 }

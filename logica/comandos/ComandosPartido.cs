@@ -27,29 +27,17 @@ public class ComandoRealizarSustitucion : IComando
         AnsiConsole.Write(separador);
 
         var formacion = equipo.FormacionPartido!;
-        
-        // Si el equipo que realizará una sustitución es del usuario, se piden los datos requeridos
-        // Si es un equipo de consola, se realiza un cambio automático (o esa es la idea)
-        if (equipo.EsEquipoJugador)
-        {
-            ejecutarSustitucionUsuario(formacion);
-        }
-        else
-        {
-            ejecutarSustitucionConsola(formacion);
-        }
+        ejecutarSustitucionUsuario(formacion);
     }
 
+    /// <summary>
+    /// Solicita los datos necesarios al usuario para realizar una sustitución
+    /// </summary>
+    /// <param name="plantilla">Plantilla de jugadores titulares y suplentes</param>
     private void ejecutarSustitucionUsuario(Formacion plantilla)
     {
-        var jugadoresCancha = new List<Jugador>(plantilla.JugadoresCancha)
-        {
-            new Jugador() // Opción de salida
-        };
-        var jugadoresSuplentes = new List<Jugador>(plantilla.JugadoresSuplentes)
-        {
-            new Jugador() // Opción de salida
-        };
+        var jugadoresCancha = new List<Jugador>(plantilla.JugadoresCancha) { new Jugador() /* Opción de salida */ };
+        var jugadoresSuplentes = new List<Jugador>(plantilla.JugadoresSuplentes) { new Jugador() /* Opción de salida */ };
 
         var jugadorSale = AnsiConsole.Prompt(
             new SelectionPrompt<Jugador>()
@@ -76,11 +64,6 @@ public class ComandoRealizarSustitucion : IComando
         simulador.Partido.SetActual.Sustituciones.VerificarSustitucion(tipoEquipo, jugadorIngresa, jugadorSale);
         simulador.RealizarSustitucion(tipoEquipo, jugadorIngresa, jugadorSale);
         simulador.Partido.SetActual.Sustituciones.VerificarCicloSustitucionCumplido(tipoEquipo, jugadorIngresa, jugadorSale);
-    }
-
-    private void ejecutarSustitucionConsola(Formacion plantilla)
-    {
-        // Falta implementar
     }
 }
 

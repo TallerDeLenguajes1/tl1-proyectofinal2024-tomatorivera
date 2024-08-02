@@ -9,7 +9,9 @@ namespace Logica.Acciones
     public class Recepcion : Accion
     {
         public Recepcion(Rally rally) : base(rally)
-        {}
+        {
+            IncrementarCansancio(0.3f, 0.5f);
+        }
 
         public override ResultadoAccion Realizar()
         {
@@ -35,7 +37,6 @@ namespace Logica.Acciones
                 calidadRecepcion = CalidadAccion.MEDIA;
             }
 
-            realizador.AumentarCansancio(0.05f, 0.1f);
             rally.JugadorActual = colocador;
             return new ResultadoAccion(new Colocacion(rally, calidadRecepcion), mensajeAccion, realizador);
         }

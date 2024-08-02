@@ -9,6 +9,7 @@ namespace Logica.Acciones
         public Colocacion(Rally rally, CalidadAccion calidadPaseAnterior) : base(rally)
         {
             this.calidadPaseAnterior = calidadPaseAnterior;
+            IncrementarCansancio(0.4f, 0.7f);
         }
 
         public override ResultadoAccion Realizar()
@@ -30,21 +31,18 @@ namespace Logica.Acciones
                 case CalidadAccion.EXCELENTE:
                     atacante = atacantes.OrderByDescending(j => j.HabilidadRemate).First();
                     mensajeAccion = $"¡{realizador.Nombre} realiza una excelente colocación para {atacante.Nombre}!";
-                    rally.JugadorActual.AumentarCansancio(0.4f, 0.6f);
                     break;
                 
                 // Si la colocación no es tan buena, irá hacia a cualquier atacante
                 case CalidadAccion.MEDIA:
                     atacante = atacantes[rnd.Next(atacantes.Count())];
                     mensajeAccion = $"La colocación de {realizador.Nombre} fue buena. {atacante.Nombre} puede rematar";
-                    rally.JugadorActual.AumentarCansancio(0.1f, 0.4f);
                     break;
                 
                 // Si la colocación es mala, puede ser salvada por cualquier atacante o por cualquier defensor
                 case CalidadAccion.MALA:
                     atacante = (rnd.NextDouble() >= 0.5f) ? atacantes[rnd.Next(atacantes.Count())] : defensores[rnd.Next(defensores.Count())];
                     mensajeAccion = $"{realizador.Nombre} alcanza por poco la pelota y logra levantarla. ¡{atacante.Nombre} se acerca a salvarla!";
-                    rally.JugadorActual.AumentarCansancio(0.03f, 0.06f);
                     break;
             }
 

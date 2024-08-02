@@ -30,6 +30,7 @@ namespace Persistencia.Infraestructura
         public static string? AudioPartidoBackground { get; set; }
         public static string? AudioPartidoGanado { get; set; }
         public static string? AudioPartidoPerdido { get; set; }
+        public static string? AudioPartidoPunto { get; set; }
 
         public static string? ApiSportsKey { get; set; }
         public static string? ApiSportsUrl { get; set; }
@@ -69,6 +70,7 @@ namespace Persistencia.Infraestructura
             AudioPartidoBackground = "PartidoBackgroundSound.wav";
             AudioPartidoGanado = "PartidoWinSound.wav";
             AudioPartidoPerdido = "PartidoLoserSound.wav";
+            AudioPartidoPunto = "PartidoPuntoSound.wav";
             
             ApiSportsKey = "03028e54f1f00215f6bb821f0b260a6d";
             ApiSportsUrl = "https://v1.volleyball.api-sports.io";

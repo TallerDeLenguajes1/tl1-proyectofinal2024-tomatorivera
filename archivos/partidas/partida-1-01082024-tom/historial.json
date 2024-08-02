@@ -1,5 +1,5 @@
 {
-  "total_partidos_jugados": 6,
+  "total_partidos_jugados": 10,
   "historial_partidos": [
     {
       "tipo_de_partido": "AMISTOSO",
@@ -131,13 +131,109 @@
       "equipo_local": {
         "nombre_equipo": "Lomas",
         "es_equipo_jugador": true,
+        "jugadores_convocados": []
+      },
+      "equipo_visitante": {
+        "nombre_equipo": "Personal Bolivar",
+        "es_equipo_jugador": false,
+        "jugadores_convocados": []
+      },
+      "score_local": 0,
+      "score_visitante": 0,
+      "resultados_sets": {
+        "1": {
+          "PuntosLocal": 1,
+          "PuntosVisitante": 0
+        }
+      }
+    },
+    {
+      "tipo_de_partido": "AMISTOSO",
+      "nombre_ganador": "Obras Pocito",
+      "al_mejor_de": 3,
+      "equipo_local": {
+        "nombre_equipo": "Lomas",
+        "es_equipo_jugador": true,
+        "jugadores_convocados": []
+      },
+      "equipo_visitante": {
+        "nombre_equipo": "Obras Pocito",
+        "es_equipo_jugador": false,
+        "jugadores_convocados": []
+      },
+      "score_local": 0,
+      "score_visitante": 2,
+      "resultados_sets": {
+        "1": {
+          "PuntosLocal": 4,
+          "PuntosVisitante": 10
+        },
+        "2": {
+          "PuntosLocal": 10,
+          "PuntosVisitante": 12
+        }
+      }
+    },
+    {
+      "tipo_de_partido": "AMISTOSO",
+      "nombre_ganador": "ABANDONADO",
+      "al_mejor_de": 3,
+      "equipo_local": {
+        "nombre_equipo": "Lomas",
+        "es_equipo_jugador": true,
+        "jugadores_convocados": []
+      },
+      "equipo_visitante": {
+        "nombre_equipo": "Tucuman W",
+        "es_equipo_jugador": false,
+        "jugadores_convocados": []
+      },
+      "score_local": 0,
+      "score_visitante": 0,
+      "resultados_sets": {
+        "1": {
+          "PuntosLocal": 3,
+          "PuntosVisitante": 1
+        }
+      }
+    },
+    {
+      "tipo_de_partido": "AMISTOSO",
+      "nombre_ganador": "ABANDONADO",
+      "al_mejor_de": 3,
+      "equipo_local": {
+        "nombre_equipo": "Lomas",
+        "es_equipo_jugador": true,
+        "jugadores_convocados": []
+      },
+      "equipo_visitante": {
+        "nombre_equipo": "La Union de Formosa",
+        "es_equipo_jugador": false,
+        "jugadores_convocados": []
+      },
+      "score_local": 0,
+      "score_visitante": 0,
+      "resultados_sets": {
+        "1": {
+          "PuntosLocal": 0,
+          "PuntosVisitante": 1
+        }
+      }
+    },
+    {
+      "tipo_de_partido": "AMISTOSO",
+      "nombre_ganador": "Policial Voley",
+      "al_mejor_de": 3,
+      "equipo_local": {
+        "nombre_equipo": "Lomas",
+        "es_equipo_jugador": true,
         "jugadores_convocados": [
-          "Bruno Solorzano (28)",
-          "Emilio Centeno (49)",
-          "Ismael Santiago (35)",
           "Joshua Burke (21)",
           "Ramiro Tafoya (23)",
           "Jacinto Camarillo (47)",
+          "Bruno Solorzano (28)",
+          "Emilio Centeno (49)",
+          "Ismael Santiago (35)",
           "Julio Crespo (25)",
           "Wilfrido Pulido (7)",
           "Ramon Daniels (46)",
@@ -149,31 +245,39 @@
         ]
       },
       "equipo_visitante": {
-        "nombre_equipo": "Personal Bolivar",
+        "nombre_equipo": "Policial Voley",
         "es_equipo_jugador": false,
         "jugadores_convocados": [
-          "Salvador Romero (34)",
-          "Tom Simmons (43)",
-          "Nathan Harrison (44)",
-          "Cristóbal Herrero (6)",
-          "Marco López (26)",
-          "Tony Jensen (27)",
-          "Flavio Guerrero (36)",
-          "Troy Nelson (20)",
-          "Vicente Torres (17)",
-          "Joaquin Arias (16)",
-          "Sergio Santos (14)",
-          "Yunnuel Carvajal (33)",
-          "Carlos Castro (37)",
-          "Albert Sánchez (4)"
+          "César Pizarro (17)",
+          "Augusto Galván (19)",
+          "Manuel Santillán (34)",
+          "Bill Neal (5)",
+          "Hector Campbell (11)",
+          "Iker Mora (4)",
+          "Claudio Gonzales (6)",
+          "Francisco Cabrera (40)",
+          "Adrian Jones (46)",
+          "Antonio Benítez (21)",
+          "Derek Wood (28)",
+          "Agustín Molina (15)",
+          "Jorge Luis Urías (26)",
+          "Leo Stewart (10)"
         ]
       },
-      "score_local": 0,
-      "score_visitante": 0,
+      "score_local": 1,
+      "score_visitante": 2,
       "resultados_sets": {
         "1": {
-          "PuntosLocal": 1,
-          "PuntosVisitante": 0
+          "PuntosLocal": 8,
+          "PuntosVisitante": 10
+        },
+        "2": {
+          "PuntosLocal": 10,
+          "PuntosVisitante": 8
+        },
+        "3": {
+          "PuntosLocal": 7,
+          "PuntosVisitante": 10
         }
       }
     }

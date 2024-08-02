@@ -8,7 +8,9 @@ namespace Logica.Acciones
     public class Saque : Accion
     {
         public Saque(Rally rally) : base(rally)
-        {}
+        {
+            IncrementarCansancio(0.1f, 0.3f);
+        }
 
         public override ResultadoAccion Realizar()
         {
@@ -26,7 +28,6 @@ namespace Logica.Acciones
 
             // La pelota pasa al campo contrario y el cansancio del jugador aumenta
             rally.IntercambiarPosesionPelota();
-            realizador.AumentarCansancio(0.04f, 0.08f);
 
             // Si es un punto directo, el rally termina
             if (esPuntoDirecto(receptor))

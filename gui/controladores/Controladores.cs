@@ -292,21 +292,18 @@ public class PanelPartidoControlador : Controlador<PanelPartido>
     /// <summary>
     /// Muestra en el panel correspondiente qué equipo ha marcado un punto
     /// </summary>
-    /// <param name="ctx">Contexto del objeto Live que actualiza el Layout</param>
     /// <param name="equipo">Tipo de equipo que ha marcado el punto (Local o Visitante)</param>
-    public void MostrarPunto(LiveDisplayContext ctx, TipoEquipo equipo)
+    public void MostrarPunto(TipoEquipo equipo)
     {
-        vista.MarcarPunto(ctx, equipo);
+        vista.MarcarPunto(equipo);
     }
 
     /// <summary>
     /// Actualiza la tabla de puntajes en la vista
     /// </summary>
-    /// <param name="ctx">Contexto del objeto Live que actualiza el Layout</param>
-    public void ActualizarMarcador(LiveDisplayContext ctx)
+    public void ActualizarMarcador()
     {
         vista.ActualizarMarcador();
-        ctx.Refresh();
     }
     
     /// <summary>

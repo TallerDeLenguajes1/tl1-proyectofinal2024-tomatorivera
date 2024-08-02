@@ -9,6 +9,7 @@ using Gui.Controladores;
 using Gui.Util;
 using Gui.Vistas;
 using Logica.Servicios;
+using Logica.Util;
 
 namespace Logica.Handlers;
 
@@ -145,6 +146,9 @@ public class SimuladorPartidoHandler
     {
         audioHandler.Reproducir(Audio.PARTIDO_BACKGROUND, true);
 
+        float minDecrementoCansancioPorSet = 0.5f;
+        float maxDecrementoCansancioPorSet = 1;
+
         // El partido termina cuando ya se hayan jugado todos los sets o cuando se pueda
         // determinar un ganador según el puntaje de los equipos tras cada ronda, o bien cuando
         // el jugador decida abandonar el partido
@@ -158,6 +162,9 @@ public class SimuladorPartidoHandler
 
             almacenarResultadoSetActual();
             partido.SetActual.SiguienteSet();
+            
+            decrementarCansancioJugadores(partido.Local.FormacionPartido!.JugadoresCancha, minDecrementoCansancioPorSet, maxDecrementoCansancioPorSet);
+            decrementarCansancioJugadores(partido.Visitante.FormacionPartido!.JugadoresCancha, minDecrementoCansancioPorSet, maxDecrementoCansancioPorSet);
         }
 
         audioHandler.Detener(Audio.PARTIDO_BACKGROUND);
@@ -260,8 +267,11 @@ public class SimuladorPartidoHandler
 
                     // Muestro las acciones del rally
                     panelPartidoControlador.MostrarAcciones(ctx, rally.AccionesRally);
-                    panelPartidoControlador.ActualizarMarcador(ctx);
-                    //panelPartidoControlador.MostrarPunto(ctx, posesionPelota);
+                    audioHandler.Reproducir(Audio.PARTIDO_PUNTO);
+                    panelPartidoControlador.ActualizarMarcador();
+                    panelPartidoControlador.MostrarPunto(posesionPelota);
+
+                    ctx.Refresh();
                     rally.AccionesRally.Clear();
                 });
 
@@ -432,6 +442,22 @@ public class SimuladorPartidoHandler
     }
 
     /// <summary>
+    /// Decrementa el cansancio de los jugadores en un rango de <paramref name="min"/> y <paramref name="max"/>
+    /// </summary>
+    /// <param name="min">Mínimo de cansancio a decrementar</param>
+    /// <param name="max">Máximo de cansancio a decrementar</param>
+    private void decrementarCansancioJugadores(ListaCircular<Jugador> jugadores, float min, float max)
+    {
+        float decremento = 0f;
+
+        foreach(var jugador in jugadores)
+        {   
+            decremento = ProbabilidadesUtil.ValorAleatorioEntre(min, max);
+            jugador.DecrementarCansancio(decremento);
+        }
+    }
+
+    /// <summary>
     /// Realiza una sustitución en alguno de los equipos
     /// </summary>
     /// <param name="equipoRealizador">Equipo que realiza el cambio (Local o visitante)</param>
@@ -457,5 +483,8 @@ public class SimuladorPartidoHandler
 
         formacion.JugadoresCancha.Reemplazar(saliente, entrante);
         formacion.JugadoresSuplentes.Reemplazar(entrante, saliente);
+
+        // El jugador saliente se recupera un poco luego de un cambio
+        saliente.DecrementarCansancio(ProbabilidadesUtil.ValorAleatorioEntre(1.5f, 2));
     }
 }

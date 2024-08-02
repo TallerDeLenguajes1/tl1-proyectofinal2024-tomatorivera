@@ -36,6 +36,7 @@ public class AudioHandler
                 Audio.PARTIDO_BACKGROUND => Config.AudioPartidoBackground,
                 Audio.PARTIDO_GANADO => Config.AudioPartidoGanado,
                 Audio.PARTIDO_PERDIDO => Config.AudioPartidoPerdido,
+                Audio.PARTIDO_PUNTO => Config.AudioPartidoPunto,
                 _ => "no encontrado"
             };
 

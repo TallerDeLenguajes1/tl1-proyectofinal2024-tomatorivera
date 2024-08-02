@@ -964,14 +964,13 @@ public class PanelPartido : Vista
     /// <summary>
     /// Actualiza el panel de 'Estado del partido' para mostrar qué equipo ha marcado un punto
     /// </summary>
-    /// <param name="ctx">Contexto de la actualización del panel en tiempo real</param>
     /// <param name="equipo">Equipo que ha marcado el punto (Local o Visitante)</param>
-    public void MarcarPunto(LiveDisplayContext ctx, TipoEquipo equipo)
+    public void MarcarPunto(TipoEquipo equipo)
     {
         (Color figlet, Color subtitulo) color = (equipo == TipoEquipo.LOCAL) ? (Color.Orange1, Color.Yellow) : (Color.Red, Color.Red1);
         var figletPunto = @"   _ ___  __  ___  ____________  __
-(_) _ \/ / / / |/ /_  __/ __ \/ /
-/ / ___/ /_/ /    / / / / /_/ /_/ 
+  (_) _ \/ / / / |/ /_  __/ __ \/ /
+ / / ___/ /_/ /    / / / / /_/ /_/ 
 /_/_/   \____/_/|_/ /_/  \____(_)  ";
         var subtitulo = (equipo == TipoEquipo.LOCAL) ? InformacionPartido!.Local.Nombre : InformacionPartido!.Visitante.Nombre;
 
@@ -993,8 +992,6 @@ public class PanelPartido : Vista
             .BorderColor(Color.Orange1)
             .Expand()
         );
-
-        ctx.Refresh();
     }
 
     /// <summary>

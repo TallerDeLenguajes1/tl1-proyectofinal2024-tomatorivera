@@ -77,17 +77,25 @@ namespace Logica.Modelo
         // Métodos
 
         /// <summary>
-        /// Aumenta el cansancio del jugador entre <paramref name="min"/> y <paramref name="max"/>
-        /// teniendo en cuenta el factor experiencia del jugador.
+        /// Aumenta el cansancio del jugador según <paramref name="incremento"/> pero
+        /// teniendo en cuenta el factor experiencia del jugador
         /// </summary>
-        /// <param name="min">Mínimo a aumentar</param>
-        /// <param name="max">Máximo a aumentar</param>
-        public void AumentarCansancio(float min, float max)
+        /// <param name="incremento">Incremento de cansancio</param>
+        public void AumentarCansancio(float incremento)
         {
             float reduccionSegunExperiencia = 1 / experiencia;
-            float incrementoCansancio = ProbabilidadesUtil.ValorAleatorioEntre(min, max) * reduccionSegunExperiencia;
+            float incrementoCansancio = incremento * reduccionSegunExperiencia;
 
-            this.cansancio = Math.Min(cansancio + incrementoCansancio, 10.0f);
+            cansancio = Math.Clamp(cansancio + incrementoCansancio, 0.0f, 10.0f);
+        }
+
+        /// <summary>
+        /// Disminuye en <paramref name="decremento"/> el cansancio del jugador
+        /// </summary>
+        /// <param name="decremento">Cantidad de cansancio a decrementar</param>
+        public void DecrementarCansancio(float decremento)
+        {
+            cansancio = Math.Clamp(cansancio - decremento, 0.0f, 10.0f);
         }
 
         /// <summary>

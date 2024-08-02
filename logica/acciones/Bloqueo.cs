@@ -9,6 +9,7 @@ namespace Logica.Acciones
         public Bloqueo(Rally rally, CalidadAccion calidadRemate) : base(rally)
         {
             this.calidadRemate = calidadRemate;
+            IncrementarCansancio(0.4f, 0.7f);
         }
 
         public override ResultadoAccion Realizar()

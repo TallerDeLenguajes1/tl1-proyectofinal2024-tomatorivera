@@ -14,7 +14,8 @@ namespace Logica.Acciones
         public Remate(Rally rally, CalidadAccion calidadColocacion) : base(rally)
         {
             this.calidadColocacion = calidadColocacion;
-            this.bonificacionRemate = calcularBonificacionRemate();
+            bonificacionRemate = calcularBonificacionRemate();
+            IncrementarCansancio(0.5f, 0.8f);
         }
 
         public override ResultadoAccion Realizar()
@@ -34,15 +35,12 @@ namespace Logica.Acciones
             {
                 case CalidadAccion.EXCELENTE:
                     accionSubMensaje = $"¡{realizador.Nombre} REMATA CON POTENCIA!";
-                    realizador.AumentarCansancio(0.5f, 0.7f);
                     break;
                 case CalidadAccion.MEDIA:
                     accionSubMensaje = $"{realizador.Nombre} realiza un buen remate";
-                    realizador.AumentarCansancio(0.1f, 0.4f);
                     break;
                 case CalidadAccion.MALA:
                     accionSubMensaje = $"{realizador.Nombre} no logró conectar bien con la pelota en el aire pero logra rematar";
-                    realizador.AumentarCansancio(0.03f, 0.06f);
                     break;
             }
 
