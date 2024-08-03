@@ -94,15 +94,15 @@ Luego de cada partido, los datos del mismo son almacenados en el historial de la
 
 Como se mencionó anteriormente, el desarrollo de los partidos es automático y basado en probabilidades, he aquí cómo se realiza el cálculo de ellas.
 
-Existen situaciones de juego donde se deben medir las habilidades de dos jugadores para decidir el resultado de la acción. Por ejemplo, en una acción de saque, el resultado depende tanto de la habilidad de saque del jugador que lo realiza y la habilidad de recepción del jugador defensa al que se dirige la pelota, en estos casos, la diferencia se calcula como:
+Existen situaciones de juego donde se deben medir las habilidades de dos jugadores para decidir el resultado de la acción. Por ejemplo, en una acción de remate, el resultado depende tanto de la habilidad de remate del jugador que lo realiza y la habilidad de recepción del jugador defensa al que se dirige la pelota, en estos casos, la diferencia se calcula como:
 
-$diferenciaHabilidades = HabilidadSaqueJugadorA + BonificacionAccion - CansancioJugadorA - (HabilidadRecepcionJugadorB - CansancioJugadorB)$
+$diferenciaHabilidades = HabilidadRemate + BonificacionAccion - CansancioRematador - (HabilidadRecepcion - CansancioDefensor)$
 
-De esta diferencia de habilidades se puede calcular la probabilidad de que la acción termine de una forma u otra. Siguiendo el ejemplo del saque, los resultados podrían ser que el receptor recepcione o no el saque. Las probabilidades de una u otra se miden de la siguiente manera:
+De esta diferencia de habilidades se puede calcular la probabilidad de que la acción termine de una forma u otra. Siguiendo el ejemplo del remate, los resultados podrían ser que el receptor logre recepcionar o no dicho remate. Las probabilidades de una u otra se miden de la siguiente manera:
 
-$probabilidadAccion = 0.5 + (diferenciaHabilidades / 20)$
+$probabilidadAccion = 0.5 + (\frac{DiferenciaHabilidades}{20})$
 
-En este cálculo, se tiene en cuenta una probabilidad base de 50% de que suceda uno u otro resultado, mas/menos la diferencia de habilidades dividida en 20 (para que resulte un numero entre 0 y 1). De este modo, si el jugador que realiza un saque tiene más habilidades de saque que las habilidades de recepción que el jugador que recibe el balón, entonces tiene más probabilidades de hacer un punto directo.
+En este cálculo, se tiene en cuenta una probabilidad base de 50% de que suceda uno u otro resultado, mas/menos la diferencia de habilidades dividida en 20 (para que resulte un numero entre 0 y 1). De este modo, si el jugador que realiza el remate tiene mejor habilidad de remate que las habilidades de recepción que el jugador que recibe el balón, entonces tiene más probabilidades de hacer marcar el punto.
 
 Como se pudo observar en la primera fórmula, también entran en juego otros factores además de las habilidades, como la *bonificación de la acción* y el *cansancio del jugador*.
 
@@ -114,7 +114,7 @@ La **bonificación** de una acción solo se tiene en cuenta en casos particulare
 
 Por otro lado, el **cansancio** del jugador es un atributo que aumenta tras cada participación del mismo en el partido, es decir, en cada pelota que toque su cansancio aumenta según la acción. Hay acciones que cansan menos como un *saque* y acciones que cansan más como un *remate* puesto que requieren más esfuerzo físico del jugador. El aumento del cansancio también tiene en cuenta el factor **experiencia** *(decimal del 0 al 10)* del jugador, por lo que, si el jugador tiene más experiencia, su cansancio aumenta más lento puesto que sabe gestionar mejor su esfuerzo. El cálculo de aumento del cansancio se realiza de la siguiente manera:
 
-$cansancioJugador = cansancioJugador + \frac{incremento}{experiencia}$
+$cansancioJugador = cansancioJugador + \frac{IncrementoCansancio}{ExperienciaJugador}$
 
 El cansancio del jugador tiene un mínimo de 0 y un máximo de 10. Como vimos anteriormente, todas las probabilidades del jugador se ven afectadas por su cansancio, por lo que si el jugador está muy cansado, fallará más seguido. El cansancio se reestablece entre 1.5 y 2 puntos por cada *sustitución* y entre 0.5 y 1 punto tras cada *cambio de set*.
 
@@ -136,7 +136,7 @@ El cansancio del jugador tiene un mínimo de 0 y un máximo de 10. Como vimos an
 
 ## Próximas implementaciones
 
-Por el momento, VBM solo posee el modo de juego de partidos amistosos, sin embargo, hay muchas implementaciones pendientes en este desarrollo:
+Por el momento, VBM solo posee el modo de juego de partidos amistosos, sin embargo, hay implementaciones pendientes en este desarrollo como:
 
 - Modo de juego de ligas
 - Modo de juego de torneos
