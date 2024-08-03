@@ -97,7 +97,7 @@ namespace Logica.Acciones
             {
                 CalidadAccion.EXCELENTE => 2f + rnd.NextDouble(),
                 CalidadAccion.MEDIA => 1 + rnd.NextDouble(),
-                CalidadAccion.MALA => 0.5f - rnd.NextDouble(),
+                CalidadAccion.MALA => 0,
                 _ => realizador.HabilidadRemate
             };
 

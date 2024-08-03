@@ -272,8 +272,8 @@ public class Dashboard : Vista
 ██║   ██║██╔══██╗████╗ ████║
 ██║   ██║██████╔╝██╔████╔██║
 ╚██╗ ██╔╝██╔══██╗██║╚██╔╝██║
-╚████╔╝ ██████╔╝██║ ╚═╝ ██║
-╚═══╝  ╚═════╝ ╚═╝     ╚═╝
+ ╚████╔╝ ██████╔╝██║ ╚═╝ ██║
+  ╚═══╝  ╚═════╝ ╚═╝     ╚═╝
 ";
         var subtitulo = ":backhand_index_pointing_right: [yellow]By:[/][bold yellow1] Ramiro Tomas Rivera Octtaviano[/] :backhand_index_pointing_left:";
 

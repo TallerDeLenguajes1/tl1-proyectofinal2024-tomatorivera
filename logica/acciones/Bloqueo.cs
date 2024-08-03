@@ -107,9 +107,9 @@ namespace Logica.Acciones
         {
             return calidadRemate switch
             {
-                CalidadAccion.EXCELENTE => 0 - rnd.NextDouble(),
-                CalidadAccion.MEDIA => rnd.NextDouble(),
-                CalidadAccion.MALA => 0.5f + rnd.NextDouble(),
+                CalidadAccion.EXCELENTE => 0 - 1.0f - rnd.NextDouble(),
+                CalidadAccion.MEDIA => 0.5f - rnd.NextDouble(),
+                CalidadAccion.MALA => 1 + rnd.NextDouble(),
                 _ => 0
             };
         }

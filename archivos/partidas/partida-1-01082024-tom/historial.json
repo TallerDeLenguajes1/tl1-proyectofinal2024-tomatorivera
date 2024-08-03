@@ -1,5 +1,5 @@
 {
-  "total_partidos_jugados": 10,
+  "total_partidos_jugados": 11,
   "historial_partidos": [
     {
       "tipo_de_partido": "AMISTOSO",
@@ -227,42 +227,12 @@
       "equipo_local": {
         "nombre_equipo": "Lomas",
         "es_equipo_jugador": true,
-        "jugadores_convocados": [
-          "Joshua Burke (21)",
-          "Ramiro Tafoya (23)",
-          "Jacinto Camarillo (47)",
-          "Bruno Solorzano (28)",
-          "Emilio Centeno (49)",
-          "Ismael Santiago (35)",
-          "Julio Crespo (25)",
-          "Wilfrido Pulido (7)",
-          "Ramon Daniels (46)",
-          "Cesar Román (19)",
-          "Jacobo Blanco (16)",
-          "Daniel Calvo (4)",
-          "Julio César Roybal (18)",
-          "Francisco Tucker (24)"
-        ]
+        "jugadores_convocados": []
       },
       "equipo_visitante": {
         "nombre_equipo": "Policial Voley",
         "es_equipo_jugador": false,
-        "jugadores_convocados": [
-          "César Pizarro (17)",
-          "Augusto Galván (19)",
-          "Manuel Santillán (34)",
-          "Bill Neal (5)",
-          "Hector Campbell (11)",
-          "Iker Mora (4)",
-          "Claudio Gonzales (6)",
-          "Francisco Cabrera (40)",
-          "Adrian Jones (46)",
-          "Antonio Benítez (21)",
-          "Derek Wood (28)",
-          "Agustín Molina (15)",
-          "Jorge Luis Urías (26)",
-          "Leo Stewart (10)"
-        ]
+        "jugadores_convocados": []
       },
       "score_local": 1,
       "score_visitante": 2,
@@ -278,6 +248,29 @@
         "3": {
           "PuntosLocal": 7,
           "PuntosVisitante": 10
+        }
+      }
+    },
+    {
+      "tipo_de_partido": "AMISTOSO",
+      "nombre_ganador": "ABANDONADO",
+      "al_mejor_de": 3,
+      "equipo_local": {
+        "nombre_equipo": "Lomas",
+        "es_equipo_jugador": true,
+        "jugadores_convocados": []
+      },
+      "equipo_visitante": {
+        "nombre_equipo": "Club Rosario W",
+        "es_equipo_jugador": false,
+        "jugadores_convocados": []
+      },
+      "score_local": 0,
+      "score_visitante": 0,
+      "resultados_sets": {
+        "1": {
+          "PuntosLocal": 2,
+          "PuntosVisitante": 3
         }
       }
     }
