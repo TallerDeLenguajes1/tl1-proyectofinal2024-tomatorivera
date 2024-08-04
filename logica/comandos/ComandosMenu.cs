@@ -1,6 +1,7 @@
 using System.Text.RegularExpressions;
 using Gui.Modelo;
 using Gui.Util;
+using Logica.Excepciones;
 using Logica.Handlers;
 using Logica.Modelo;
 using Logica.Servicios;
@@ -103,11 +104,21 @@ Espero que te hayas divertido :)
 public class ComandoNuevaPartida : IComando
 {
     public string Titulo => "Crear nueva partida";
+    private IPartidaServicio partidaServicio;
+    private IEquipoJugadoresServicio equipoServicio;
+
+    public ComandoNuevaPartida()
+    {
+        partidaServicio = new PartidaServicioImpl();
+        equipoServicio = new EquipoJugadoresServicioImpl();
+    }
 
     public void Ejecutar()
     {
         /* EL USERNAME NO SE PIDE EN BUCLE PARA EVITAR BUGS VISUALES EN EL MENÚ */
         System.Console.WriteLine();
+
+        if (!partidaServicio.PuedeCrearPartida()) throw new MaximoPartidasAlcanzadoException("Ha alcanzado el límite de partidas creadas, debe borrar alguna para continuar");
 
         // Creo un separador
         var separador = new Rule("[red]Creando nueva partida[/]");
@@ -167,10 +178,6 @@ public class ComandoNuevaPartida : IComando
     /// <returns>Objeto <c>PartidaHandler</c> para manejar la partida creada</returns>
     private async Task<PartidaHandler> crearPartidaAsync(string nombreUsuario, string nombreEquipo)
     {
-        // Creo la nueva partida y la inicio automáticamente
-        var partidaServicio = new PartidaServicioImpl();
-        var equipoServicio = new EquipoJugadoresServicioImpl();
-
         // Genero los datos necesarios para crear una nueva partida
         int id = partidaServicio.ObtenerNuevoIdPartida();
         Equipo nuevoEquipo = await equipoServicio.GenerarEquipoAsync(nombreEquipo);

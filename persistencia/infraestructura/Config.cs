@@ -36,6 +36,8 @@ namespace Persistencia.Infraestructura
         public static string? ApiSportsUrl { get; set; }
         public static string? ApiRandomUserUrl { get; set; }
 
+        public static int LimitePartidasCreadas { get; set; }
+
         // Datos cargados durante la ejecución
         public static string? DirectorioPartidaActual { get; set; }
         public static string? NombreUsuarioActual { get; set; }
@@ -46,7 +48,6 @@ namespace Persistencia.Infraestructura
         /// </summary>
         public static void CargarConfiguracion()
         {
-            // Podría traerse desde un archivo externo
             DirectorioPersistencia = "archivos";
             DirectorioPartidas = DirectorioPersistencia + @"\partidas";
             DirectorioPartidasPrefix = "partida-";
@@ -75,6 +76,8 @@ namespace Persistencia.Infraestructura
             ApiSportsKey = "03028e54f1f00215f6bb821f0b260a6d";
             ApiSportsUrl = "https://v1.volleyball.api-sports.io";
             ApiRandomUserUrl = "https://randomuser.me/api/";
+
+            LimitePartidasCreadas = 10;
         }
     }
 }

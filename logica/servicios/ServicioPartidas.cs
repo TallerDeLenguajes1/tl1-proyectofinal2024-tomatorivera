@@ -20,6 +20,7 @@ namespace Logica.Servicios
         PartidaHandler ObtenerManejadorPartida(Partida partida);
         void GuardarPartida(Partida partida);
         void EliminarPartida();
+        bool PuedeCrearPartida();
     }
 
     public class PartidaServicioImpl : IPartidaServicio
@@ -219,6 +220,15 @@ namespace Logica.Servicios
             {
                 throw;
             }
+        }
+
+        /// <summary>
+        /// Verifica si el usuario puede crear una nueva partida
+        /// </summary>
+        /// <returns><c>True</c> cuando el número de partidas creadas no supere el límite establecido en la configuración, <c>False</c> en caso contrario</returns>
+        public bool PuedeCrearPartida()
+        {
+            return ObtenerPartidas().Count() < Config.LimitePartidasCreadas;
         }
     }
 }

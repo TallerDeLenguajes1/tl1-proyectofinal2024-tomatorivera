@@ -21,4 +21,10 @@ namespace Logica.Excepciones
         public DirectorioPartidaInvalidoException(string msg) : base(msg)
         {}
     }
+
+    public class MaximoPartidasAlcanzadoException : VoleyballManagerRuntimeException
+    {
+        public MaximoPartidasAlcanzadoException(string msg) : base(msg)
+        {}
+    }
 }
