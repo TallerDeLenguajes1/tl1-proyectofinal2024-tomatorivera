@@ -40,3 +40,9 @@ public enum Audio
     PARTIDO_PERDIDO,
     PARTIDO_PUNTO
 }
+
+public enum TipoPanelPlantilla
+{
+    PANEL_DASHBOARD,
+    PANEL_PARTIDO
+}

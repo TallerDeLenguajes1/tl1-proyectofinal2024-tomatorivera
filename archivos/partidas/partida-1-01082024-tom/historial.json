@@ -1,5 +1,5 @@
 {
-  "total_partidos_jugados": 12,
+  "total_partidos_jugados": 13,
   "historial_partidos": [
     {
       "tipo_de_partido": "AMISTOSO",
@@ -294,6 +294,59 @@
         "1": {
           "PuntosLocal": 0,
           "PuntosVisitante": 1
+        }
+      }
+    },
+    {
+      "tipo_de_partido": "AMISTOSO",
+      "nombre_ganador": "Lomas",
+      "al_mejor_de": 1,
+      "equipo_local": {
+        "nombre_equipo": "Lomas",
+        "es_equipo_jugador": true,
+        "jugadores_convocados": [
+          "Emilio Centeno (49)",
+          "Ismael Santiago (35)",
+          "Joshua Burke (21)",
+          "Ramiro Tafoya (23)",
+          "Jacinto Camarillo (47)",
+          "Bruno Solorzano (28)",
+          "Julio Crespo (25)",
+          "Wilfrido Pulido (7)",
+          "Ramon Daniels (46)",
+          "Cesar Román (19)",
+          "Jacobo Blanco (16)",
+          "Daniel Calvo (4)",
+          "Julio César Roybal (18)",
+          "Francisco Tucker (24)"
+        ]
+      },
+      "equipo_visitante": {
+        "nombre_equipo": "Universidad La Matanza W",
+        "es_equipo_jugador": false,
+        "jugadores_convocados": [
+          "Adolfo Carrasco (16)",
+          "Mariano Olvera (37)",
+          "Wenseslao Guevara (34)",
+          "Albert Flores (47)",
+          "Lee Riley (44)",
+          "Tom Barnes (13)",
+          "Joaquin Martínez (1)",
+          "Alan Kelley (19)",
+          "Miguel Richards (3)",
+          "Marc Flores (29)",
+          "Yandel Valverde (40)",
+          "Ryan Andrews (49)",
+          "Raúl Rubio (22)",
+          "Sergio Benítez (5)"
+        ]
+      },
+      "score_local": 1,
+      "score_visitante": 0,
+      "resultados_sets": {
+        "1": {
+          "PuntosLocal": 5,
+          "PuntosVisitante": 2
         }
       }
     }

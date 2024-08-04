@@ -1242,54 +1242,122 @@ public class PanelHistorial : Vista
 /// </summary>
 public class PanelPlantilla : Vista
 {
-    private string nombreEquipo;
-    private List<Jugador> jugadores;
+    private string? nombreEquipo;
+    private List<Jugador>? jugadoresEquipo;
+    private Formacion? jugadoresPartido;
+    private TipoPanelPlantilla tipoPanel;
 
-    public PanelPlantilla(List<Jugador> jugadores, string nombreEquipo)
+    /// <summary>
+    /// Genera una instancia de <see cref="PanelPlantilla"/> para mostrar los jugadores en el dashboard
+    /// </summary>
+    /// <param name="jugadoresEquipo">Lista de jugadores del equipo</param>
+    /// <param name="nombreEquipo">Nombre del equipo</param>
+    public PanelPlantilla(List<Jugador> jugadoresEquipo, string nombreEquipo)
     {
-        this.jugadores = jugadores;
+        this.jugadoresEquipo = jugadoresEquipo;
         this.nombreEquipo = nombreEquipo;
+        tipoPanel = TipoPanelPlantilla.PANEL_DASHBOARD;
+    }
+
+    /// <summary>
+    /// Genera una instancia de <see cref="PanelPlantilla"/> para mostrar los jugadores en un partido
+    /// </summary>
+    /// <param name="jugadoresPartido"><see cref="Formacion"/> de jugadores en el partido</param>
+    public PanelPlantilla(Formacion jugadoresPartido)
+    {
+        this.jugadoresPartido = jugadoresPartido; 
+        tipoPanel = TipoPanelPlantilla.PANEL_PARTIDO;
     }
 
     public override void Dibujar()
     {
-        if (!jugadores.Any())
+        AnsiConsole.Write(
+            tipoPanel == TipoPanelPlantilla.PANEL_DASHBOARD ? obtenerPlantillaDashboard() : obtenerPlantillaPartido()
+        );
+    }
+
+    /// <summary>
+    /// Genera la plantilla de jugadores que se mostrará en el dashboard
+    /// </summary>
+    /// <returns>Instancia de <see cref="Rows"/> con la vista de la plantilla</returns>
+    private Rows obtenerPlantillaDashboard()
+    {
+        if (jugadoresEquipo == null || !jugadoresEquipo.Any())
+            return new Rows(
+                new Markup($"\n:warning: [navajowhite1]El equipo[/] [cornsilk1]{nombreEquipo}[/] [navajowhite1]no tiene jugadores[/]"));
+
+        var indicaciones = new Markup("\n[gray italic](( Presione una tecla para volver al dashboard))[/]");
+        var separador = new Rule().RuleStyle(Style.Parse("gray"));
+        var arbolJugadores = new Tree($":newspaper: [red bold]Jugadores del equipo {nombreEquipo}[/]").Style(Style.Parse("gray"));
+
+        foreach (var jugador in jugadoresEquipo)
         {
-            AnsiConsole.Write(new Markup($"\n:warning: [navajowhite1]El equipo[/] [cornsilk1]{nombreEquipo}[/] [navajowhite1]no tiene jugadores[/]"));
-        }
-        else
-        {
-            var separador = new Rule().RuleStyle(Style.Parse("gray"));
-            var arbolJugadores = new Tree($":newspaper: [red bold]Jugadores del equipo {nombreEquipo}[/]").Style(Style.Parse("gray"));
-            var indicaciones = new Markup("\n[gray italic](( Presione una tecla para volver al dashboard))[/]");
+            var nodoJugador = arbolJugadores.AddNode(
+                $"[cornsilk1]{jugador.NumeroCamiseta}[/] :t_shirt: [navajowhite1]{jugador.Nombre}[/]"
+            );
 
-            foreach (var jugador in jugadores)
-            {
-                var nodoJugador = arbolJugadores.AddNode(
-                    $"[cornsilk1]{jugador.NumeroCamiseta}[/] :t_shirt: [navajowhite1]{jugador.Nombre}[/]"
-                );
+            nodoJugador.AddNode($"[grey70]Posición de preferencia:[/] [gold1]{jugador.TipoJugador}[/]");
+            nodoJugador.AddNode($"[grey70]Experiencia en juego:[/] [gold1]{jugador.Experiencia} pts.[/]");
 
-                nodoJugador.AddNode($"[grey70]Posición de preferencia:[/] [gold1]{jugador.TipoJugador}[/]");
-                nodoJugador.AddNode($"[grey70]Experiencia en juego:[/] [gold1]{jugador.Experiencia} pts.[/]");
-
-                var nodoHabilidades = nodoJugador.AddNode($"[grey70]Habilidades:[/]");
-                nodoHabilidades.AddNode(
-                    $"[gray]SAQUE:[/] {jugador.HabilidadSaque}" +
-                    $"[gray], REMATE:[/] {jugador.HabilidadRemate}" +
-                    $"[gray], RECEPCION:[/] {jugador.HabilidadRecepcion}" +
-                    $"[gray], COLOCACION:[/] {jugador.HabilidadColocacion}" +
-                    $"[gray], BLOQUEO:[/] {jugador.HabilidadBloqueo}"
-                );
-            }
-
-            AnsiConsole.Write(
-                new Rows(
-                    separador,
-                    arbolJugadores,
-                    indicaciones,
-                    separador
-                )
+            var nodoHabilidades = nodoJugador.AddNode($"[grey70]Habilidades:[/]");
+            nodoHabilidades.AddNode(
+                $"[gray]SAQUE:[/] {jugador.HabilidadSaque}" +
+                $"[gray], REMATE:[/] {jugador.HabilidadRemate}" +
+                $"[gray], RECEPCION:[/] {jugador.HabilidadRecepcion}" +
+                $"[gray], COLOCACION:[/] {jugador.HabilidadColocacion}" +
+                $"[gray], BLOQUEO:[/] {jugador.HabilidadBloqueo}"
             );
         }
+
+        return
+            new Rows(
+                separador,
+                arbolJugadores,
+                indicaciones,
+                separador
+            );
+    }
+
+    /// <summary>
+    /// Genera la plantilla de jugadores que se mostrará en el partido
+    /// </summary>
+    /// <returns>Instancia de <see cref="Rows"/> con la vista de la plantilla</returns>
+    private Rows obtenerPlantillaPartido()
+    {
+        if (jugadoresPartido == null)
+            return new Rows(new Markup("\n:warning: [red]Ha ocurrido un error obteniendo la formación del equipo[/]"));
+
+        var separador = new Rule()
+        {
+            Style = Style.Parse("gray bold")
+        };
+
+        // Muestro los jugadores en cancha indicando su zona
+        var arbolTitulares = new Tree(":small_orange_diamond: [orange3]Jugadores en cancha:[/]")
+        {
+            Style = Style.Parse("orange3")
+        };
+        for (int i=0 ; i<jugadoresPartido.JugadoresCancha.Count() ; i++)
+        {
+            arbolTitulares.AddNode($"[greenyellow bold]ZONA {i+1}:[/] {jugadoresPartido.JugadoresCancha.ElementAt(i).DescripcionPartido()}");
+        }
+
+        // Muestro los suplentes
+        var arbolSuplentes = new Tree("\n:small_orange_diamond: [orange3]Jugadores suplentes:[/]")
+        {
+            Style = Style.Parse("orange3")
+        };
+        foreach (var jugador in jugadoresPartido.JugadoresSuplentes)
+        {
+            arbolSuplentes.AddNode($"{jugador.DescripcionPartido()}");
+        }
+
+        return
+            new Rows(
+                separador,
+                arbolTitulares,
+                arbolSuplentes,
+                separador
+            );
     }
 }
