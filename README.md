@@ -82,9 +82,9 @@ Actualmente solo se encuentra disponible el modo de **partidos amistosos**.
 
 Al iniciar un partido, se desplegará la interfaz del **panel del partido** en la que podrás consultar información relevante como ser el *desarrollo del partido*, *marcador en tiempo real*, *detalles de tus jugadores suplentes*, *información del equipo rival* y *posición actual de los jugadores en cancha*.
 
-El partido se desarrolla de manera automática basado en probabilidades que se calculan según varios factores, principalmente según las habilidades de los jugadores en la acción que realizan *(saque, remate, bloqueo, recepción y colocación)*. El cálculo de las probabilidades se explica más adelante.
+El partido se desarrolla de manera automática basado en probabilidades que se calculan según varios factores, principalmente según las habilidades de los jugadores en la acción que realizan *(saque, remate, bloqueo, recepción y colocación)*. [Aquí podrás consultar sobre el cálculo de las probabilidades](#acerca-del-juego).
 
-A continuación del panel del partido y tras cada pelota parada, es decir, cuando se produzca un punto y/o un cambio de set, se mostrarán distintas opciones para que puedas inclinar las probabilidades a tu favor implementando las estrategias que creas convenientes. Entre ellas: *realizar una sustitución*, *consultar planilla de jugadores*, *continuar partido* o *abandonar partido*. Las sustituciones siguen las reglas de voley oficial, si un jugador A es reemplazado por un jugador B, entonces el jugador A solo puede reingresar en lugar del jugador B, además, tendrás 12 sustituciones en lugar de 6 por partido. Por otro lado, en la plantilla de jugadores podrás ver el detalle de tus jugadores titulares y suplentes.
+A continuación del panel del partido y tras cada pelota parada, es decir, cuando se produzca un punto y/o un cambio de set, se mostrarán distintas opciones para que puedas inclinar las probabilidades a tu favor implementando las estrategias que creas convenientes. Entre ellas: *realizar una sustitución*, *consultar planilla de jugadores*, *continuar partido* o *abandonar partido*. Las sustituciones siguen las reglas de voley oficial, si un jugador A es reemplazado por un jugador B, entonces el jugador A solo puede reingresar en lugar del jugador B, además, tendrás 12 sustituciones en lugar de 6 por **SET**. Por otro lado, en la plantilla de jugadores podrás ver el detalle de tus jugadores titulares y suplentes.
 
 Luego de cada partido, los datos del mismo son almacenados en el historial de la partida que puede ser consultado desde el dashboard.
 
@@ -100,7 +100,7 @@ $diferenciaHabilidades = HabilidadRemate + BonificacionAccion - CansancioRematad
 
 De esta diferencia de habilidades se puede calcular la probabilidad de que la acción termine de una forma u otra. Siguiendo el ejemplo del remate, los resultados podrían ser que el receptor logre recepcionar o no dicho remate. Las probabilidades de una u otra se miden de la siguiente manera:
 
-$probabilidadAccion = 0.5 + (\frac{DiferenciaHabilidades}{20})$
+$probabilidadAccion = 0.5 + \frac{DiferenciaHabilidades}{20}$
 
 En este cálculo, se tiene en cuenta una probabilidad base de 50% de que suceda uno u otro resultado, mas/menos la diferencia de habilidades dividida en 20 (para que resulte un numero entre 0 y 1). De este modo, si el jugador que realiza el remate tiene mejor habilidad de remate que las habilidades de recepción que el jugador que recibe el balón, entonces tiene más probabilidades de hacer marcar el punto.
 

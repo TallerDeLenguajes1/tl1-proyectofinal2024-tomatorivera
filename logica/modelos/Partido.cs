@@ -10,8 +10,6 @@ namespace Logica.Modelo;
 /// </summary>
 public class Partido
 {
-    public const int PuntosParaSet = 5;
-
     private Equipo local;
     private Equipo visitante;
     private Equipo equipoEnSaque;
