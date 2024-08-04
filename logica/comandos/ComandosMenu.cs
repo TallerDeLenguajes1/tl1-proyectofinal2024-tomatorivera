@@ -248,13 +248,18 @@ public class ComandoNuevaPartida : IComando
 public class ComandoCargarPartida : IComando
 {
     public string Titulo => "Cargar partida";
+    private IPartidaServicio servicio;
+
+    public ComandoCargarPartida()
+    {
+        servicio = new PartidaServicioImpl();
+    }
 
     public void Ejecutar()
     {
         System.Console.WriteLine();
 
         // Obtengo una lista de partidas guardadas
-        IPartidaServicio servicio = new PartidaServicioImpl();
         List<Partida> partidasGuardadas = servicio.ObtenerPartidas();
 
         // Verifico si hay al menos una partida, de lo contrario muestro un mensaje por pantalla

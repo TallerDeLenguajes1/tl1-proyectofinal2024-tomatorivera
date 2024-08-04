@@ -34,21 +34,23 @@ public abstract class Controlador<V> where V : Vista
 
 public class InicioControlador : Controlador<Inicio>
 {
+    private IRecursoServicio servicioRecursos;
+
     public InicioControlador(Inicio vista) : base(vista)
-    {}
+    {
+        servicioRecursos = new RecursoServicioImpl();
+    }
 
     /// <summary>
     /// Muestra la vista de inicio y solicita al usuario su nombre de DT
     /// </summary>
     public override void MostrarVista()
     {
-        var servicio = new RecursoServicioImpl();
-        
         try
         {
             // El servicio me devuelve el Path de la imagen Logo, si hubiese un 
             // error con el directorio o el archivo lanza una excepción
-            string logo = servicio.ObtenerLogo();
+            string logo = servicioRecursos.ObtenerLogo();
             vista.Logo = new CanvasImage(logo) { MaxWidth = 38 };
         }
         catch (Exception)
@@ -84,11 +86,13 @@ public class InicioControlador : Controlador<Inicio>
 
 public class MenuControlador : Controlador<Menu>
 {
+    private IRecursoServicio recursosServicio;
     private bool estaSeleccionando;
     private int indiceSeleccionado;
 
     public MenuControlador(Menu vista) : base(vista)
     {
+        recursosServicio = new RecursoServicioImpl();
         indiceSeleccionado = 0;
         estaSeleccionando = true;
 
@@ -100,7 +104,6 @@ public class MenuControlador : Controlador<Menu>
     /// </summary>
     public override void MostrarVista()
     {
-        var recursosServicio = new RecursoServicioImpl();
         var audioHandler = recursosServicio.ObtenerManejadorAudio();
 
         ConsoleKeyInfo teclaPresionada;
@@ -179,8 +182,11 @@ public class MenuControlador : Controlador<Menu>
 
 public class DashboardControlador : Controlador<Dashboard>
 {
+    private INovedadesServicio servicioNovedades;
+
     public DashboardControlador(Dashboard vista, float dineroPrePartido) : base(vista)
     {
+        servicioNovedades = new NovedadesServicioImpl();
         vista.DineroPrePartido = dineroPrePartido;
     }
 
@@ -222,7 +228,6 @@ public class DashboardControlador : Controlador<Dashboard>
     private async Task<(LeagueResponse, List<GamesResponse>)> obtenerNovedades()
     {
         var random = new Random();
-        var servicioNovedades = new NovedadesServicioImpl();
         var temporada = 2024;
 
         // Obtengo las ligas del servicio, si no devuelve nada entonces retorno

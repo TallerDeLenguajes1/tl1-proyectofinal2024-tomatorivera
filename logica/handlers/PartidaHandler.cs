@@ -46,11 +46,11 @@ public class PartidaHandler
             // Las novedades se recargan solo si se ejecutaron algunos comandos o es la primera vez
             // que ingresa al bucle. Esto para evitar que se recarguen con comandos sencillos como
             // consultar la plantilla o consultar el historial, ya que implica una llamada a una API
-            /*if (recargarNovedades)
+            if (recargarNovedades)
             {
                 controladorDashboard.CargarNovedades();
                 recargarNovedades = false;
-            }*/
+            }
 
             // Muestro el dashboard
             controladorDashboard.MostrarVista();

@@ -13,10 +13,14 @@ public class ComandoJugarAmistoso : IComando
 {
     public string Titulo => "Jugar partido amistoso";
     private bool seJugaraAmistoso;
+    private IEquipoJugadoresServicio servicioEquipos;
+    private IUsuarioServicio servicioUsuario;
 
     public ComandoJugarAmistoso()
     {
         seJugaraAmistoso = false;
+        servicioEquipos = new EquipoJugadoresServicioImpl();
+        servicioUsuario = new UsuarioServicioImpl();
     }
 
     public bool SeJugaraAmistoso { get => seJugaraAmistoso; }
@@ -55,8 +59,6 @@ public class ComandoJugarAmistoso : IComando
     /// <returns>Objeto <c>Partido</c></returns>
     private async Task<Partido> generarDatosPartidoAsync(Equipo equipoJugador)
     {
-        var servicioEquipos = new EquipoJugadoresServicioImpl();
-        
         // Genero el equipo rival
         var tipoEquipoConsola = (new Random().Next(2) < 0.5) ? TipoEquipo.LOCAL : TipoEquipo.VISITANTE;
         var equipoRival = await servicioEquipos.GenerarEquipoAsync();
@@ -80,7 +82,6 @@ public class ComandoJugarAmistoso : IComando
         System.Console.WriteLine();
 
         // Obtengo el equipo del usuario
-        var servicioUsuario = new UsuarioServicioImpl();
         var equipoJugador = servicioUsuario.ObtenerDatosUsuario().Equipo;
 
         // A partir de su equipo actual, le solicito 14 jugadores a convocar
@@ -254,16 +255,17 @@ public class ComandoConsultarHistorial : IComando
 {
     public string Titulo => "Consultar historial de partidos";
     private string nombreEquipoJugador;
+    private IHistorialServicio servicioHistorial;
 
     public ComandoConsultarHistorial(string nombreEquipoJugador)
     {
         this.nombreEquipoJugador = nombreEquipoJugador;
+        servicioHistorial = new HistorialServicioImpl();
     }
 
     public void Ejecutar()
     {
         // Obtengo el historial de la partida actual
-        var servicioHistorial = new HistorialServicioImpl();
         var historial = servicioHistorial.ObtenerDatosHistorial();
         
         // Genero un panel de información del historial y lo muestro por pantalla
@@ -276,12 +278,17 @@ public class ComandoEliminarPartida : IComando
 {
     public string Titulo => "Eliminar partida";
     public Action? AccionCancelacion { get; set; }
+    private IPartidaServicio partidaServicio;
+
+    public ComandoEliminarPartida()
+    {
+        partidaServicio = new PartidaServicioImpl();
+    }
 
     public void Ejecutar()
     {
         if (pregunta("¿Está seguro de que desea eliminar esta partida? [si/no]: "))
         {
-            var partidaServicio = new PartidaServicioImpl();
             partidaServicio.EliminarPartida();
 
             if (AccionCancelacion != null) AccionCancelacion.Invoke();
