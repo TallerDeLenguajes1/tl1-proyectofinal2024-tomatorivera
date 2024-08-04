@@ -675,10 +675,10 @@ public class PanelPartido : Vista
                 new Text(""), // separador
                 tablaResultado,
                 new Text(""), // separador
-                new Markup($":backhand_index_pointing_right: [tan]Set actual:[/] [yellow bold]{InformacionPartido.SetActual.NumeroSet}[/]"),
-                new Markup($":backhand_index_pointing_right: [tan]Sets a jugar:[/] [yellow bold]{InformacionPartido.SetMaximos}[/]"),
-                new Markup($":backhand_index_pointing_right: [tan]Posesión del saque:[/] [yellow bold]{InformacionPartido.EquipoEnSaque.Nombre}[/]"),
-                new Markup($":backhand_index_pointing_right: [tan]Tipo de partido:[/] [yellow bold]{InformacionPartido.TipoPartido}[/]"),
+                new Markup($":backhand_index_pointing_right: [tan]Set actual:[/] [gold1 bold]{InformacionPartido.SetActual.NumeroSet}[/]"),
+                new Markup($":backhand_index_pointing_right: [tan]Sets a jugar:[/] [gold1 bold]{InformacionPartido.SetMaximos}[/]"),
+                new Markup($":backhand_index_pointing_right: [tan]Posesión del saque:[/] [gold1 bold]{InformacionPartido.EquipoEnSaque.Nombre}[/]"),
+                new Markup($":backhand_index_pointing_right: [tan]Tipo de partido:[/] [gold1 bold]{InformacionPartido.TipoPartido}[/]"),
                 new Text(""), // separador
                 new Markup($"[yellow]▮ Acciones de {InformacionPartido.Local.Nombre}[/]"),
                 new Markup($"[red]▮ Acciones de {InformacionPartido.Visitante.Nombre}[/]")
@@ -934,7 +934,7 @@ public class PanelPartido : Vista
     /// <param name="segundosDelay">Segundos de delay entre la aparición de cada acción en pantalla (por defecto, 0 segs)</param>
     public void ActualizarAcciones(LiveDisplayContext ctx, List<string> acciones, int segundosDelay = 0)
     {
-        int maxLineasVentana = 20 /*Console.WindowHeight / 3 * 2 - 8*/;
+        int maxLineasVentana = 22 /*Console.WindowHeight / 3 * 2 - 8*/;
 
         // En esta variable acumulo las acciones que van mostrandose para realizar la animación
         // de que lo que pasa va dibujandose una línea debajo de otra
@@ -1162,6 +1162,7 @@ public class PanelHistorial : Vista
         else
         {
             var separador = new Rule().RuleStyle(Style.Parse("gray"));
+            var totalPartidos = new Markup($":volleyball: [red bold]Partidos jugados:[/] [navajowhite1]{informacionHistorial.TotalPartidosJugados}[/]");
             var arbolPartidos = new Tree($":newspaper: [red bold]Historial de {nombreEquipo}[/]").Style(Style.Parse("gray"));
             var indicaciones = new Markup("\n[gray italic](( Presione una tecla para volver al dashboard))[/]");
 
@@ -1226,6 +1227,7 @@ public class PanelHistorial : Vista
             AnsiConsole.Write(
                 new Rows(
                     separador,
+                    totalPartidos,
                     arbolPartidos,
                     indicaciones,
                     separador

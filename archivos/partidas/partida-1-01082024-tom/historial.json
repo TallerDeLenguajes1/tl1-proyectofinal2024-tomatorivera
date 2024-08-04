@@ -1,5 +1,5 @@
 {
-  "total_partidos_jugados": 11,
+  "total_partidos_jugados": 12,
   "historial_partidos": [
     {
       "tipo_de_partido": "AMISTOSO",
@@ -271,6 +271,29 @@
         "1": {
           "PuntosLocal": 2,
           "PuntosVisitante": 3
+        }
+      }
+    },
+    {
+      "tipo_de_partido": "AMISTOSO",
+      "nombre_ganador": "ABANDONADO",
+      "al_mejor_de": 1,
+      "equipo_local": {
+        "nombre_equipo": "Lomas",
+        "es_equipo_jugador": true,
+        "jugadores_convocados": []
+      },
+      "equipo_visitante": {
+        "nombre_equipo": "UPCN",
+        "es_equipo_jugador": false,
+        "jugadores_convocados": []
+      },
+      "score_local": 0,
+      "score_visitante": 0,
+      "resultados_sets": {
+        "1": {
+          "PuntosLocal": 0,
+          "PuntosVisitante": 1
         }
       }
     }

@@ -1,0 +1,164 @@
+{
+  "nombre_usuario": "tomato",
+  "ganancias": 17217.0,
+  "equipo": {
+    "nombre_equipo": "BokitaJr",
+    "total_jugadores": 14,
+    "jugadores": [
+      {
+        "nombre_jugador": "Orlando Yáñez",
+        "numero_camiseta": 39,
+        "tipo_jugador": "CENTRAL",
+        "experiencia": 9.42,
+        "habilidad_saque": 5.76,
+        "habilidad_remate": 4.42,
+        "habilidad_recepcion": 4.7,
+        "habilidad_colocacion": 2.21,
+        "habilidad_bloqueo": 6.3
+      },
+      {
+        "nombre_jugador": "Tomás Fernández",
+        "numero_camiseta": 28,
+        "tipo_jugador": "ARMADOR",
+        "experiencia": 6.74,
+        "habilidad_saque": 5.94,
+        "habilidad_remate": 5.35,
+        "habilidad_recepcion": 3.8,
+        "habilidad_colocacion": 7.14,
+        "habilidad_bloqueo": 2.11
+      },
+      {
+        "nombre_jugador": "Lucas Bravo",
+        "numero_camiseta": 3,
+        "tipo_jugador": "CENTRAL",
+        "experiencia": 1.87,
+        "habilidad_saque": 5.92,
+        "habilidad_remate": 4.83,
+        "habilidad_recepcion": 3.81,
+        "habilidad_colocacion": 3.9,
+        "habilidad_bloqueo": 6.87
+      },
+      {
+        "nombre_jugador": "Cory Wagner",
+        "numero_camiseta": 5,
+        "tipo_jugador": "CENTRAL",
+        "experiencia": 8.97,
+        "habilidad_saque": 5.34,
+        "habilidad_remate": 3.2,
+        "habilidad_recepcion": 3.69,
+        "habilidad_colocacion": 2.71,
+        "habilidad_bloqueo": 5.11
+      },
+      {
+        "nombre_jugador": "Seth Robinson",
+        "numero_camiseta": 8,
+        "tipo_jugador": "ARMADOR",
+        "experiencia": 4.61,
+        "habilidad_saque": 5.64,
+        "habilidad_remate": 5.0,
+        "habilidad_recepcion": 3.86,
+        "habilidad_colocacion": 7.41,
+        "habilidad_bloqueo": 2.53
+      },
+      {
+        "nombre_jugador": "Clyde Wagner",
+        "numero_camiseta": 26,
+        "tipo_jugador": "OPUESTO",
+        "experiencia": 2.91,
+        "habilidad_saque": 6.03,
+        "habilidad_remate": 7.44,
+        "habilidad_recepcion": 4.51,
+        "habilidad_colocacion": 2.81,
+        "habilidad_bloqueo": 3.37
+      },
+      {
+        "nombre_jugador": "Terrance Armstrong",
+        "numero_camiseta": 44,
+        "tipo_jugador": "LIBERO",
+        "experiencia": 7.99,
+        "habilidad_saque": 2.89,
+        "habilidad_remate": 1.25,
+        "habilidad_recepcion": 7.65,
+        "habilidad_colocacion": 2.94,
+        "habilidad_bloqueo": 1.48
+      },
+      {
+        "nombre_jugador": "Iker Gallego",
+        "numero_camiseta": 24,
+        "tipo_jugador": "PUNTA",
+        "experiencia": 4.16,
+        "habilidad_saque": 6.26,
+        "habilidad_remate": 6.99,
+        "habilidad_recepcion": 5.1,
+        "habilidad_colocacion": 2.44,
+        "habilidad_bloqueo": 4.58
+      },
+      {
+        "nombre_jugador": "Mark Knight",
+        "numero_camiseta": 43,
+        "tipo_jugador": "PUNTA",
+        "experiencia": 1.61,
+        "habilidad_saque": 5.79,
+        "habilidad_remate": 6.57,
+        "habilidad_recepcion": 5.58,
+        "habilidad_colocacion": 2.23,
+        "habilidad_bloqueo": 5.09
+      },
+      {
+        "nombre_jugador": "Johnni Fields",
+        "numero_camiseta": 12,
+        "tipo_jugador": "ARMADOR",
+        "experiencia": 7.46,
+        "habilidad_saque": 6.66,
+        "habilidad_remate": 5.96,
+        "habilidad_recepcion": 5.07,
+        "habilidad_colocacion": 6.32,
+        "habilidad_bloqueo": 3.71
+      },
+      {
+        "nombre_jugador": "Shane Robinson",
+        "numero_camiseta": 31,
+        "tipo_jugador": "OPUESTO",
+        "experiencia": 8.4,
+        "habilidad_saque": 6.82,
+        "habilidad_remate": 6.81,
+        "habilidad_recepcion": 4.84,
+        "habilidad_colocacion": 2.68,
+        "habilidad_bloqueo": 4.68
+      },
+      {
+        "nombre_jugador": "Evan Evans",
+        "numero_camiseta": 15,
+        "tipo_jugador": "ARMADOR",
+        "experiencia": 9.64,
+        "habilidad_saque": 6.26,
+        "habilidad_remate": 4.04,
+        "habilidad_recepcion": 4.13,
+        "habilidad_colocacion": 7.34,
+        "habilidad_bloqueo": 3.25
+      },
+      {
+        "nombre_jugador": "Gordon Dean",
+        "numero_camiseta": 9,
+        "tipo_jugador": "LIBERO",
+        "experiencia": 5.4,
+        "habilidad_saque": 2.54,
+        "habilidad_remate": 1.22,
+        "habilidad_recepcion": 6.79,
+        "habilidad_colocacion": 2.15,
+        "habilidad_bloqueo": 0.69
+      },
+      {
+        "nombre_jugador": "Álvaro Sáez",
+        "numero_camiseta": 23,
+        "tipo_jugador": "ARMADOR",
+        "experiencia": 4.3,
+        "habilidad_saque": 5.99,
+        "habilidad_remate": 5.48,
+        "habilidad_recepcion": 4.6,
+        "habilidad_colocacion": 6.8,
+        "habilidad_bloqueo": 3.63
+      }
+    ]
+  }
+}

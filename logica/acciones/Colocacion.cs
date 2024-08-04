@@ -41,7 +41,7 @@ namespace Logica.Acciones
                 
                 // Si la colocación es mala, puede ser salvada por cualquier atacante o por cualquier defensor
                 case CalidadAccion.MALA:
-                    atacante = (rnd.NextDouble() >= 0.5f) ? atacantes[rnd.Next(atacantes.Count())] : defensores[rnd.Next(defensores.Count())];
+                    atacante = (rnd.NextDouble() > 0.7f) ? atacantes[rnd.Next(atacantes.Count())] : defensores[rnd.Next(defensores.Count())];
                     mensajeAccion = $"{realizador.Nombre} alcanza por poco la pelota y logra levantarla. ¡{atacante.Nombre} se acerca a salvarla!";
                     break;
             }

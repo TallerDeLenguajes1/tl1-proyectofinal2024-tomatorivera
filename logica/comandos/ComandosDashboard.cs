@@ -172,7 +172,7 @@ public class ComandoJugarAmistoso : IComando
         var armador = equipoConvocado.Jugadores.OrderByDescending(jugador => jugador.HabilidadColocacion).First();
         equipoConvocado.Jugadores.Remove(armador);
         var opuesto = (tipoEquipo == TipoEquipo.LOCAL) ? equipoConvocado.Jugadores.OrderByDescending(jugador => jugador.HabilidadBloqueo).First()
-                                                        : equipoConvocado.Jugadores.OrderByDescending(jugador => jugador.HabilidadSaque).First();
+                                                       : equipoConvocado.Jugadores.OrderByDescending(jugador => jugador.HabilidadSaque).First();
         equipoConvocado.Jugadores.Remove(opuesto);
 
         titularesConsola.Insertar(lateral); // zona 4 
