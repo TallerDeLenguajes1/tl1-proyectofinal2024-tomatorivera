@@ -115,6 +115,7 @@ public class PartidaHandler
                                     new ComandoJugarAmistoso(),
                                     new ComandoConsultarPlantilla(datosUsuario.Equipo.Jugadores, datosUsuario.Equipo.Nombre),
                                     new ComandoConsultarHistorial(datosUsuario.Equipo.Nombre),
+                                    new ComandoMercadoJugadores(datosUsuario.Equipo.Jugadores),
                                     new ComandoEliminarPartida() { AccionCancelacion = () => { this.partidaEliminada = true; } },
                                     new ComandoSalir(TipoMenu.SECUNDARIO) { AccionSalida = () => this.deseaSalir = true }
                                 })

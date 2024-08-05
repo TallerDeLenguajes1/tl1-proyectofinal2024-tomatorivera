@@ -314,9 +314,21 @@ public class ComandoEliminarPartida : IComando
 public class ComandoMercadoJugadores : IComando
 {
     public string Titulo => "Mercado de jugadores";
+    private IMercadoServicio mercadoServicio;
+    private List<Jugador> jugadoresUsuario;
+
+    public ComandoMercadoJugadores(List<Jugador> jugadoresUsuario)
+    {
+        this.jugadoresUsuario = jugadoresUsuario;
+        mercadoServicio = new MercadoServicioImpl();
+    }
 
     public void Ejecutar()
     {
-        throw new NotImplementedException();
+        var mercadoActual = mercadoServicio.ObtenerDatosMercado();
+        var controladorPanelMercado = new PanelMercadoControlador(new PanelMercado(mercadoActual, jugadoresUsuario));
+        controladorPanelMercado.MostrarVista();
+
+        Console.ReadKey(true);
     }
 }

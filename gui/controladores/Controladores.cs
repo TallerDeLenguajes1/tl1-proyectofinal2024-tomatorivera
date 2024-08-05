@@ -377,3 +377,14 @@ public class PanelPlantillaControlador : Controlador<PanelPlantilla>
         Console.ReadKey(true);
     }
 }
+
+public class PanelMercadoControlador : Controlador<PanelMercado>
+{
+    public PanelMercadoControlador(PanelMercado vista) : base(vista)
+    {}
+
+    public override void MostrarVista()
+    {
+        vista.Dibujar();
+    }
+}

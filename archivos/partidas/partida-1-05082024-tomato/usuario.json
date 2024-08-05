@@ -1,0 +1,164 @@
+{
+  "nombre_usuario": "tomato",
+  "ganancias": 0.0,
+  "equipo": {
+    "nombre_equipo": "BokitaJr",
+    "total_jugadores": 14,
+    "jugadores": [
+      {
+        "nombre_jugador": "Julian Ulloa",
+        "numero_camiseta": 45,
+        "tipo_jugador": "OPUESTO",
+        "experiencia": 1.25,
+        "habilidad_saque": 6.15,
+        "habilidad_remate": 7.91,
+        "habilidad_recepcion": 4.68,
+        "habilidad_colocacion": 2.37,
+        "habilidad_bloqueo": 4.47
+      },
+      {
+        "nombre_jugador": "Vicente Sáez",
+        "numero_camiseta": 43,
+        "tipo_jugador": "ARMADOR",
+        "experiencia": 6.88,
+        "habilidad_saque": 6.4,
+        "habilidad_remate": 5.41,
+        "habilidad_recepcion": 4.97,
+        "habilidad_colocacion": 7.14,
+        "habilidad_bloqueo": 2.88
+      },
+      {
+        "nombre_jugador": "Ángel Armas",
+        "numero_camiseta": 39,
+        "tipo_jugador": "PUNTA",
+        "experiencia": 2.5,
+        "habilidad_saque": 5.85,
+        "habilidad_remate": 6.33,
+        "habilidad_recepcion": 5.31,
+        "habilidad_colocacion": 2.43,
+        "habilidad_bloqueo": 4.79
+      },
+      {
+        "nombre_jugador": "Owen Castillo",
+        "numero_camiseta": 42,
+        "tipo_jugador": "PUNTA",
+        "experiencia": 7.6,
+        "habilidad_saque": 5.72,
+        "habilidad_remate": 7.19,
+        "habilidad_recepcion": 5.59,
+        "habilidad_colocacion": 2.06,
+        "habilidad_bloqueo": 5.33
+      },
+      {
+        "nombre_jugador": "Francisco Monroy",
+        "numero_camiseta": 48,
+        "tipo_jugador": "LIBERO",
+        "experiencia": 8.25,
+        "habilidad_saque": 3.59,
+        "habilidad_remate": 0.86,
+        "habilidad_recepcion": 7.47,
+        "habilidad_colocacion": 1.45,
+        "habilidad_bloqueo": 1.53
+      },
+      {
+        "nombre_jugador": "Ricardo Vergara",
+        "numero_camiseta": 44,
+        "tipo_jugador": "OPUESTO",
+        "experiencia": 7.26,
+        "habilidad_saque": 5.44,
+        "habilidad_remate": 7.47,
+        "habilidad_recepcion": 4.1,
+        "habilidad_colocacion": 2.96,
+        "habilidad_bloqueo": 4.62
+      },
+      {
+        "nombre_jugador": "Víctor Nieto",
+        "numero_camiseta": 6,
+        "tipo_jugador": "PUNTA",
+        "experiencia": 4.73,
+        "habilidad_saque": 5.93,
+        "habilidad_remate": 6.38,
+        "habilidad_recepcion": 6.19,
+        "habilidad_colocacion": 2.83,
+        "habilidad_bloqueo": 5.29
+      },
+      {
+        "nombre_jugador": "Arturo Velasco",
+        "numero_camiseta": 3,
+        "tipo_jugador": "LIBERO",
+        "experiencia": 7.39,
+        "habilidad_saque": 2.8,
+        "habilidad_remate": 1.19,
+        "habilidad_recepcion": 6.48,
+        "habilidad_colocacion": 2.04,
+        "habilidad_bloqueo": 1.17
+      },
+      {
+        "nombre_jugador": "Xavier Crespo",
+        "numero_camiseta": 26,
+        "tipo_jugador": "OPUESTO",
+        "experiencia": 6.98,
+        "habilidad_saque": 5.69,
+        "habilidad_remate": 7.97,
+        "habilidad_recepcion": 3.14,
+        "habilidad_colocacion": 2.09,
+        "habilidad_bloqueo": 4.74
+      },
+      {
+        "nombre_jugador": "Pilar Bravo",
+        "numero_camiseta": 49,
+        "tipo_jugador": "CENTRAL",
+        "experiencia": 3.74,
+        "habilidad_saque": 5.87,
+        "habilidad_remate": 4.85,
+        "habilidad_recepcion": 4.34,
+        "habilidad_colocacion": 2.28,
+        "habilidad_bloqueo": 6.07
+      },
+      {
+        "nombre_jugador": "Kurt Allen",
+        "numero_camiseta": 46,
+        "tipo_jugador": "CENTRAL",
+        "experiencia": 9.61,
+        "habilidad_saque": 5.28,
+        "habilidad_remate": 4.44,
+        "habilidad_recepcion": 4.14,
+        "habilidad_colocacion": 2.56,
+        "habilidad_bloqueo": 5.59
+      },
+      {
+        "nombre_jugador": "Stephen Scott",
+        "numero_camiseta": 14,
+        "tipo_jugador": "ARMADOR",
+        "experiencia": 8.67,
+        "habilidad_saque": 5.18,
+        "habilidad_remate": 5.16,
+        "habilidad_recepcion": 4.22,
+        "habilidad_colocacion": 6.71,
+        "habilidad_bloqueo": 3.59
+      },
+      {
+        "nombre_jugador": "Emilio Ortiz",
+        "numero_camiseta": 13,
+        "tipo_jugador": "CENTRAL",
+        "experiencia": 7.86,
+        "habilidad_saque": 6.04,
+        "habilidad_remate": 3.69,
+        "habilidad_recepcion": 5.31,
+        "habilidad_colocacion": 3.56,
+        "habilidad_bloqueo": 5.27
+      },
+      {
+        "nombre_jugador": "Francisco Fuentes",
+        "numero_camiseta": 8,
+        "tipo_jugador": "CENTRAL",
+        "experiencia": 5.53,
+        "habilidad_saque": 5.63,
+        "habilidad_remate": 3.97,
+        "habilidad_recepcion": 4.93,
+        "habilidad_colocacion": 2.34,
+        "habilidad_bloqueo": 5.26
+      }
+    ]
+  }
+}

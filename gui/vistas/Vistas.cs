@@ -2,7 +2,6 @@ using System.Text;
 using Gui.Util;
 using Logica.Comandos;
 using Logica.Modelo;
-using Logica.Util;
 using Spectre.Console;
 using Spectre.Console.Rendering;
 
@@ -1379,6 +1378,8 @@ public class PanelMercado : Vista
 
     public override void Dibujar()
     {
+        AnsiConsole.Clear();
+
         var layoutMercado = new Layout("raiz")
             .SplitRows(
                 new Layout("actualizacion"),
@@ -1432,6 +1433,8 @@ public class PanelMercado : Vista
                                                   : dibujarInformacionJugador(i+1, jugadorMostrar)
             );
         }
+
+        AnsiConsole.Write(layoutMercado);
     }
 
     /// <summary>
@@ -1453,7 +1456,7 @@ public class PanelMercado : Vista
                         new Markup($"[navajowhite1]Habilidad de colocacion:[/] [cornsilk1]{jugador.HabilidadColocacion}[/]"),
                         new Markup($"[navajowhite1]Experiencia:[/] [cornsilk1]{jugador.Experiencia} pts.[/]"),
                         new Text(""),
-                        new Markup($":money_with_wings: [grey70]Valor del jugador:[/] [greenyellow]${calcularPrecioJugador(jugador)}[/]")
+                        new Markup($":money_with_wings: [grey70]Valor del jugador:[/] [greenyellow]${jugador.Precio}[/]")
                     ),
                     VerticalAlignment.Middle
                 ))
@@ -1499,22 +1502,5 @@ public class PanelMercado : Vista
                                            j.Experiencia == jugador.Experiencia
                                     )
                                     .Any();
-    }
-    
-    /// <summary>
-    /// Calcula el precio de un jugador
-    /// </summary>
-    /// <param name="jugador">Jugador a calcular</param>
-    /// <returns><c>float</c> precio del jugador</returns>
-    private float calcularPrecioJugador(Jugador jugador)
-    {
-        var rnd = new Random();
-        var promedioSkills = jugador.CalcularCalificacion();
-        return promedioSkills switch
-        {
-            < 3 => rnd.Next(5000, 15000),
-            < 7 => rnd.Next(25000, 50000),
-            _ => rnd.Next(65000, 100000)
-        };
     }
 }

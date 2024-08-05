@@ -12,7 +12,7 @@ namespace Persistencia.Repositorios
         private static Usuario? usuarioActual;
 
         /// <value>Contiene las propiedades que se excluirán del JSON correspondiente al usuario</value>
-        private DefaultContractResolver usuarioContractResolver = new ExclusionPropiedadesJson(["jugadores_convocados", "es_equipo_jugador"]);
+        private DefaultContractResolver usuarioContractResolver = new ExclusionPropiedadesJson(["jugadores_convocados", "es_equipo_jugador", "precio_mercado"]);
 
         /// <summary>
         /// Crea un nuevo archivo de persistencia para <paramref name="obj"/>
