@@ -99,6 +99,15 @@ namespace Logica.Modelo
         }
 
         /// <summary>
+        /// Calcula la calificación del jugador para el mercado
+        /// </summary>
+        /// <returns><c>float</c> calificación</returns>
+        public float CalcularCalificacion()
+        {
+            return (habilidadSaque + habilidadRecepcion + habilidadBloqueo + habilidadColocacion + habilidadRemate + experiencia) / 6;
+        }
+
+        /// <summary>
         /// Obtiene la descripción de los jugadores utilizada para los partidos
         /// </summary>
         /// <returns><c>string</c> Descripción del jugador con colores</returns>

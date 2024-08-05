@@ -2,6 +2,7 @@ using System.Text;
 using Gui.Util;
 using Logica.Comandos;
 using Logica.Modelo;
+using Logica.Util;
 using Spectre.Console;
 using Spectre.Console.Rendering;
 
@@ -1359,5 +1360,161 @@ public class PanelPlantilla : Vista
                 arbolSuplentes,
                 separador
             );
+    }
+}
+
+/// <summary>
+/// Clase vista que muestra los datos del mercado
+/// </summary>
+public class PanelMercado : Vista
+{
+    private Mercado informacionMercado;
+    private List<Jugador> jugadoresUsuario;
+
+    public PanelMercado(Mercado informacionMercado, List<Jugador> jugadoresUsuario)
+    {
+        this.informacionMercado = informacionMercado;
+        this.jugadoresUsuario = jugadoresUsuario;
+    }
+
+    public override void Dibujar()
+    {
+        var layoutMercado = new Layout("raiz")
+            .SplitRows(
+                new Layout("actualizacion"),
+                new Layout("jugadores")
+                    .SplitRows(
+                        new Layout("jugadores_arriba")
+                            .SplitColumns(
+                                new Layout("jugador_1"),
+                                new Layout("jugador_2")
+                            ),
+                        new Layout("jugadores_abajo")
+                            .SplitColumns(
+                                new Layout("jugador_3"),
+                                new Layout("jugador_4")
+                            )
+                    )
+            );
+
+        var fechaActualizacion = informacionMercado.UltimaActualizacion.AddHours(12);
+        var textoMercado = @$"
+[orange1]⠀⠀⠀⠀⠀⠀⣠⡤⢤⡄⠀⠀⠀⠀                                                            [/]
+[orange1]⠀⠀⠀⠀⠀⣾⣿⠂⠀⣇⣀⠀⠀⠀                                                            [/]
+[orange1]⠀⠀⠀⣠⠖⠉⠀⠀⠀⠀⠀⠉⠙⢢                                                            [/]
+[orange1]⠀⠀⣴⠃⠀⢰⣮⠿⠿⢍⣻⡒⣶⠃    __  __                        _                        [/]
+[orange1]⠀⢀⡿⡄⠀⠈⠳⢤⣀⠀⠀⠉⠁⠀   |  \/  | ___ _ __ ___ __ _  __| | ___                    [/]
+[orange1]⠀ ⢗⠝⡢⣄⡀⠀⠀⠉⠓⠢⡀⠀   | |\/| |/ _ \ '__/ __/ _` |/ _` |/ _ \                   [/]
+[orange1]⠀⠀⠀⠙⠮⢔⣝⣗⠦⣄⠀⠀⠘⡆   | |  | |  __/ | | (_| (_| | (_| | (_) |                  [/]
+[orange1]    ⠀⠀⠀⠉⢳⠬⡇⠀⠀ ⡱   |_|  |_|\___|_|  \___\__,_|\__,_|\___/                   [/]
+[orange1]⢀⡶⡾⠒⠢⠤⠤⠼⠟⠁⠀⢠⡇                                                           [/]
+[orange1]⠺⣍⡣⣄⣀⣀⣀⠀⠀⣠⣤⣴⡟⠁[/]   [orange1]Próxima actualización: [/][yellow]{fechaActualizacion.ToString("dd/MM/yyyy HH:mm")} hs              [/]
+[orange1]⠀⠈⠙⠲⠵⢽⡹⡇⠀⢹⠟⠉⠀⠀                                                            [/]
+[orange1]⠀⠀⠀⠀⠀⢸⡦⣷⢖⣾⠀⠀⠀⠀                                                           [/]
+[orange1]⠀⠀⠀⠀⠀⠈⠛⠓⠋⠁⠀⠀                                                             [/]";
+
+        layoutMercado["actualizacion"].Update(
+            new Panel(Align.Center(new Markup($"{textoMercado}")))
+                .Expand()
+                .BorderColor(Color.Orange1)
+        );
+
+        layoutMercado["actualizacion"].Ratio(3);
+        layoutMercado["jugadores"].Ratio(7);
+
+        // Solo muestro cuatro jugadores
+        Jugador jugadorMostrar;
+        for (int i=0 ; i<4 ; i++)
+        {
+            jugadorMostrar = informacionMercado.Jugadores[i];
+            layoutMercado[$"jugador_{i+1}"].Update(
+                esJugadorComprado(jugadorMostrar) ? dibujarJugadorComprado() 
+                                                  : dibujarInformacionJugador(i+1, jugadorMostrar)
+            );
+        }
+    }
+
+    /// <summary>
+    /// Dibuja el panel con información del jugador
+    /// </summary>
+    /// <param name="nJugador">ID del jugador en el panel</param>
+    /// <param name="jugador">Datos del jugador</param>
+    /// <returns>Instancia de <see cref="Panel"/> con los datos del jugador</returns>
+    private Panel dibujarInformacionJugador(int nJugador, Jugador jugador)
+    {
+        return new Panel(Align.Center(
+                    new Rows(
+                        new Markup($"[yellow]{jugador.Nombre}[/] [gray]-[/] [gold1]{jugador.TipoJugador}[/]"),
+                        new Text(""),
+                        new Markup($"[navajowhite1]Habilidad de saque:[/] [cornsilk1]{jugador.HabilidadSaque}[/]"),
+                        new Markup($"[navajowhite1]Habilidad de remate:[/] [cornsilk1]{jugador.HabilidadRemate}[/]"),
+                        new Markup($"[navajowhite1]Habilidad de recepcion:[/] [cornsilk1]{jugador.HabilidadRecepcion}[/]"),
+                        new Markup($"[navajowhite1]Habilidad de bloqueo:[/] [cornsilk1]{jugador.HabilidadBloqueo}[/]"),
+                        new Markup($"[navajowhite1]Habilidad de colocacion:[/] [cornsilk1]{jugador.HabilidadColocacion}[/]"),
+                        new Markup($"[navajowhite1]Experiencia:[/] [cornsilk1]{jugador.Experiencia} pts.[/]"),
+                        new Text(""),
+                        new Markup($":money_with_wings: [grey70]Valor del jugador:[/] [greenyellow]${calcularPrecioJugador(jugador)}[/]")
+                    ),
+                    VerticalAlignment.Middle
+                ))
+                {
+                    Header = new PanelHeader($"[gold1] Jugador {nJugador} [/]")
+                }
+                .Expand()
+                .BorderColor(Color.Gold1);
+    }
+
+    /// <summary>
+    /// Dibuja el panel para un jugador comprado
+    /// </summary>
+    /// <returns>Instancia de <see cref="Panel"/></returns>
+    private Panel dibujarJugadorComprado()
+    {
+        return new Panel(Align.Center(
+                    new Rows(
+                        new Markup("[greenyellow]Este jugador ya fue comprado[/]")
+                    ),
+                    VerticalAlignment.Middle
+                ))
+                {
+                    Header = new PanelHeader("[greenyellow] COMPRADO [/]")
+                }
+                .Expand()
+                .BorderColor(Color.GreenYellow);
+    }
+
+    /// <summary>
+    /// Verifica si el usuario ya posee al jugador
+    /// </summary>
+    /// <param name="jugador">Jugador a verificar</param>
+    /// <returns><c>True</c> si el usuario ya tiene un jugador con el mismo nombre, habilidades y experiencia que <paramref name="jugador"/>, <c>False</c> en caso contrario</returns>
+    private bool esJugadorComprado(Jugador jugador)
+    {
+        return jugadoresUsuario.Where(j => j.Nombre.Equals(jugador.Nombre) &&
+                                           j.HabilidadSaque == jugador.HabilidadSaque &&
+                                           j.HabilidadBloqueo == jugador.HabilidadBloqueo &&
+                                           j.HabilidadColocacion == jugador.HabilidadColocacion &&
+                                           j.HabilidadRecepcion == jugador.HabilidadRecepcion &&
+                                           j.HabilidadRemate == jugador.HabilidadRemate &&
+                                           j.Experiencia == jugador.Experiencia
+                                    )
+                                    .Any();
+    }
+    
+    /// <summary>
+    /// Calcula el precio de un jugador
+    /// </summary>
+    /// <param name="jugador">Jugador a calcular</param>
+    /// <returns><c>float</c> precio del jugador</returns>
+    private float calcularPrecioJugador(Jugador jugador)
+    {
+        var rnd = new Random();
+        var promedioSkills = jugador.CalcularCalificacion();
+        return promedioSkills switch
+        {
+            < 3 => rnd.Next(5000, 15000),
+            < 7 => rnd.Next(25000, 50000),
+            _ => rnd.Next(65000, 100000)
+        };
     }
 }
