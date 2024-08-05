@@ -39,6 +39,7 @@ namespace Persistencia.Infraestructura
 
         public static int LimitePartidasCreadas { get; set; }
         public static int LimiteJugadoresPlantilla { get; set; }
+        public static int LimiteJugadoresMercado { get; set; }
 
         // Datos cargados durante la ejecución
         public static string? DirectorioPartidaActual { get; set; }
@@ -82,6 +83,7 @@ namespace Persistencia.Infraestructura
 
             LimitePartidasCreadas = 10;
             LimiteJugadoresPlantilla = 30;
+            LimiteJugadoresMercado = 4;
         }
     }
 }

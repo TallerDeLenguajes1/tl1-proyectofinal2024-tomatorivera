@@ -13,6 +13,7 @@ public interface IMercadoServicio
 {
     void CrearMercado(Mercado mercado);
     Task<Mercado> RegenerarMercadoAsync();
+    Task<List<Jugador>> GenerarJugadoresMercadoAsync();
     Mercado ObtenerDatosMercado();
     Mercado ObtenerDatosMercado(int id);
     void GuardarMercado(Mercado mercado);
@@ -57,26 +58,31 @@ public class MercadoServicioImpl : IMercadoServicio
     {
         try
         {
-            Mercado nuevoMercado;
+            var nuevoMercado = repositorio.ObtenerActual();
 
-            // Si la instancia del mercado en el repositorio es nula, genero una nueva
-            // porque puedo necesitar generar el mercado por primera vez
-            try
-            {
-                nuevoMercado = repositorio.ObtenerActual();
-            }
-            catch (Exception)
-            {
-                nuevoMercado = new Mercado();
-            }
-            
-            var nuevosJugadores = await jugadoresServicio.GenerarJugadoresAsync(nuevoMercado.MaximoJugadoresPorMercado);
-
-            nuevoMercado.Jugadores = nuevosJugadores;
+            nuevoMercado.Jugadores = await GenerarJugadoresMercadoAsync();
             nuevoMercado.UltimaActualizacion = DateTime.Now;
-            repositorio.Guardar(nuevoMercado);
+
+            // Guardo el nuevo mercado
+            GuardarMercado(nuevoMercado);
 
             return nuevoMercado;
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
+    /// <summary>
+    /// Genera una lista de nuevos jugadores para el mercado
+    /// </summary>
+    /// <returns>Lista de <see cref="Jugador"/></returns>
+    public async Task<List<Jugador>> GenerarJugadoresMercadoAsync()
+    {
+        try
+        {
+            return await jugadoresServicio.GenerarJugadoresAsync(Config.LimiteJugadoresMercado);
         }
         catch (Exception)
         {

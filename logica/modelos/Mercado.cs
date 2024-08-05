@@ -18,6 +18,12 @@ public class Mercado
         jugadores = new List<Jugador>();
     }
 
+    public Mercado(List<Jugador> jugadores)
+    {
+        this.jugadores = jugadores;
+        ultimaActualizacion = DateTime.Now;
+    }
+
     // Propiedades
 
     [JsonProperty("ultima_actualizacion")]

@@ -185,7 +185,8 @@ public class ComandoNuevaPartida : IComando
         var nuevoEquipo = await equipoServicio.GenerarEquipoAsync(nombreEquipo);
         var nuevoUsuario = new Usuario(nombreUsuario, nuevoEquipo);
         var nuevoHistorial = new Historial();
-        var nuevoMercado = await mercadoServicio.RegenerarMercadoAsync();
+        var jugadoresMercado = await mercadoServicio.GenerarJugadoresMercadoAsync();
+        var nuevoMercado = new Mercado(jugadoresMercado);
         Partida nuevaPartida = new Partida(id, DateTime.Now, DateTime.Now, nuevoUsuario, nuevoHistorial, nuevoMercado);
 
         // Creo la partida
