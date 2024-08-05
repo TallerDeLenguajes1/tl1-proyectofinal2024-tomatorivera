@@ -1,5 +1,5 @@
 {
-  "total_partidos_jugados": 1,
+  "total_partidos_jugados": 2,
   "historial_partidos": [
     {
       "tipo_de_partido": "AMISTOSO",
@@ -8,33 +8,36 @@
       "equipo_local": {
         "nombre_equipo": "Banco Provincia W",
         "es_equipo_jugador": false,
-        "jugadores_convocados": [
-          "Jim Frazier (22)",
-          "Lawrence Walker (44)",
-          "Clarence Harrison (6)",
-          "Patrick Williamson (15)",
-          "Héctor Duran (47)",
-          "Pascual Páez (43)",
-          "Earl Cook (1)",
-          "José Luis Ibarra (12)",
-          "César Zapata (10)",
-          "Gabriel Marín (14)",
-          "Israel Nazario (25)",
-          "Marc Prieto (26)",
-          "Marcos Rosas (40)",
-          "Manuel Soler (24)"
-        ]
+        "jugadores_convocados": []
       },
       "equipo_visitante": {
         "nombre_equipo": "BokitaJr",
         "es_equipo_jugador": true,
+        "jugadores_convocados": []
+      },
+      "score_local": 0,
+      "score_visitante": 0,
+      "resultados_sets": {
+        "1": {
+          "PuntosLocal": 1,
+          "PuntosVisitante": 0
+        }
+      }
+    },
+    {
+      "tipo_de_partido": "AMISTOSO",
+      "nombre_ganador": "ABANDONADO",
+      "al_mejor_de": 1,
+      "equipo_local": {
+        "nombre_equipo": "BokitaJr",
+        "es_equipo_jugador": true,
         "jugadores_convocados": [
-          "Ricardo Vergara (44)",
           "Francisco Monroy (48)",
           "Owen Castillo (42)",
           "Ángel Armas (39)",
           "Vicente Sáez (43)",
           "Julian Ulloa (45)",
+          "Ricardo Vergara (44)",
           "Arturo Velasco (3)",
           "Francisco Fuentes (8)",
           "Emilio Ortiz (13)",
@@ -43,6 +46,26 @@
           "Stephen Scott (14)",
           "Xavier Crespo (26)",
           "Víctor Nieto (6)"
+        ]
+      },
+      "equipo_visitante": {
+        "nombre_equipo": "Tucuman W",
+        "es_equipo_jugador": false,
+        "jugadores_convocados": [
+          "Alfred Garza (41)",
+          "Arturo Ibáñez (1)",
+          "Isaac Sanz (3)",
+          "Pablo Cano (5)",
+          "Zack Sullivan (11)",
+          "Phillip Gibson (24)",
+          "Jordi Arias (22)",
+          "Allan Reid (7)",
+          "Bernardo Mayorga (18)",
+          "Tommy Coleman (17)",
+          "Silvano Santillán (28)",
+          "Guillermo Olvera (49)",
+          "Wendolin Cedillo (33)",
+          "José Carlos Manzanares (43)"
         ]
       },
       "score_local": 0,

@@ -1,49 +1,49 @@
 {
-  "ultima_actualizacion": "2024-08-05T03:54:48.5983373-03:00",
+  "ultima_actualizacion": "2024-08-05T04:27:30.0452258-03:00",
   "jugadores_mercado": [
     {
-      "nombre_jugador": "Ramses Laboy",
-      "tipo_jugador": "ARMADOR",
-      "experiencia": 1.85,
-      "habilidad_saque": 6.58,
-      "habilidad_remate": 5.88,
-      "habilidad_recepcion": 5.32,
-      "habilidad_colocacion": 6.62,
-      "habilidad_bloqueo": 3.55,
-      "precio_mercado": 41739.0
-    },
-    {
-      "nombre_jugador": "Alfonso Santiago",
-      "tipo_jugador": "ARMADOR",
-      "experiencia": 2.95,
-      "habilidad_saque": 5.71,
-      "habilidad_remate": 4.68,
-      "habilidad_recepcion": 4.26,
-      "habilidad_colocacion": 6.84,
-      "habilidad_bloqueo": 2.7,
-      "precio_mercado": 44394.0
-    },
-    {
-      "nombre_jugador": "Bernardo Soto",
-      "tipo_jugador": "LIBERO",
-      "experiencia": 1.45,
-      "habilidad_saque": 2.64,
-      "habilidad_remate": 0.99,
-      "habilidad_recepcion": 7.52,
-      "habilidad_colocacion": 2.24,
-      "habilidad_bloqueo": 1.24,
-      "precio_mercado": 13778.0
-    },
-    {
-      "nombre_jugador": "Josep Cabrera",
+      "nombre_jugador": "Rubén Centeno",
       "tipo_jugador": "PUNTA",
-      "experiencia": 3.44,
-      "habilidad_saque": 6.94,
-      "habilidad_remate": 5.81,
+      "experiencia": 9.67,
+      "habilidad_saque": 5.77,
+      "habilidad_remate": 6.54,
+      "habilidad_recepcion": 6.42,
+      "habilidad_colocacion": 2.86,
+      "habilidad_bloqueo": 4.99,
+      "precio_mercado": 25500.0
+    },
+    {
+      "nombre_jugador": "Nelly Casanova",
+      "tipo_jugador": "PUNTA",
+      "experiencia": 1.81,
+      "habilidad_saque": 5.76,
+      "habilidad_remate": 7.42,
+      "habilidad_recepcion": 6.39,
+      "habilidad_colocacion": 3.67,
+      "habilidad_bloqueo": 5.34,
+      "precio_mercado": 41203.0
+    },
+    {
+      "nombre_jugador": "Nicholas Barnett",
+      "tipo_jugador": "CENTRAL",
+      "experiencia": 1.69,
+      "habilidad_saque": 5.27,
+      "habilidad_remate": 4.32,
       "habilidad_recepcion": 5.35,
-      "habilidad_colocacion": 2.18,
-      "habilidad_bloqueo": 4.68,
-      "precio_mercado": 36310.0
+      "habilidad_colocacion": 2.87,
+      "habilidad_bloqueo": 6.47,
+      "precio_mercado": 32206.0
+    },
+    {
+      "nombre_jugador": "Felipe Bravo",
+      "tipo_jugador": "OPUESTO",
+      "experiencia": 7.11,
+      "habilidad_saque": 6.63,
+      "habilidad_remate": 6.22,
+      "habilidad_recepcion": 4.28,
+      "habilidad_colocacion": 3.2,
+      "habilidad_bloqueo": 4.0,
+      "precio_mercado": 49289.0
     }
   ]
 }

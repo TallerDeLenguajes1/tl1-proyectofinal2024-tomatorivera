@@ -327,8 +327,70 @@ public class ComandoMercadoJugadores : IComando
     {
         var mercadoActual = mercadoServicio.ObtenerDatosMercado();
         var controladorPanelMercado = new PanelMercadoControlador(new PanelMercado(mercadoActual, jugadoresUsuario));
-        controladorPanelMercado.MostrarVista();
 
-        Console.ReadKey(true);
+        // Si ya pasaron 12 horas desde la última actualización del mercado, se regenera
+        if (debeRenerarMercado(mercadoActual)) mercadoActual = mercadoServicio.RegenerarMercadoAsync().GetAwaiter().GetResult();
+        
+        // Ejecuto el menú del mercado mientras el usuario no seleccione 'volver al dashboard'
+        Jugador jugadorComprar;
+        do
+        {
+            controladorPanelMercado.MostrarVista();
+
+            jugadorComprar = mostrarMenuSeleccion(mercadoActual);
+
+            // Si el jugador seleccionó que desea cancelar la compra, vuelvo atrás
+            if (string.IsNullOrWhiteSpace(jugadorComprar.Nombre)) return;
+
+            if (pregunta("¿Seguro de que desea realizar esta compra? [si/no]: "))
+            {
+                mercadoServicio.RealizarCompraJugador(jugadorComprar);
+            }   
+        }
+        while (!string.IsNullOrEmpty(jugadorComprar.Nombre));
+    }
+
+    /// <summary>
+    /// Muestra el menú de selección de jugadores disponibles para comprar
+    /// </summary>
+    /// <param name="mercado"></param>
+    /// <returns></returns>
+    private Jugador mostrarMenuSeleccion(Mercado mercado)
+    {
+        var jugadoresMostrar = new List<Jugador>(mercado.Jugadores){ new Jugador() /* opción de salida */ };
+
+        return AnsiConsole.Prompt(
+            new SelectionPrompt<Jugador>()
+                .Title("[orange1 bold]Seleccione el jugador a comprar:[/]")
+                .HighlightStyle("navajowhite1")
+                .AddChoices(jugadoresMostrar)
+                .UseConverter(j => string.IsNullOrWhiteSpace(j.Nombre) ? "[red3]:right_arrow_curving_left: Volver al dashboard[/]"
+                                                                       : j.DescripcionMercado())
+        );
+    }
+
+    /// <summary>
+    /// Realiza una pregunta de sí o no al usuario
+    /// </summary>
+    /// <param name="textoPregunta">Pregunta a realizar</param>
+    /// <returns><c>True</c> si el primer caracter de la cadena es 's', <c>False</c> en caso contrario</returns>
+    private bool pregunta(string textoPregunta) 
+    {
+        System.Console.WriteLine();
+
+        VistasUtil.MostrarCentradoSinSalto(textoPregunta);
+        string respuesta = Console.ReadLine() ?? string.Empty;
+
+        return !string.IsNullOrWhiteSpace(respuesta) && respuesta.ToLower()[0].Equals('s');
+    }
+
+    /// <summary>
+    /// Verifica si ya pasaron las 12 horas desde la ultima actualizacion del mercado
+    /// </summary>
+    /// <param name="mercado">Mercado a evaluar</param>
+    /// <returns>True o false</returns>
+    private bool debeRenerarMercado(Mercado mercado)
+    {
+        return mercado.UltimaActualizacion.AddHours(12) < DateTime.Now;
     }
 }

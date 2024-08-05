@@ -15,6 +15,7 @@ public interface IMercadoServicio
     Mercado ObtenerDatosMercado(int id);
     void GuardarMercado(Mercado mercado);
     void EliminarMercado();
+    void RealizarCompraJugador(Jugador jugador);
 }
 
 public class MercadoServicioImpl : IMercadoServicio
@@ -69,6 +70,7 @@ public class MercadoServicioImpl : IMercadoServicio
 
             nuevoMercado.Jugadores = nuevosJugadores;
             nuevoMercado.UltimaActualizacion = DateTime.Now;
+            repositorio.Guardar(nuevoMercado);
 
             return nuevoMercado;
         }
@@ -142,5 +144,14 @@ public class MercadoServicioImpl : IMercadoServicio
         {
             throw;
         }
+    }
+
+    /// <summary>
+    /// Realiza la compra de un jugador para el usuario
+    /// </summary>
+    /// <param name="jugador">Jugador a comprar</param>
+    public void RealizarCompraJugador(Jugador jugador)
+    {
+
     }
 }

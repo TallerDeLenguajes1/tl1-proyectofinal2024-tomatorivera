@@ -154,6 +154,12 @@ namespace Logica.Modelo
                 $"[gray] - SAQ:[/] {habilidadSaque} [gray]REM:[/] {habilidadRemate} [gray]REC:[/] {habilidadRecepcion} [gray]COL:[/] {habilidadColocacion} [gray]BLO:[/] {habilidadBloqueo}";
         }
 
+        public string DescripcionMercado()
+        {
+            return $":volleyball: [lightgoldenrod3]{nombre}[/] [tan]({tipoJugador})[/]" +
+                   $"[gray] - SAQ:[/] {habilidadSaque} [gray]REM:[/] {habilidadRemate} [gray]REC:[/] {habilidadRecepcion} [gray]COL:[/] {habilidadColocacion} [gray]BLO:[/] {habilidadBloqueo}";
+        }
+
         public override string ToString()
         {
             return !string.IsNullOrWhiteSpace(nombre) ? $"{nombre} ({numeroCamiseta}) - {tipoJugador} - {experiencia} pts. de experiencia en juego"
