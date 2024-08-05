@@ -18,6 +18,7 @@ namespace Persistencia.Infraestructura
         public static string? NombreJsonPartida { get; set; }
         public static string? NombreJsonUsuario { get; set; }
         public static string? NombreJsonHistorial { get; set; }
+        public static string? NombreJsonMercado { get; set;}
         public static string? NombreImgLogo { get; set; }
 
         public static string? FuentePagga { get; set; }
@@ -37,6 +38,8 @@ namespace Persistencia.Infraestructura
         public static string? ApiRandomUserUrl { get; set; }
 
         public static int LimitePartidasCreadas { get; set; }
+        public static int LimiteJugadoresPlantilla { get; set; }
+        public static int LimiteJugadoresMercado { get; set; }
 
         // Datos cargados durante la ejecución
         public static string? DirectorioPartidaActual { get; set; }
@@ -59,6 +62,7 @@ namespace Persistencia.Infraestructura
             NombreJsonPartida = "partida.json";
             NombreJsonUsuario = "usuario.json";
             NombreJsonHistorial = "historial.json";
+            NombreJsonMercado = "mercado.json";
             NombreImgLogo = "logo.png";
 
             FuentePagga = "Pagga.flf";
@@ -78,6 +82,8 @@ namespace Persistencia.Infraestructura
             ApiRandomUserUrl = "https://randomuser.me/api/";
 
             LimitePartidasCreadas = 10;
+            LimiteJugadoresPlantilla = 30;
+            LimiteJugadoresMercado = 4;
         }
     }
 }

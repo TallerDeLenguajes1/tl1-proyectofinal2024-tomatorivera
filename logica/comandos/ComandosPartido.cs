@@ -1,3 +1,5 @@
+using Gui.Controladores;
+using Gui.Vistas;
 using Logica.Handlers;
 using Logica.Modelo;
 using Spectre.Console;
@@ -69,7 +71,7 @@ public class ComandoRealizarSustitucion : IComando
 
 public class ComandoVisualizarPlantilla : IComando
 {
-    public string Titulo => "Revisar estadísticas de los jugadores en cancha";
+    public string Titulo => "Revisar plantilla de jugadores";
     private Formacion plantilla;
 
     public ComandoVisualizarPlantilla(Formacion plantilla)
@@ -79,39 +81,8 @@ public class ComandoVisualizarPlantilla : IComando
 
     public void Ejecutar()
     {
-        var separador = new Rule()
-        {
-            Style = Style.Parse("gray bold")
-        };
-
-        // Muestro los jugadores en cancha indicando su zona
-        var arbolTitulares = new Tree(":small_orange_diamond: [orange3]Jugadores en cancha:[/]")
-        {
-            Style = Style.Parse("orange3")
-        };
-        for (int i=0 ; i<plantilla.JugadoresCancha.Count() ; i++)
-        {
-            arbolTitulares.AddNode($"[greenyellow bold]ZONA {i+1}:[/] {plantilla.JugadoresCancha.ElementAt(i).DescripcionPartido()}");
-        }
-
-        // Muestro los suplentes
-        var arbolSuplentes = new Tree("\n:small_orange_diamond: [orange3]Jugadores suplentes:[/]")
-        {
-            Style = Style.Parse("orange3")
-        };
-        foreach (var jugador in plantilla.JugadoresSuplentes)
-        {
-            arbolSuplentes.AddNode($"{jugador.DescripcionPartido()}");
-        }
-
-        AnsiConsole.Write(
-            new Rows(
-                separador,
-                arbolTitulares,
-                arbolSuplentes,
-                separador
-            )
-        );
+        var controladorPlantilla = new PanelPlantillaControlador(new PanelPlantilla(plantilla));
+        controladorPlantilla.MostrarVista();
     }
 }
 

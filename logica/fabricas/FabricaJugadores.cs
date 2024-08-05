@@ -34,21 +34,19 @@ namespace Logica.Fabricas
         /// <param name="habilidades">Habilidades del jugador a generar</param>
         /// <returns>Objeto <c>Jugador</c></returns>
         protected Jugador generarJugador(Dictionary<string, (float min, float max)> habilidades)
-        {
-            return
-                new Jugador() 
-                { 
-                    HabilidadSaque = valorAleatorioEntre(habilidades["saque"].min, habilidades["saque"].max),
-                    HabilidadRemate = valorAleatorioEntre(habilidades["remate"].min, habilidades["remate"].max),
-                    HabilidadRecepcion = valorAleatorioEntre(habilidades["recepcion"].min, habilidades["recepcion"].max),
-                    HabilidadColocacion = valorAleatorioEntre(habilidades["colocacion"].min, habilidades["colocacion"].max),
-                    HabilidadBloqueo = valorAleatorioEntre(habilidades["bloqueo"].min, habilidades["bloqueo"].max),
-                    Experiencia = valorAleatorioEntre(1, 10)
-                };
+        {  
+            var HabilidadSaque = valorAleatorioEntre(habilidades["saque"].min, habilidades["saque"].max);
+            var HabilidadRemate = valorAleatorioEntre(habilidades["remate"].min, habilidades["remate"].max);
+            var HabilidadRecepcion = valorAleatorioEntre(habilidades["recepcion"].min, habilidades["recepcion"].max);
+            var HabilidadColocacion = valorAleatorioEntre(habilidades["colocacion"].min, habilidades["colocacion"].max);
+            var HabilidadBloqueo = valorAleatorioEntre(habilidades["bloqueo"].min, habilidades["bloqueo"].max);
+            var Experiencia = valorAleatorioEntre(1, 10);
+
+            return new Jugador(HabilidadSaque, HabilidadRemate, HabilidadRecepcion, HabilidadColocacion, HabilidadBloqueo, Experiencia);
         }
     }
 
-    public class JugadorLiberoFabrica() : JugadorFabrica
+    public class JugadorLiberoFabrica : JugadorFabrica
     {
         /// <summary>
         /// Crea un jugador
@@ -69,7 +67,7 @@ namespace Logica.Fabricas
         }
     }
 
-    public class JugadorPuntaFabrica() : JugadorFabrica
+    public class JugadorPuntaFabrica : JugadorFabrica
     {
         /// <summary>
         /// Crea un jugador
@@ -90,7 +88,7 @@ namespace Logica.Fabricas
         }
     }
 
-    public class JugadorOpuestoFabrica() : JugadorFabrica
+    public class JugadorOpuestoFabrica : JugadorFabrica
     {
         /// <summary>
         /// Crea un jugador
@@ -111,7 +109,7 @@ namespace Logica.Fabricas
         }
     }
 
-    public class JugadorArmadorFabrica() : JugadorFabrica
+    public class JugadorArmadorFabrica : JugadorFabrica
     {
         /// <summary>
         /// Crea un jugador
@@ -132,7 +130,7 @@ namespace Logica.Fabricas
         }
     }
 
-    public class JugadorCentralFabrica() : JugadorFabrica
+    public class JugadorCentralFabrica : JugadorFabrica
     {
         /// <summary>
         /// Crea un jugador

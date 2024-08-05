@@ -106,11 +106,13 @@ public class ComandoNuevaPartida : IComando
     public string Titulo => "Crear nueva partida";
     private IPartidaServicio partidaServicio;
     private IEquipoJugadoresServicio equipoServicio;
+    private IMercadoServicio mercadoServicio;
 
     public ComandoNuevaPartida()
     {
         partidaServicio = new PartidaServicioImpl();
         equipoServicio = new EquipoJugadoresServicioImpl();
+        mercadoServicio = new MercadoServicioImpl();
     }
 
     public void Ejecutar()
@@ -180,10 +182,12 @@ public class ComandoNuevaPartida : IComando
     {
         // Genero los datos necesarios para crear una nueva partida
         int id = partidaServicio.ObtenerNuevoIdPartida();
-        Equipo nuevoEquipo = await equipoServicio.GenerarEquipoAsync(nombreEquipo);
-        Usuario nuevoUsuario = new Usuario(nombreUsuario, nuevoEquipo);
-        Historial nuevoHistorial = new Historial();
-        Partida nuevaPartida = new Partida(id, DateTime.Now, DateTime.Now, nuevoUsuario, nuevoHistorial);
+        var nuevoEquipo = await equipoServicio.GenerarEquipoAsync(nombreEquipo);
+        var nuevoUsuario = new Usuario(nombreUsuario, nuevoEquipo);
+        var nuevoHistorial = new Historial();
+        var jugadoresMercado = await mercadoServicio.GenerarJugadoresMercadoAsync();
+        var nuevoMercado = new Mercado(jugadoresMercado);
+        Partida nuevaPartida = new Partida(id, DateTime.Now, DateTime.Now, nuevoUsuario, nuevoHistorial, nuevoMercado);
 
         // Creo la partida
         partidaServicio.CrearPartida(nuevaPartida);
@@ -248,13 +252,18 @@ public class ComandoNuevaPartida : IComando
 public class ComandoCargarPartida : IComando
 {
     public string Titulo => "Cargar partida";
+    private IPartidaServicio servicio;
+
+    public ComandoCargarPartida()
+    {
+        servicio = new PartidaServicioImpl();
+    }
 
     public void Ejecutar()
     {
         System.Console.WriteLine();
 
         // Obtengo una lista de partidas guardadas
-        IPartidaServicio servicio = new PartidaServicioImpl();
         List<Partida> partidasGuardadas = servicio.ObtenerPartidas();
 
         // Verifico si hay al menos una partida, de lo contrario muestro un mensaje por pantalla

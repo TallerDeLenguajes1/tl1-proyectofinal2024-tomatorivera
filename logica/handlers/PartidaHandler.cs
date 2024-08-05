@@ -46,11 +46,11 @@ public class PartidaHandler
             // Las novedades se recargan solo si se ejecutaron algunos comandos o es la primera vez
             // que ingresa al bucle. Esto para evitar que se recarguen con comandos sencillos como
             // consultar la plantilla o consultar el historial, ya que implica una llamada a una API
-            /*if (recargarNovedades)
+            if (recargarNovedades)
             {
                 controladorDashboard.CargarNovedades();
                 recargarNovedades = false;
-            }*/
+            }
 
             // Muestro el dashboard
             controladorDashboard.MostrarVista();
@@ -115,6 +115,7 @@ public class PartidaHandler
                                     new ComandoJugarAmistoso(),
                                     new ComandoConsultarPlantilla(datosUsuario.Equipo.Jugadores, datosUsuario.Equipo.Nombre),
                                     new ComandoConsultarHistorial(datosUsuario.Equipo.Nombre),
+                                    new ComandoMercadoJugadores(datosUsuario.Equipo.Jugadores),
                                     new ComandoEliminarPartida() { AccionCancelacion = () => { this.partidaEliminada = true; } },
                                     new ComandoSalir(TipoMenu.SECUNDARIO) { AccionSalida = () => this.deseaSalir = true }
                                 })

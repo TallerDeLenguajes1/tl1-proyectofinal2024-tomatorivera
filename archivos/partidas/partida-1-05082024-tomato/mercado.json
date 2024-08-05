@@ -1,0 +1,49 @@
+{
+  "ultima_actualizacion": "2024-08-05T12:25:17.1930432-03:00",
+  "jugadores_mercado": [
+    {
+      "nombre_jugador": "Glen Hudson",
+      "tipo_jugador": "OPUESTO",
+      "experiencia": 4.82,
+      "habilidad_saque": 6.42,
+      "habilidad_remate": 7.76,
+      "habilidad_recepcion": 4.35,
+      "habilidad_colocacion": 3.18,
+      "habilidad_bloqueo": 3.68,
+      "precio_mercado": 44620.0
+    },
+    {
+      "nombre_jugador": "Miguel Ángel Manzanares",
+      "tipo_jugador": "ARMADOR",
+      "experiencia": 7.3,
+      "habilidad_saque": 5.91,
+      "habilidad_remate": 5.92,
+      "habilidad_recepcion": 4.02,
+      "habilidad_colocacion": 6.42,
+      "habilidad_bloqueo": 3.47,
+      "precio_mercado": 25161.0
+    },
+    {
+      "nombre_jugador": "Floyd Vasquez",
+      "tipo_jugador": "OPUESTO",
+      "experiencia": 3.76,
+      "habilidad_saque": 5.56,
+      "habilidad_remate": 7.9,
+      "habilidad_recepcion": 4.41,
+      "habilidad_colocacion": 2.15,
+      "habilidad_bloqueo": 4.26,
+      "precio_mercado": 35696.0
+    },
+    {
+      "nombre_jugador": "Luis Manuel Trujillo",
+      "tipo_jugador": "OPUESTO",
+      "experiencia": 6.64,
+      "habilidad_saque": 6.28,
+      "habilidad_remate": 7.53,
+      "habilidad_recepcion": 3.79,
+      "habilidad_colocacion": 3.18,
+      "habilidad_bloqueo": 3.98,
+      "precio_mercado": 37165.0
+    }
+  ]
+}

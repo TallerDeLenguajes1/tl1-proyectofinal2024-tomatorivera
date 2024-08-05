@@ -1,0 +1,49 @@
+{
+  "ultima_actualizacion": "2024-08-05T12:27:12.672155-03:00",
+  "jugadores_mercado": [
+    {
+      "nombre_jugador": "Enrique Sanz",
+      "tipo_jugador": "ARMADOR",
+      "experiencia": 6.37,
+      "habilidad_saque": 6.54,
+      "habilidad_remate": 5.29,
+      "habilidad_recepcion": 5.02,
+      "habilidad_colocacion": 7.33,
+      "habilidad_bloqueo": 3.7,
+      "precio_mercado": 49443.0
+    },
+    {
+      "nombre_jugador": "Alberto Zúñiga",
+      "tipo_jugador": "ARMADOR",
+      "experiencia": 2.13,
+      "habilidad_saque": 5.99,
+      "habilidad_remate": 4.7,
+      "habilidad_recepcion": 5.37,
+      "habilidad_colocacion": 7.15,
+      "habilidad_bloqueo": 3.65,
+      "precio_mercado": 29255.0
+    },
+    {
+      "nombre_jugador": "Eugenio Gutiérrez",
+      "tipo_jugador": "ARMADOR",
+      "experiencia": 5.36,
+      "habilidad_saque": 5.75,
+      "habilidad_remate": 4.14,
+      "habilidad_recepcion": 4.84,
+      "habilidad_colocacion": 6.44,
+      "habilidad_bloqueo": 2.31,
+      "precio_mercado": 37627.0
+    },
+    {
+      "nombre_jugador": "Xavier Diez",
+      "tipo_jugador": "CENTRAL",
+      "experiencia": 2.61,
+      "habilidad_saque": 5.83,
+      "habilidad_remate": 3.88,
+      "habilidad_recepcion": 4.52,
+      "habilidad_colocacion": 2.58,
+      "habilidad_bloqueo": 5.84,
+      "precio_mercado": 25362.0
+    }
+  ]
+}

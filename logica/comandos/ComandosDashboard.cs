@@ -13,10 +13,14 @@ public class ComandoJugarAmistoso : IComando
 {
     public string Titulo => "Jugar partido amistoso";
     private bool seJugaraAmistoso;
+    private IEquipoJugadoresServicio servicioEquipos;
+    private IUsuarioServicio servicioUsuario;
 
     public ComandoJugarAmistoso()
     {
         seJugaraAmistoso = false;
+        servicioEquipos = new EquipoJugadoresServicioImpl();
+        servicioUsuario = new UsuarioServicioImpl();
     }
 
     public bool SeJugaraAmistoso { get => seJugaraAmistoso; }
@@ -55,8 +59,6 @@ public class ComandoJugarAmistoso : IComando
     /// <returns>Objeto <c>Partido</c></returns>
     private async Task<Partido> generarDatosPartidoAsync(Equipo equipoJugador)
     {
-        var servicioEquipos = new EquipoJugadoresServicioImpl();
-        
         // Genero el equipo rival
         var tipoEquipoConsola = (new Random().Next(2) < 0.5) ? TipoEquipo.LOCAL : TipoEquipo.VISITANTE;
         var equipoRival = await servicioEquipos.GenerarEquipoAsync();
@@ -80,7 +82,6 @@ public class ComandoJugarAmistoso : IComando
         System.Console.WriteLine();
 
         // Obtengo el equipo del usuario
-        var servicioUsuario = new UsuarioServicioImpl();
         var equipoJugador = servicioUsuario.ObtenerDatosUsuario().Equipo;
 
         // A partir de su equipo actual, le solicito 14 jugadores a convocar
@@ -231,7 +232,7 @@ public class ComandoJugarAmistoso : IComando
 
 public class ComandoConsultarPlantilla : IComando
 {
-    public string Titulo => "Consultar plantilla de jugadores";
+    public string Titulo => "Plantilla de jugadores";
 
     private List<Jugador> jugadores;
     private string nombreEquipo;
@@ -252,18 +253,19 @@ public class ComandoConsultarPlantilla : IComando
 
 public class ComandoConsultarHistorial : IComando
 {
-    public string Titulo => "Consultar historial de partidos";
+    public string Titulo => "Historial de partidos";
     private string nombreEquipoJugador;
+    private IHistorialServicio servicioHistorial;
 
     public ComandoConsultarHistorial(string nombreEquipoJugador)
     {
         this.nombreEquipoJugador = nombreEquipoJugador;
+        servicioHistorial = new HistorialServicioImpl();
     }
 
     public void Ejecutar()
     {
         // Obtengo el historial de la partida actual
-        var servicioHistorial = new HistorialServicioImpl();
         var historial = servicioHistorial.ObtenerDatosHistorial();
         
         // Genero un panel de información del historial y lo muestro por pantalla
@@ -276,12 +278,17 @@ public class ComandoEliminarPartida : IComando
 {
     public string Titulo => "Eliminar partida";
     public Action? AccionCancelacion { get; set; }
+    private IPartidaServicio partidaServicio;
+
+    public ComandoEliminarPartida()
+    {
+        partidaServicio = new PartidaServicioImpl();
+    }
 
     public void Ejecutar()
     {
         if (pregunta("¿Está seguro de que desea eliminar esta partida? [si/no]: "))
         {
-            var partidaServicio = new PartidaServicioImpl();
             partidaServicio.EliminarPartida();
 
             if (AccionCancelacion != null) AccionCancelacion.Invoke();
@@ -301,5 +308,107 @@ public class ComandoEliminarPartida : IComando
         string respuesta = Console.ReadLine() ?? string.Empty;
 
         return !string.IsNullOrWhiteSpace(respuesta) && respuesta.ToLower()[0].Equals('s');
+    }
+}
+
+public class ComandoMercadoJugadores : IComando
+{
+    public string Titulo => "Mercado de jugadores";
+    private IMercadoServicio mercadoServicio;
+    private List<Jugador> jugadoresUsuario;
+
+    public ComandoMercadoJugadores(List<Jugador> jugadoresUsuario)
+    {
+        this.jugadoresUsuario = jugadoresUsuario;
+        mercadoServicio = new MercadoServicioImpl();
+    }
+
+    public void Ejecutar()
+    {
+        var mercadoActual = mercadoServicio.ObtenerDatosMercado();
+        // Si ya pasaron 12 horas desde la última actualización del mercado, se regenera
+        if (debeRenerarMercado(mercadoActual)) mercadoActual = mercadoServicio.RegenerarMercadoAsync().GetAwaiter().GetResult();
+        
+        var controladorPanelMercado = new PanelMercadoControlador(new PanelMercado(mercadoActual, jugadoresUsuario));
+
+        // Ejecuto el menú del mercado mientras el usuario no seleccione 'volver al dashboard'
+        Jugador jugadorComprar;
+        do
+        {
+            controladorPanelMercado.MostrarVista();
+
+            jugadorComprar = mostrarMenuSeleccion(mercadoActual);
+
+            // Si el jugador seleccionó que desea cancelar la compra, vuelvo atrás
+            if (string.IsNullOrWhiteSpace(jugadorComprar.Nombre)) return;
+
+            if (pregunta("¿Seguro de que desea realizar esta compra? [si/no]: "))
+            {
+                mercadoServicio.RealizarCompraJugador(jugadorComprar);
+            }   
+        }
+        while (!string.IsNullOrEmpty(jugadorComprar.Nombre));
+    }
+
+    /// <summary>
+    /// Muestra el menú de selección de jugadores disponibles para comprar
+    /// </summary>
+    /// <param name="mercado"></param>
+    /// <returns></returns>
+    private Jugador mostrarMenuSeleccion(Mercado mercado)
+    {
+        var jugadoresMostrar = new List<Jugador>(mercado.Jugadores){ new Jugador() /* opción de salida */ };
+
+        return AnsiConsole.Prompt(
+            new SelectionPrompt<Jugador>()
+                .Title("[orange1 bold]Seleccione el jugador a comprar:[/]")
+                .HighlightStyle("navajowhite1")
+                .AddChoices(jugadoresMostrar.Where(j => !esJugadorComprado(j)))
+                .UseConverter(j => string.IsNullOrWhiteSpace(j.Nombre) ? "[red3]:right_arrow_curving_left: Volver al dashboard[/]"
+                                                                       : j.DescripcionMercado())
+        );
+    }
+
+    /// <summary>
+    /// Realiza una pregunta de sí o no al usuario
+    /// </summary>
+    /// <param name="textoPregunta">Pregunta a realizar</param>
+    /// <returns><c>True</c> si el primer caracter de la cadena es 's', <c>False</c> en caso contrario</returns>
+    private bool pregunta(string textoPregunta) 
+    {
+        System.Console.WriteLine();
+
+        VistasUtil.MostrarCentradoSinSalto(textoPregunta);
+        string respuesta = Console.ReadLine() ?? string.Empty;
+
+        return !string.IsNullOrWhiteSpace(respuesta) && respuesta.ToLower()[0].Equals('s');
+    }
+
+    /// <summary>
+    /// Verifica si ya pasaron las 12 horas desde la ultima actualizacion del mercado
+    /// </summary>
+    /// <param name="mercado">Mercado a evaluar</param>
+    /// <returns>True o false</returns>
+    private bool debeRenerarMercado(Mercado mercado)
+    {
+        return mercado.UltimaActualizacion.AddHours(12) < DateTime.Now;
+    }
+
+    /// <summary>
+    /// Verifica si el usuario ya posee al jugador
+    /// </summary>
+    /// <param name="jugador">Jugador a verificar</param>
+    /// <returns><c>True</c> si el usuario ya tiene un jugador con el mismo nombre, habilidades y experiencia que <paramref name="jugador"/>, <c>False</c> en caso contrario</returns>
+    private bool esJugadorComprado(Jugador jugador)
+    {
+        return jugadoresUsuario.Where(j => j.Nombre.Equals(jugador.Nombre) &&
+                                           j.HabilidadSaque == jugador.HabilidadSaque &&
+                                           j.HabilidadBloqueo == jugador.HabilidadBloqueo &&
+                                           j.HabilidadColocacion == jugador.HabilidadColocacion &&
+                                           j.HabilidadRecepcion == jugador.HabilidadRecepcion &&
+                                           j.HabilidadRemate == jugador.HabilidadRemate &&
+                                           j.Experiencia == jugador.Experiencia
+                                    )
+                                    .Any();
     }
 }

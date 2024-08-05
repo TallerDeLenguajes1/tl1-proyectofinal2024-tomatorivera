@@ -350,7 +350,8 @@ public class Dashboard : Vista
         tablaJugadores.AddColumn(new TableColumn(new Markup("[orange3]Experiencia :timer_clock:[/]")).Centered());
 
         var columnas = new List<Markup>();
-        var nJugadoresMostrar = informacionPartida.Usuario.Equipo.Jugadores.Count();
+        var nJugadoresMaximo = 25;
+        var nJugadoresMostrar = informacionPartida.Usuario.Equipo.Jugadores.Count() < nJugadoresMaximo ? informacionPartida.Usuario.Equipo.Jugadores.Count() : nJugadoresMaximo;
         var equipoJugador = informacionPartida.Usuario.Equipo.Jugadores;
 
         for (int i=0 ; i<nJugadoresMostrar ; i++)
@@ -394,11 +395,11 @@ public class Dashboard : Vista
 
         // Calculo la diferencia de dinero que hay luego de que el usuario realice una actividad
         float dineroActualUsuario = informacionPartida.Usuario.Dinero;
-        var diferenciaDinero = dineroActualUsuario - DineroPrePartido;
+        float diferenciaDinero = dineroActualUsuario - DineroPrePartido;
         string strDiferenciaDinero = diferenciaDinero switch
         {
             > 0 => $"[gray]([/][greenyellow]+ ${Math.Round(diferenciaDinero, 2)}[/][gray])[/]",
-            < 0 => $"[gray]([/][red3_1]- ${Math.Round(diferenciaDinero, 2)}[/][gray])[/]",
+            < 0 => $"[gray]([/][red3_1]- ${Math.Abs(Math.Round(diferenciaDinero, 2))}[/][gray])[/]",
             _ => string.Empty
         };
 
@@ -418,7 +419,7 @@ public class Dashboard : Vista
             // En esta tabla mostraré los últimos partidos del historial
             var tablaPartidos = new Table()
             {
-                Caption = new TableTitle("[italic grey](( Puede consultar el historial detallado más abajo ))[/]")
+                Caption = new TableTitle("[italic grey](( Puede consultar el historial completo abajo ))[/]")
             }
             .Border(TableBorder.Rounded)
             .BorderColor(Color.Orange3);
@@ -934,7 +935,7 @@ public class PanelPartido : Vista
     /// <param name="segundosDelay">Segundos de delay entre la aparición de cada acción en pantalla (por defecto, 0 segs)</param>
     public void ActualizarAcciones(LiveDisplayContext ctx, List<string> acciones, int segundosDelay = 0)
     {
-        int maxLineasVentana = 22 /*Console.WindowHeight / 3 * 2 - 8*/;
+        int maxLineasVentana = 20 /*Console.WindowHeight / 3 * 2 - 8*/;
 
         // En esta variable acumulo las acciones que van mostrandose para realizar la animación
         // de que lo que pasa va dibujandose una línea debajo de otra
@@ -1242,54 +1243,265 @@ public class PanelHistorial : Vista
 /// </summary>
 public class PanelPlantilla : Vista
 {
-    private string nombreEquipo;
-    private List<Jugador> jugadores;
+    private string? nombreEquipo;
+    private List<Jugador>? jugadoresEquipo;
+    private Formacion? jugadoresPartido;
+    private TipoPanelPlantilla tipoPanel;
 
-    public PanelPlantilla(List<Jugador> jugadores, string nombreEquipo)
+    /// <summary>
+    /// Genera una instancia de <see cref="PanelPlantilla"/> para mostrar los jugadores en el dashboard
+    /// </summary>
+    /// <param name="jugadoresEquipo">Lista de jugadores del equipo</param>
+    /// <param name="nombreEquipo">Nombre del equipo</param>
+    public PanelPlantilla(List<Jugador> jugadoresEquipo, string nombreEquipo)
     {
-        this.jugadores = jugadores;
+        this.jugadoresEquipo = jugadoresEquipo;
         this.nombreEquipo = nombreEquipo;
+        tipoPanel = TipoPanelPlantilla.PANEL_DASHBOARD;
+    }
+
+    /// <summary>
+    /// Genera una instancia de <see cref="PanelPlantilla"/> para mostrar los jugadores en un partido
+    /// </summary>
+    /// <param name="jugadoresPartido"><see cref="Formacion"/> de jugadores en el partido</param>
+    public PanelPlantilla(Formacion jugadoresPartido)
+    {
+        this.jugadoresPartido = jugadoresPartido; 
+        tipoPanel = TipoPanelPlantilla.PANEL_PARTIDO;
     }
 
     public override void Dibujar()
     {
-        if (!jugadores.Any())
+        AnsiConsole.Write(
+            tipoPanel == TipoPanelPlantilla.PANEL_DASHBOARD ? obtenerPlantillaDashboard() : obtenerPlantillaPartido()
+        );
+    }
+
+    /// <summary>
+    /// Genera la plantilla de jugadores que se mostrará en el dashboard
+    /// </summary>
+    /// <returns>Instancia de <see cref="Rows"/> con la vista de la plantilla</returns>
+    private Rows obtenerPlantillaDashboard()
+    {
+        if (jugadoresEquipo == null || !jugadoresEquipo.Any())
+            return new Rows(
+                new Markup($"\n:warning: [navajowhite1]El equipo[/] [cornsilk1]{nombreEquipo}[/] [navajowhite1]no tiene jugadores[/]"));
+
+        var indicaciones = new Markup("\n[gray italic](( Presione una tecla para volver al dashboard))[/]");
+        var separador = new Rule().RuleStyle(Style.Parse("gray"));
+        var arbolJugadores = new Tree($":newspaper: [red bold]Jugadores del equipo {nombreEquipo}[/]").Style(Style.Parse("gray"));
+
+        foreach (var jugador in jugadoresEquipo)
         {
-            AnsiConsole.Write(new Markup($"\n:warning: [navajowhite1]El equipo[/] [cornsilk1]{nombreEquipo}[/] [navajowhite1]no tiene jugadores[/]"));
-        }
-        else
-        {
-            var separador = new Rule().RuleStyle(Style.Parse("gray"));
-            var arbolJugadores = new Tree($":newspaper: [red bold]Jugadores del equipo {nombreEquipo}[/]").Style(Style.Parse("gray"));
-            var indicaciones = new Markup("\n[gray italic](( Presione una tecla para volver al dashboard))[/]");
+            var nodoJugador = arbolJugadores.AddNode(
+                $"[cornsilk1]{jugador.NumeroCamiseta}[/] :t_shirt: [navajowhite1]{jugador.Nombre}[/]"
+            );
 
-            foreach (var jugador in jugadores)
-            {
-                var nodoJugador = arbolJugadores.AddNode(
-                    $"[cornsilk1]{jugador.NumeroCamiseta}[/] :t_shirt: [navajowhite1]{jugador.Nombre}[/]"
-                );
+            nodoJugador.AddNode($"[grey70]Posición de preferencia:[/] [gold1]{jugador.TipoJugador}[/]");
+            nodoJugador.AddNode($"[grey70]Experiencia en juego:[/] [gold1]{jugador.Experiencia} pts.[/]");
 
-                nodoJugador.AddNode($"[grey70]Posición de preferencia:[/] [gold1]{jugador.TipoJugador}[/]");
-                nodoJugador.AddNode($"[grey70]Experiencia en juego:[/] [gold1]{jugador.Experiencia} pts.[/]");
-
-                var nodoHabilidades = nodoJugador.AddNode($"[grey70]Habilidades:[/]");
-                nodoHabilidades.AddNode(
-                    $"[gray]SAQUE:[/] {jugador.HabilidadSaque}" +
-                    $"[gray], REMATE:[/] {jugador.HabilidadRemate}" +
-                    $"[gray], RECEPCION:[/] {jugador.HabilidadRecepcion}" +
-                    $"[gray], COLOCACION:[/] {jugador.HabilidadColocacion}" +
-                    $"[gray], BLOQUEO:[/] {jugador.HabilidadBloqueo}"
-                );
-            }
-
-            AnsiConsole.Write(
-                new Rows(
-                    separador,
-                    arbolJugadores,
-                    indicaciones,
-                    separador
-                )
+            var nodoHabilidades = nodoJugador.AddNode($"[grey70]Habilidades:[/]");
+            nodoHabilidades.AddNode(
+                $"[gray]SAQUE:[/] {jugador.HabilidadSaque}" +
+                $"[gray], REMATE:[/] {jugador.HabilidadRemate}" +
+                $"[gray], RECEPCION:[/] {jugador.HabilidadRecepcion}" +
+                $"[gray], COLOCACION:[/] {jugador.HabilidadColocacion}" +
+                $"[gray], BLOQUEO:[/] {jugador.HabilidadBloqueo}"
             );
         }
+
+        return
+            new Rows(
+                separador,
+                arbolJugadores,
+                indicaciones,
+                separador
+            );
+    }
+
+    /// <summary>
+    /// Genera la plantilla de jugadores que se mostrará en el partido
+    /// </summary>
+    /// <returns>Instancia de <see cref="Rows"/> con la vista de la plantilla</returns>
+    private Rows obtenerPlantillaPartido()
+    {
+        if (jugadoresPartido == null)
+            return new Rows(new Markup("\n:warning: [red]Ha ocurrido un error obteniendo la formación del equipo[/]"));
+
+        var separador = new Rule()
+        {
+            Style = Style.Parse("gray bold")
+        };
+
+        // Muestro los jugadores en cancha indicando su zona
+        var arbolTitulares = new Tree(":small_orange_diamond: [orange3]Jugadores en cancha:[/]")
+        {
+            Style = Style.Parse("orange3")
+        };
+        for (int i=0 ; i<jugadoresPartido.JugadoresCancha.Count() ; i++)
+        {
+            arbolTitulares.AddNode($"[greenyellow bold]ZONA {i+1}:[/] {jugadoresPartido.JugadoresCancha.ElementAt(i).DescripcionPartido()}");
+        }
+
+        // Muestro los suplentes
+        var arbolSuplentes = new Tree("\n:small_orange_diamond: [orange3]Jugadores suplentes:[/]")
+        {
+            Style = Style.Parse("orange3")
+        };
+        foreach (var jugador in jugadoresPartido.JugadoresSuplentes)
+        {
+            arbolSuplentes.AddNode($"{jugador.DescripcionPartido()}");
+        }
+
+        return
+            new Rows(
+                separador,
+                arbolTitulares,
+                arbolSuplentes,
+                separador
+            );
+    }
+}
+
+/// <summary>
+/// Clase vista que muestra los datos del mercado
+/// </summary>
+public class PanelMercado : Vista
+{
+    private Mercado informacionMercado;
+    private List<Jugador> jugadoresUsuario;
+
+    public PanelMercado(Mercado informacionMercado, List<Jugador> jugadoresUsuario)
+    {
+        this.informacionMercado = informacionMercado;
+        this.jugadoresUsuario = jugadoresUsuario;
+    }
+
+    public override void Dibujar()
+    {
+        AnsiConsole.Clear();
+
+        var layoutMercado = new Layout("raiz")
+            .SplitRows(
+                new Layout("actualizacion"),
+                new Layout("jugadores")
+                    .SplitRows(
+                        new Layout("jugadores_arriba")
+                            .SplitColumns(
+                                new Layout("jugador_1"),
+                                new Layout("jugador_2")
+                            ),
+                        new Layout("jugadores_abajo")
+                            .SplitColumns(
+                                new Layout("jugador_3"),
+                                new Layout("jugador_4")
+                            )
+                    )
+            );
+
+        var fechaActualizacion = informacionMercado.UltimaActualizacion.AddHours(12);
+        var textoMercado = @$"
+[orange1]⠀⠀⠀⠀⠀⠀⣠⡤⢤⡄⠀⠀⠀⠀                                                            [/]
+[orange1]⠀⠀⠀⠀⠀⣾⣿⠂⠀⣇⣀⠀⠀⠀                                                            [/]
+[orange1]⠀⠀⠀⣠⠖⠉⠀⠀⠀⠀⠀⠉⠙⢢                                                            [/]
+[orange1]⠀⠀⣴⠃⠀⢰⣮⠿⠿⢍⣻⡒⣶⠃    __  __                        _                        [/]
+[orange1]⠀⢀⡿⡄⠀⠈⠳⢤⣀⠀⠀⠉⠁⠀   |  \/  | ___ _ __ ___ __ _  __| | ___                    [/]
+[orange1]⠀ ⢗⠝⡢⣄⡀⠀⠀⠉⠓⠢⡀⠀   | |\/| |/ _ \ '__/ __/ _` |/ _` |/ _ \                   [/]
+[orange1]⠀⠀⠀⠙⠮⢔⣝⣗⠦⣄⠀⠀⠘⡆   | |  | |  __/ | | (_| (_| | (_| | (_) |                  [/]
+[orange1]    ⠀⠀⠀⠉⢳⠬⡇⠀⠀ ⡱   |_|  |_|\___|_|  \___\__,_|\__,_|\___/                    [/]
+[orange1]⢀⡶⡾⠒⠢⠤⠤⠼⠟⠁⠀⢠⡇                                                           [/]
+[orange1]⠺⣍⡣⣄⣀⣀⣀⠀⠀⣠⣤⣴⡟⠁[/]   [orange1]Próxima actualización: [/][yellow]{fechaActualizacion.ToString("dd/MM/yyyy HH:mm")} hs              [/]
+[orange1]⠀⠈⠙⠲⠵⢽⡹⡇⠀⢹⠟⠉⠀⠀                                                            [/]
+[orange1]⠀⠀⠀⠀⠀⢸⡦⣷⢖⣾⠀⠀⠀⠀                                                           [/]
+[orange1]⠀⠀⠀⠀⠀⠈⠛⠓⠋⠁⠀⠀                                                             [/]";
+
+        layoutMercado["actualizacion"].Update(
+            new Panel(Align.Center(new Markup($"{textoMercado}")))
+                .Expand()
+                .BorderColor(Color.Orange1)
+        );
+
+        layoutMercado["actualizacion"].Ratio(3);
+        layoutMercado["jugadores"].Ratio(7);
+
+        // Solo muestro cuatro jugadores
+        Jugador jugadorMostrar;
+        for (int i=0 ; i<4 ; i++)
+        {
+            jugadorMostrar = informacionMercado.Jugadores[i];
+            layoutMercado[$"jugador_{i+1}"].Update(
+                esJugadorComprado(jugadorMostrar) ? dibujarJugadorComprado() 
+                                                  : dibujarInformacionJugador(i+1, jugadorMostrar)
+            );
+        }
+
+        AnsiConsole.Write(layoutMercado);
+    }
+
+    /// <summary>
+    /// Dibuja el panel con información del jugador
+    /// </summary>
+    /// <param name="nJugador">ID del jugador en el panel</param>
+    /// <param name="jugador">Datos del jugador</param>
+    /// <returns>Instancia de <see cref="Panel"/> con los datos del jugador</returns>
+    private Panel dibujarInformacionJugador(int nJugador, Jugador jugador)
+    {
+        return new Panel(Align.Center(
+                    new Rows(
+                        new Markup($"[yellow]{jugador.Nombre}[/] [gray]-[/] [gold1]{jugador.TipoJugador}[/]"),
+                        new Text(""),
+                        new Markup($"[navajowhite1]Habilidad de saque:[/] [cornsilk1]{jugador.HabilidadSaque}[/]"),
+                        new Markup($"[navajowhite1]Habilidad de remate:[/] [cornsilk1]{jugador.HabilidadRemate}[/]"),
+                        new Markup($"[navajowhite1]Habilidad de recepcion:[/] [cornsilk1]{jugador.HabilidadRecepcion}[/]"),
+                        new Markup($"[navajowhite1]Habilidad de bloqueo:[/] [cornsilk1]{jugador.HabilidadBloqueo}[/]"),
+                        new Markup($"[navajowhite1]Habilidad de colocacion:[/] [cornsilk1]{jugador.HabilidadColocacion}[/]"),
+                        new Markup($"[navajowhite1]Experiencia:[/] [cornsilk1]{jugador.Experiencia} pts.[/]"),
+                        new Text(""),
+                        new Markup($":money_with_wings: [grey70]Valor del jugador:[/] [greenyellow]${jugador.Precio}[/]")
+                    ),
+                    VerticalAlignment.Middle
+                ))
+                {
+                    Header = new PanelHeader($"[gold1] Jugador {nJugador} [/]")
+                }
+                .Expand()
+                .BorderColor(Color.Gold1);
+    }
+
+    /// <summary>
+    /// Dibuja el panel para un jugador comprado
+    /// </summary>
+    /// <returns>Instancia de <see cref="Panel"/></returns>
+    private Panel dibujarJugadorComprado()
+    {
+        return new Panel(Align.Center(
+                    new Rows(
+                        new Markup("[greenyellow]Este jugador ya fue comprado[/]")
+                    ),
+                    VerticalAlignment.Middle
+                ))
+                {
+                    Header = new PanelHeader("[greenyellow] COMPRADO [/]")
+                }
+                .Expand()
+                .BorderColor(Color.GreenYellow);
+    }
+
+    /// <summary>
+    /// Verifica si el usuario ya posee al jugador
+    /// </summary>
+    /// <param name="jugador">Jugador a verificar</param>
+    /// <returns><c>True</c> si el usuario ya tiene un jugador con el mismo nombre, habilidades y experiencia que <paramref name="jugador"/>, <c>False</c> en caso contrario</returns>
+    private bool esJugadorComprado(Jugador jugador)
+    {
+        return jugadoresUsuario.Where(j => j.Nombre.Equals(jugador.Nombre) &&
+                                           j.HabilidadSaque == jugador.HabilidadSaque &&
+                                           j.HabilidadBloqueo == jugador.HabilidadBloqueo &&
+                                           j.HabilidadColocacion == jugador.HabilidadColocacion &&
+                                           j.HabilidadRecepcion == jugador.HabilidadRecepcion &&
+                                           j.HabilidadRemate == jugador.HabilidadRemate &&
+                                           j.Experiencia == jugador.Experiencia
+                                    )
+                                    .Any();
     }
 }

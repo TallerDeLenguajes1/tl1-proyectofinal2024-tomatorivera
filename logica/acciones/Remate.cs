@@ -15,7 +15,7 @@ namespace Logica.Acciones
         {
             this.calidadColocacion = calidadColocacion;
             bonificacionRemate = calcularBonificacionRemate();
-            IncrementarCansancio(0.5f, 0.8f);
+            IncrementarCansancio(0.9f, 1.05f);
         }
 
         public override ResultadoAccion Realizar()

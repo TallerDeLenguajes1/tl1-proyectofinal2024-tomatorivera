@@ -20,6 +20,7 @@ namespace Logica.Modelo
         private float habilidadColocacion;
         private float habilidadBloqueo;
         private float cansancio;
+        private float precio;
 
         public Jugador()
         {
@@ -33,12 +34,27 @@ namespace Logica.Modelo
             habilidadColocacion = 0;
             habilidadBloqueo = 0;
             cansancio = 0;
+            precio = 0;
         }
 
         public Jugador(TipoJugador tipoJugador)
         {
             nombre = string.Empty;
             this.tipoJugador = tipoJugador;
+        }
+
+        public Jugador(float habilidadSaque, float habilidadRemate, float habilidadRecepcion, float habilidadColocacion, float habilidadBloqueo, float experiencia)
+        {
+            nombre = string.Empty;
+            numeroCamiseta = -1;
+            this.habilidadSaque = habilidadSaque;
+            this.habilidadRemate = habilidadRemate;
+            this.habilidadRecepcion = habilidadRecepcion;
+            this.habilidadColocacion = habilidadColocacion;
+            this.habilidadBloqueo = habilidadBloqueo;
+            this.experiencia = experiencia;
+            cansancio = 0;
+            precio = CalcularPrecio();
         }
 
         // Propiedades
@@ -71,6 +87,9 @@ namespace Logica.Modelo
         [JsonProperty("habilidad_bloqueo")]
         public float HabilidadBloqueo { get => habilidadBloqueo; set => habilidadBloqueo = value; }
 
+        [JsonProperty("precio_mercado")]
+        public float Precio { get => (float) Math.Round(precio, 2); set => precio = value; }
+
         [JsonIgnore]
         public float Cansancio { get => (float)Math.Round(cansancio, 2); set => cansancio = value; }
         
@@ -99,6 +118,31 @@ namespace Logica.Modelo
         }
 
         /// <summary>
+        /// Calcula la calificación del jugador para el mercado
+        /// </summary>
+        /// <returns><c>float</c> calificación</returns>
+        public float CalcularCalificacion()
+        {
+            return (habilidadSaque + habilidadRecepcion + habilidadBloqueo + habilidadColocacion + habilidadRemate + experiencia) / 6;
+        }
+
+        /// <summary>
+        /// Calcula el precio de este jugador según su calificacion
+        /// </summary>
+        /// <returns><c>float</c> precio del jugador</returns>
+        public float CalcularPrecio()
+        {
+            var rnd = new Random();
+            var promedioSkills = CalcularCalificacion();
+            return promedioSkills switch
+            {
+                < 3 => rnd.Next(5000, 15000),
+                < 7 => rnd.Next(25000, 50000),
+                _ => rnd.Next(65000, 100000)
+            };
+        }
+
+        /// <summary>
         /// Obtiene la descripción de los jugadores utilizada para los partidos
         /// </summary>
         /// <returns><c>string</c> Descripción del jugador con colores</returns>
@@ -108,6 +152,12 @@ namespace Logica.Modelo
                 ? "[red3_1]:right_arrow_curving_left: Cancelar sustitución[/]"
                 : $"[mistyrose3]{numeroCamiseta}[/] :t_shirt: [lightgoldenrod3]{nombre}[/] [tan]({tipoJugador})[/] [gray] - [/][mistyrose3]Cansancio {Math.Round(cansancio, 2)}[/]" +
                 $"[gray] - SAQ:[/] {habilidadSaque} [gray]REM:[/] {habilidadRemate} [gray]REC:[/] {habilidadRecepcion} [gray]COL:[/] {habilidadColocacion} [gray]BLO:[/] {habilidadBloqueo}";
+        }
+
+        public string DescripcionMercado()
+        {
+            return $":volleyball: [lightgoldenrod3]{nombre}[/] [tan]({tipoJugador})[/]" +
+                   $"[gray] - SAQ:[/] {habilidadSaque} [gray]REM:[/] {habilidadRemate} [gray]REC:[/] {habilidadRecepcion} [gray]COL:[/] {habilidadColocacion} [gray]BLO:[/] {habilidadBloqueo}";
         }
 
         public override string ToString()

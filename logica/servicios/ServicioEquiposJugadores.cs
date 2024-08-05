@@ -17,6 +17,8 @@ namespace Logica.Servicios
         Task<List<Jugador>> GenerarJugadoresAsync(int nJugadores);
         Task<string> GenerarNombreJugadorAsync();
         Task<Dictionary<int, string>> GenerarIdentificadoresJugadoresAsync(int nIdentificadores = 1);
+
+        int GenerarIdentificadorUnico(List<int> numerosOcupados);
     }
 
     public class EquipoJugadoresServicioImpl : IEquipoJugadoresServicio
@@ -276,6 +278,19 @@ namespace Logica.Servicios
             }
 
             return listaIdentificadores;
+        }
+
+        /// <summary>
+        /// Genera un identificador (número de camiseta) único a partir de una lista de excluidos
+        /// </summary>
+        /// <param name="numerosOcupados">Lista de números ocupados</param>
+        /// <returns><c>int</c> identificador</returns>
+        public int GenerarIdentificadorUnico(List<int> numerosOcupados)
+        {
+            var numerosDisponibles = Enumerable.Range(nCamisetaMin, nCamisetaMax).Except(numerosOcupados).ToList();
+
+            return numerosDisponibles.Any() ? numerosDisponibles[new Random().Next(numerosDisponibles.Count())]
+                                            : -1;
         }
     }
 }
