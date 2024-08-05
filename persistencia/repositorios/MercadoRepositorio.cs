@@ -1,6 +1,7 @@
 using Logica.Excepciones;
 using Logica.Modelo;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Persistencia.Infraestructura;
 using Persistencia.Util;
 
@@ -9,6 +10,9 @@ namespace Persistencia.Repositorios;
 public class MercadoRepositorio : IRepositorio<Mercado>
 {
     private static Mercado? mercadoActual;
+
+    /// <value>Contiene las propiedades que se excluirán del JSON correspondiente al mercado</value>
+    private DefaultContractResolver mercadoContractResolver = new ExclusionPropiedadesJson(["numero_camiseta"]);
 
     /// <summary>
     /// Crea un nuevo mercado en los archivos de persistencia
@@ -32,7 +36,8 @@ public class MercadoRepositorio : IRepositorio<Mercado>
                 string mercadoSerializado = JsonConvert.SerializeObject(obj,
                                                                         new JsonSerializerSettings {
                                                                             StringEscapeHandling = StringEscapeHandling.EscapeHtml,
-                                                                            Formatting = Formatting.Indented
+                                                                            Formatting = Formatting.Indented,
+                                                                            ContractResolver = mercadoContractResolver
                                                                         });
                 mercadoWriter.WriteLine(mercadoSerializado);
             }
@@ -112,7 +117,8 @@ public class MercadoRepositorio : IRepositorio<Mercado>
                 string mercadoSerializado = JsonConvert.SerializeObject(obj,
                                                                         new JsonSerializerSettings {
                                                                             StringEscapeHandling = StringEscapeHandling.EscapeHtml,
-                                                                            Formatting = Formatting.Indented
+                                                                            Formatting = Formatting.Indented,
+                                                                            ContractResolver = mercadoContractResolver
                                                                         });
                 mercadoWriter.WriteLine(mercadoSerializado);
             }

@@ -28,12 +28,14 @@ namespace Logica.Servicios
         private readonly IRepositorioNavegable<Partida> repositorio;
         private readonly IUsuarioServicio usuarioServicio;
         private readonly IHistorialServicio historialServicio;
+        private readonly IMercadoServicio mercadoServicio;
 
         public PartidaServicioImpl()
         {
             repositorio = new PartidaRepositorioImpl();
             usuarioServicio = new UsuarioServicioImpl();
             historialServicio = new HistorialServicioImpl();
+            mercadoServicio = new MercadoServicioImpl();
         }
 
         /// <summary>
@@ -47,6 +49,7 @@ namespace Logica.Servicios
                 repositorio.Crear(partida);
                 usuarioServicio.CrearUsuario(partida.Usuario);
                 historialServicio.CrearHistorial(partida.Historial);
+                mercadoServicio.CrearMercado(partida.Mercado);
             }
             catch (Exception)
             {
@@ -83,10 +86,12 @@ namespace Logica.Servicios
                 var partida = repositorio.Cargar(id);
                 var usuario = usuarioServicio.ObtenerDatosUsuario(id);
                 var historial = historialServicio.ObtenerDatosHistorial(id);
+                var mercado = mercadoServicio.ObtenerDatosMercado(id);
 
                 // Vinculo los datos a la partida
                 partida.Usuario = usuario;
                 partida.Historial = historial;
+                partida.Mercado = mercado;
 
                 return partida;
             }
@@ -194,6 +199,7 @@ namespace Logica.Servicios
                 repositorio.Guardar(partida);
                 usuarioServicio.GuardarUsuario(partida.Usuario);
                 historialServicio.GuardarHistorial(partida.Historial);
+                mercadoServicio.GuardarMercado(partida.Mercado);
             }
             catch (Exception)
             {
@@ -214,6 +220,7 @@ namespace Logica.Servicios
 
                 usuarioServicio.EliminarUsuario();
                 historialServicio.EliminarHistorial();
+                mercadoServicio.EliminarMercado();
                 repositorio.Eliminar();
             }
             catch (Exception)

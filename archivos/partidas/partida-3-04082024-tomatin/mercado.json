@@ -1,0 +1,45 @@
+{
+  "ultima_actualizacion": "2024-08-04T22:29:18.1181415-03:00",
+  "jugadores_mercado": [
+    {
+      "nombre_jugador": "Jamie Fleming",
+      "tipo_jugador": "LIBERO",
+      "experiencia": 7.1,
+      "habilidad_saque": 2.98,
+      "habilidad_remate": 0.82,
+      "habilidad_recepcion": 7.14,
+      "habilidad_colocacion": 2.33,
+      "habilidad_bloqueo": 0.53
+    },
+    {
+      "nombre_jugador": "Elmer Clark",
+      "tipo_jugador": "LIBERO",
+      "experiencia": 4.82,
+      "habilidad_saque": 2.24,
+      "habilidad_remate": 0.97,
+      "habilidad_recepcion": 6.0,
+      "habilidad_colocacion": 1.5,
+      "habilidad_bloqueo": 1.52
+    },
+    {
+      "nombre_jugador": "Arturo Herrero",
+      "tipo_jugador": "PUNTA",
+      "experiencia": 1.64,
+      "habilidad_saque": 6.29,
+      "habilidad_remate": 6.62,
+      "habilidad_recepcion": 6.54,
+      "habilidad_colocacion": 3.94,
+      "habilidad_bloqueo": 5.4
+    },
+    {
+      "nombre_jugador": "Albert Howell",
+      "tipo_jugador": "PUNTA",
+      "experiencia": 7.39,
+      "habilidad_saque": 5.82,
+      "habilidad_remate": 7.05,
+      "habilidad_recepcion": 5.7,
+      "habilidad_colocacion": 2.33,
+      "habilidad_bloqueo": 4.15
+    }
+  ]
+}

@@ -11,7 +11,7 @@ namespace Persistencia.Repositorios
     {
         private static Historial? historialActual;
 
-        /// <value>Contiene las propiedades que se excluirán del JSON correspondiente al usuario</value>
+        /// <value>Contiene las propiedades que se excluirán del JSON correspondiente al historial</value>
         private DefaultContractResolver historialContractResolver = new ExclusionPropiedadesJson(["jugadores", "total_jugadores"]);
 
         /// <summary>

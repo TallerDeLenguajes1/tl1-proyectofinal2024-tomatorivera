@@ -12,6 +12,7 @@ public class Partida
     private DateTime fechaGuardado;
     private Usuario usuario;
     private Historial historial;
+    private Mercado mercado;
 
     public Partida()
     {
@@ -21,6 +22,7 @@ public class Partida
         fechaGuardado = DateTime.Now;
         usuario = new Usuario();
         historial = new Historial();
+        mercado = new Mercado();
     }
 
     public Partida(int id)
@@ -32,6 +34,7 @@ public class Partida
         fechaGuardado = DateTime.Now;
         usuario = new Usuario();
         historial = new Historial();
+        mercado = new Mercado();
     }
 
     public Partida(int id, DateTime fechaCreacion, Usuario usuario)
@@ -42,15 +45,17 @@ public class Partida
 
         // Valores por defecto
         historial = new Historial();
+        mercado = new Mercado();
     }
 
-    public Partida(int id, DateTime fechaCreacion, DateTime fechaGuardado, Usuario usuario, Historial historial)
+    public Partida(int id, DateTime fechaCreacion, DateTime fechaGuardado, Usuario usuario, Historial historial, Mercado mercado)
     {
         this.id = id;
         this.fechaCreacion = fechaCreacion;
         this.fechaGuardado = fechaGuardado;
         this.usuario = usuario;
         this.historial = historial;
+        this.mercado = mercado;
     }
 
     // Propiedades
@@ -72,6 +77,9 @@ public class Partida
 
     [JsonIgnore] // El historial será mostrado en otro JSON
     public Historial Historial { get => historial; set => historial = value; }
+
+    [JsonIgnore] // El mercado será mostrado en otro JSON
+    public Mercado Mercado { get => mercado; set => mercado = value; }
 
     // Métodos
 

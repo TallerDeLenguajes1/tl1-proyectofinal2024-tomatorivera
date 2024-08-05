@@ -106,11 +106,13 @@ public class ComandoNuevaPartida : IComando
     public string Titulo => "Crear nueva partida";
     private IPartidaServicio partidaServicio;
     private IEquipoJugadoresServicio equipoServicio;
+    private IMercadoServicio mercadoServicio;
 
     public ComandoNuevaPartida()
     {
         partidaServicio = new PartidaServicioImpl();
         equipoServicio = new EquipoJugadoresServicioImpl();
+        mercadoServicio = new MercadoServicioImpl();
     }
 
     public void Ejecutar()
@@ -180,10 +182,11 @@ public class ComandoNuevaPartida : IComando
     {
         // Genero los datos necesarios para crear una nueva partida
         int id = partidaServicio.ObtenerNuevoIdPartida();
-        Equipo nuevoEquipo = await equipoServicio.GenerarEquipoAsync(nombreEquipo);
-        Usuario nuevoUsuario = new Usuario(nombreUsuario, nuevoEquipo);
-        Historial nuevoHistorial = new Historial();
-        Partida nuevaPartida = new Partida(id, DateTime.Now, DateTime.Now, nuevoUsuario, nuevoHistorial);
+        var nuevoEquipo = await equipoServicio.GenerarEquipoAsync(nombreEquipo);
+        var nuevoUsuario = new Usuario(nombreUsuario, nuevoEquipo);
+        var nuevoHistorial = new Historial();
+        var nuevoMercado = await mercadoServicio.RegenerarMercadoAsync();
+        Partida nuevaPartida = new Partida(id, DateTime.Now, DateTime.Now, nuevoUsuario, nuevoHistorial, nuevoMercado);
 
         // Creo la partida
         partidaServicio.CrearPartida(nuevaPartida);

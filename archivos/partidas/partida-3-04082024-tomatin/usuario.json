@@ -1,0 +1,164 @@
+{
+  "nombre_usuario": "tomatin",
+  "ganancias": 0.0,
+  "equipo": {
+    "nombre_equipo": "Ferro Carril Oeste W",
+    "total_jugadores": 14,
+    "jugadores": [
+      {
+        "nombre_jugador": "Darrell Kim",
+        "numero_camiseta": 16,
+        "tipo_jugador": "PUNTA",
+        "experiencia": 6.87,
+        "habilidad_saque": 6.22,
+        "habilidad_remate": 6.9,
+        "habilidad_recepcion": 6.04,
+        "habilidad_colocacion": 3.83,
+        "habilidad_bloqueo": 4.27
+      },
+      {
+        "nombre_jugador": "Ramses Granados",
+        "numero_camiseta": 26,
+        "tipo_jugador": "CENTRAL",
+        "experiencia": 6.06,
+        "habilidad_saque": 5.46,
+        "habilidad_remate": 3.87,
+        "habilidad_recepcion": 5.4,
+        "habilidad_colocacion": 2.01,
+        "habilidad_bloqueo": 6.93
+      },
+      {
+        "nombre_jugador": "Rubén Caballero",
+        "numero_camiseta": 40,
+        "tipo_jugador": "ARMADOR",
+        "experiencia": 9.78,
+        "habilidad_saque": 5.69,
+        "habilidad_remate": 4.75,
+        "habilidad_recepcion": 4.65,
+        "habilidad_colocacion": 7.14,
+        "habilidad_bloqueo": 3.64
+      },
+      {
+        "nombre_jugador": "Jimmy Anderson",
+        "numero_camiseta": 19,
+        "tipo_jugador": "ARMADOR",
+        "experiencia": 6.93,
+        "habilidad_saque": 6.15,
+        "habilidad_remate": 5.31,
+        "habilidad_recepcion": 4.06,
+        "habilidad_colocacion": 7.07,
+        "habilidad_bloqueo": 3.38
+      },
+      {
+        "nombre_jugador": "Ernesto Guajardo",
+        "numero_camiseta": 45,
+        "tipo_jugador": "ARMADOR",
+        "experiencia": 4.22,
+        "habilidad_saque": 5.93,
+        "habilidad_remate": 4.07,
+        "habilidad_recepcion": 3.93,
+        "habilidad_colocacion": 7.34,
+        "habilidad_bloqueo": 3.12
+      },
+      {
+        "nombre_jugador": "David Archuleta",
+        "numero_camiseta": 38,
+        "tipo_jugador": "PUNTA",
+        "experiencia": 8.52,
+        "habilidad_saque": 6.63,
+        "habilidad_remate": 6.9,
+        "habilidad_recepcion": 6.63,
+        "habilidad_colocacion": 2.59,
+        "habilidad_bloqueo": 5.28
+      },
+      {
+        "nombre_jugador": "Nicolás Mireles",
+        "numero_camiseta": 13,
+        "tipo_jugador": "CENTRAL",
+        "experiencia": 8.27,
+        "habilidad_saque": 5.58,
+        "habilidad_remate": 4.81,
+        "habilidad_recepcion": 4.36,
+        "habilidad_colocacion": 3.3,
+        "habilidad_bloqueo": 6.82
+      },
+      {
+        "nombre_jugador": "Alfredo Rodríguez",
+        "numero_camiseta": 3,
+        "tipo_jugador": "ARMADOR",
+        "experiencia": 6.36,
+        "habilidad_saque": 5.58,
+        "habilidad_remate": 5.91,
+        "habilidad_recepcion": 4.87,
+        "habilidad_colocacion": 6.78,
+        "habilidad_bloqueo": 3.17
+      },
+      {
+        "nombre_jugador": "Joaquin Santos",
+        "numero_camiseta": 23,
+        "tipo_jugador": "CENTRAL",
+        "experiencia": 1.06,
+        "habilidad_saque": 5.99,
+        "habilidad_remate": 4.63,
+        "habilidad_recepcion": 5.32,
+        "habilidad_colocacion": 2.33,
+        "habilidad_bloqueo": 5.59
+      },
+      {
+        "nombre_jugador": "Iván Caraballo",
+        "numero_camiseta": 21,
+        "tipo_jugador": "ARMADOR",
+        "experiencia": 7.21,
+        "habilidad_saque": 5.85,
+        "habilidad_remate": 5.41,
+        "habilidad_recepcion": 5.28,
+        "habilidad_colocacion": 6.43,
+        "habilidad_bloqueo": 2.82
+      },
+      {
+        "nombre_jugador": "Luis Moya",
+        "numero_camiseta": 14,
+        "tipo_jugador": "PUNTA",
+        "experiencia": 1.66,
+        "habilidad_saque": 5.3,
+        "habilidad_remate": 6.84,
+        "habilidad_recepcion": 6.59,
+        "habilidad_colocacion": 2.39,
+        "habilidad_bloqueo": 4.44
+      },
+      {
+        "nombre_jugador": "Fred Wallace",
+        "numero_camiseta": 8,
+        "tipo_jugador": "CENTRAL",
+        "experiencia": 1.56,
+        "habilidad_saque": 5.68,
+        "habilidad_remate": 4.85,
+        "habilidad_recepcion": 4.82,
+        "habilidad_colocacion": 2.2,
+        "habilidad_bloqueo": 5.45
+      },
+      {
+        "nombre_jugador": "Reynaldo Burgos",
+        "numero_camiseta": 15,
+        "tipo_jugador": "CENTRAL",
+        "experiencia": 1.56,
+        "habilidad_saque": 5.24,
+        "habilidad_remate": 3.03,
+        "habilidad_recepcion": 4.55,
+        "habilidad_colocacion": 2.08,
+        "habilidad_bloqueo": 6.43
+      },
+      {
+        "nombre_jugador": "Francis Ford",
+        "numero_camiseta": 5,
+        "tipo_jugador": "PUNTA",
+        "experiencia": 9.0,
+        "habilidad_saque": 6.46,
+        "habilidad_remate": 6.04,
+        "habilidad_recepcion": 4.91,
+        "habilidad_colocacion": 2.88,
+        "habilidad_bloqueo": 5.22
+      }
+    ]
+  }
+}
