@@ -49,6 +49,18 @@ public class Equipo
 
     [JsonProperty("jugadores_convocados")]
     public List<string> JugadoresConvocados { get => (formacionPartido != null) ? formacionPartido.ObtenerListaJugadores().Select(j => $"{j.Nombre} ({j.NumeroCamiseta})").ToList() : new List<string>(); }
+
+    // Métodos
+
+    /// <summary>
+    /// Agrega un jugador al equipo incrementando el número de jugadores
+    /// </summary>
+    /// <param name="jugador">Jugador a agregar</param>
+    public void AgregarJugador(Jugador jugador)
+    {
+        jugadores.Add(jugador);
+        nJugadores++;
+    }
 }
 
 // Modelos para API's relacionadas al equipo

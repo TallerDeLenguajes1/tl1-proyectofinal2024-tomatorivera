@@ -175,7 +175,7 @@ public class MercadoServicioImpl : IMercadoServicio
                 throw new PlantillaLlenaException("Ya has alcanzado el límite de jugadores en tu plantel");
 
             jugador.NumeroCamiseta = jugadoresServicio.GenerarIdentificadorUnico(usuarioActual.Equipo.Jugadores.Select(j => j.NumeroCamiseta).ToList());
-            usuarioActual.Equipo.Jugadores.Add(jugador);
+            usuarioActual.Equipo.AgregarJugador(jugador);
             usuarioActual.Dinero -= jugador.Precio;
         }
         catch (Exception)

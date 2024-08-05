@@ -71,7 +71,7 @@ public class ComandoRealizarSustitucion : IComando
 
 public class ComandoVisualizarPlantilla : IComando
 {
-    public string Titulo => "Revisar estadísticas de los jugadores en cancha";
+    public string Titulo => "Revisar plantilla de jugadores";
     private Formacion plantilla;
 
     public ComandoVisualizarPlantilla(Formacion plantilla)

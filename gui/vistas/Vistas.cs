@@ -350,7 +350,8 @@ public class Dashboard : Vista
         tablaJugadores.AddColumn(new TableColumn(new Markup("[orange3]Experiencia :timer_clock:[/]")).Centered());
 
         var columnas = new List<Markup>();
-        var nJugadoresMostrar = informacionPartida.Usuario.Equipo.Jugadores.Count();
+        var nJugadoresMaximo = 25;
+        var nJugadoresMostrar = informacionPartida.Usuario.Equipo.Jugadores.Count() < nJugadoresMaximo ? informacionPartida.Usuario.Equipo.Jugadores.Count() : nJugadoresMaximo;
         var equipoJugador = informacionPartida.Usuario.Equipo.Jugadores;
 
         for (int i=0 ; i<nJugadoresMostrar ; i++)
@@ -418,7 +419,7 @@ public class Dashboard : Vista
             // En esta tabla mostraré los últimos partidos del historial
             var tablaPartidos = new Table()
             {
-                Caption = new TableTitle("[italic grey](( Puede consultar el historial detallado más abajo ))[/]")
+                Caption = new TableTitle("[italic grey](( Puede consultar el historial completo abajo ))[/]")
             }
             .Border(TableBorder.Rounded)
             .BorderColor(Color.Orange3);
@@ -934,7 +935,7 @@ public class PanelPartido : Vista
     /// <param name="segundosDelay">Segundos de delay entre la aparición de cada acción en pantalla (por defecto, 0 segs)</param>
     public void ActualizarAcciones(LiveDisplayContext ctx, List<string> acciones, int segundosDelay = 0)
     {
-        int maxLineasVentana = 22 /*Console.WindowHeight / 3 * 2 - 8*/;
+        int maxLineasVentana = 20 /*Console.WindowHeight / 3 * 2 - 8*/;
 
         // En esta variable acumulo las acciones que van mostrandose para realizar la animación
         // de que lo que pasa va dibujandose una línea debajo de otra

@@ -1,9 +1,9 @@
 {
   "nombre_usuario": "tomato",
-  "ganancias": 5529.0,
+  "ganancias": 105380.0,
   "equipo": {
     "nombre_equipo": "BokitaJr",
-    "total_jugadores": 14,
+    "total_jugadores": 21,
     "jugadores": [
       {
         "nombre_jugador": "Julian Ulloa",
@@ -213,6 +213,28 @@
         "habilidad_recepcion": 5.0,
         "habilidad_colocacion": 3.31,
         "habilidad_bloqueo": 4.79
+      },
+      {
+        "nombre_jugador": "Miguel Ángel Manzanares",
+        "numero_camiseta": 41,
+        "tipo_jugador": "ARMADOR",
+        "experiencia": 7.3,
+        "habilidad_saque": 5.91,
+        "habilidad_remate": 5.92,
+        "habilidad_recepcion": 4.02,
+        "habilidad_colocacion": 6.42,
+        "habilidad_bloqueo": 3.47
+      },
+      {
+        "nombre_jugador": "Glen Hudson",
+        "numero_camiseta": 27,
+        "tipo_jugador": "OPUESTO",
+        "experiencia": 4.82,
+        "habilidad_saque": 6.42,
+        "habilidad_remate": 7.76,
+        "habilidad_recepcion": 4.35,
+        "habilidad_colocacion": 3.18,
+        "habilidad_bloqueo": 3.68
       }
     ]
   }

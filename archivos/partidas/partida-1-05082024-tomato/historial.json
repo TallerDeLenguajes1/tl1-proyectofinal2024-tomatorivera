@@ -1,5 +1,5 @@
 {
-  "total_partidos_jugados": 2,
+  "total_partidos_jugados": 5,
   "historial_partidos": [
     {
       "tipo_de_partido": "AMISTOSO",
@@ -44,6 +44,75 @@
         "1": {
           "PuntosLocal": 1,
           "PuntosVisitante": 0
+        }
+      }
+    },
+    {
+      "tipo_de_partido": "AMISTOSO",
+      "nombre_ganador": "ABANDONADO",
+      "al_mejor_de": 1,
+      "equipo_local": {
+        "nombre_equipo": "BokitaJr",
+        "es_equipo_jugador": true,
+        "jugadores_convocados": []
+      },
+      "equipo_visitante": {
+        "nombre_equipo": "Monteros",
+        "es_equipo_jugador": false,
+        "jugadores_convocados": []
+      },
+      "score_local": 0,
+      "score_visitante": 0,
+      "resultados_sets": {
+        "1": {
+          "PuntosLocal": 0,
+          "PuntosVisitante": 2
+        }
+      }
+    },
+    {
+      "tipo_de_partido": "AMISTOSO",
+      "nombre_ganador": "BokitaJr",
+      "al_mejor_de": 1,
+      "equipo_local": {
+        "nombre_equipo": "BokitaJr",
+        "es_equipo_jugador": true,
+        "jugadores_convocados": []
+      },
+      "equipo_visitante": {
+        "nombre_equipo": "Atenas W",
+        "es_equipo_jugador": false,
+        "jugadores_convocados": []
+      },
+      "score_local": 1,
+      "score_visitante": 0,
+      "resultados_sets": {
+        "1": {
+          "PuntosLocal": 6,
+          "PuntosVisitante": 4
+        }
+      }
+    },
+    {
+      "tipo_de_partido": "AMISTOSO",
+      "nombre_ganador": "Personal Bolivar",
+      "al_mejor_de": 1,
+      "equipo_local": {
+        "nombre_equipo": "Personal Bolivar",
+        "es_equipo_jugador": false,
+        "jugadores_convocados": []
+      },
+      "equipo_visitante": {
+        "nombre_equipo": "BokitaJr",
+        "es_equipo_jugador": true,
+        "jugadores_convocados": []
+      },
+      "score_local": 1,
+      "score_visitante": 0,
+      "resultados_sets": {
+        "1": {
+          "PuntosLocal": 5,
+          "PuntosVisitante": 2
         }
       }
     }

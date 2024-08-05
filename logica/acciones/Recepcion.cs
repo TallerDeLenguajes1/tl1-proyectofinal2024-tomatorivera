@@ -10,7 +10,7 @@ namespace Logica.Acciones
     {
         public Recepcion(Rally rally) : base(rally)
         {
-            IncrementarCansancio(0.3f, 0.5f);
+            IncrementarCansancio(0.7f, 0.9f);
         }
 
         public override ResultadoAccion Realizar()

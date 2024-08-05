@@ -9,7 +9,7 @@ namespace Logica.Acciones
         public Colocacion(Rally rally, CalidadAccion calidadPaseAnterior) : base(rally)
         {
             this.calidadPaseAnterior = calidadPaseAnterior;
-            IncrementarCansancio(0.4f, 0.7f);
+            IncrementarCansancio(0.8f, 1.0f);
         }
 
         public override ResultadoAccion Realizar()
