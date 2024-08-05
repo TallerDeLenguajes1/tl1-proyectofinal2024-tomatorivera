@@ -1,5 +1,7 @@
+using Logica.Excepciones;
 using Logica.Modelo;
 using Persistencia;
+using Persistencia.Infraestructura;
 using Persistencia.Repositorios;
 
 namespace Logica.Servicios;
@@ -22,11 +24,13 @@ public class MercadoServicioImpl : IMercadoServicio
 {
     private readonly IRepositorio<Mercado> repositorio;
     private readonly IEquipoJugadoresServicio jugadoresServicio;
+    private readonly IUsuarioServicio usuarioServicio;
 
     public MercadoServicioImpl()
     {
         repositorio = new MercadoRepositorio();
         jugadoresServicio = new EquipoJugadoresServicioImpl();
+        usuarioServicio = new UsuarioServicioImpl();
     }
 
     /// <summary>
@@ -150,8 +154,27 @@ public class MercadoServicioImpl : IMercadoServicio
     /// Realiza la compra de un jugador para el usuario
     /// </summary>
     /// <param name="jugador">Jugador a comprar</param>
+    /// <exception cref="DineroInsuficienteException">Si el usuario no tiene suficiente dinero para la compra de <paramref name="jugador"/></exception>
     public void RealizarCompraJugador(Jugador jugador)
     {
+        try
+        {
+            var usuarioActual = usuarioServicio.ObtenerDatosUsuario();
 
+            // Verifico si el usuario posee dinero para la compra
+            if (usuarioActual.Dinero < jugador.Precio)
+                throw new DineroInsuficienteException("No tienes la cantidad de dinero suficiente para realizar la compra");
+            // Verifico si el usuario tiene la plantilla llena
+            if (usuarioActual.Equipo.Jugadores.Count() >= Config.LimiteJugadoresPlantilla)
+                throw new PlantillaLlenaException("Ya has alcanzado el límite de jugadores en tu plantel");
+
+            jugador.NumeroCamiseta = jugadoresServicio.GenerarIdentificadorUnico(usuarioActual.Equipo.Jugadores.Select(j => j.NumeroCamiseta).ToList());
+            usuarioActual.Equipo.Jugadores.Add(jugador);
+            usuarioActual.Dinero -= jugador.Precio;
+        }
+        catch (Exception)
+        {
+            throw;
+        }
     }
 }

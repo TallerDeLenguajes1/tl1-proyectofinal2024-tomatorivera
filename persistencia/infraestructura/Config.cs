@@ -38,6 +38,7 @@ namespace Persistencia.Infraestructura
         public static string? ApiRandomUserUrl { get; set; }
 
         public static int LimitePartidasCreadas { get; set; }
+        public static int LimiteJugadoresPlantilla { get; set; }
 
         // Datos cargados durante la ejecución
         public static string? DirectorioPartidaActual { get; set; }
@@ -80,6 +81,7 @@ namespace Persistencia.Infraestructura
             ApiRandomUserUrl = "https://randomuser.me/api/";
 
             LimitePartidasCreadas = 10;
+            LimiteJugadoresPlantilla = 30;
         }
     }
 }

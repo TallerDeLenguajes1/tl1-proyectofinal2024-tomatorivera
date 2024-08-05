@@ -1,6 +1,6 @@
 {
   "nombre_usuario": "tomato",
-  "ganancias": 0.0,
+  "ganancias": 22107.0,
   "equipo": {
     "nombre_equipo": "BokitaJr",
     "total_jugadores": 14,
@@ -158,6 +158,28 @@
         "habilidad_recepcion": 4.93,
         "habilidad_colocacion": 2.34,
         "habilidad_bloqueo": 5.26
+      },
+      {
+        "nombre_jugador": "Rubén Centeno",
+        "numero_camiseta": 21,
+        "tipo_jugador": "PUNTA",
+        "experiencia": 9.67,
+        "habilidad_saque": 5.77,
+        "habilidad_remate": 6.54,
+        "habilidad_recepcion": 6.42,
+        "habilidad_colocacion": 2.86,
+        "habilidad_bloqueo": 4.99
+      },
+      {
+        "nombre_jugador": "Pedro Rubio",
+        "numero_camiseta": 5,
+        "tipo_jugador": "PUNTA",
+        "experiencia": 6.24,
+        "habilidad_saque": 5.3,
+        "habilidad_remate": 6.9,
+        "habilidad_recepcion": 5.33,
+        "habilidad_colocacion": 2.86,
+        "habilidad_bloqueo": 4.99
       }
     ]
   }

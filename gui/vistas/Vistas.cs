@@ -394,11 +394,11 @@ public class Dashboard : Vista
 
         // Calculo la diferencia de dinero que hay luego de que el usuario realice una actividad
         float dineroActualUsuario = informacionPartida.Usuario.Dinero;
-        var diferenciaDinero = dineroActualUsuario - DineroPrePartido;
+        float diferenciaDinero = dineroActualUsuario - DineroPrePartido;
         string strDiferenciaDinero = diferenciaDinero switch
         {
             > 0 => $"[gray]([/][greenyellow]+ ${Math.Round(diferenciaDinero, 2)}[/][gray])[/]",
-            < 0 => $"[gray]([/][red3_1]- ${Math.Round(diferenciaDinero, 2)}[/][gray])[/]",
+            < 0 => $"[gray]([/][red3_1]- ${Math.Abs(Math.Round(diferenciaDinero, 2))}[/][gray])[/]",
             _ => string.Empty
         };
 

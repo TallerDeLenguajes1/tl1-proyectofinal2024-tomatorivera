@@ -31,42 +31,12 @@
       "equipo_local": {
         "nombre_equipo": "BokitaJr",
         "es_equipo_jugador": true,
-        "jugadores_convocados": [
-          "Francisco Monroy (48)",
-          "Owen Castillo (42)",
-          "Ángel Armas (39)",
-          "Vicente Sáez (43)",
-          "Julian Ulloa (45)",
-          "Ricardo Vergara (44)",
-          "Arturo Velasco (3)",
-          "Francisco Fuentes (8)",
-          "Emilio Ortiz (13)",
-          "Kurt Allen (46)",
-          "Pilar Bravo (49)",
-          "Stephen Scott (14)",
-          "Xavier Crespo (26)",
-          "Víctor Nieto (6)"
-        ]
+        "jugadores_convocados": []
       },
       "equipo_visitante": {
         "nombre_equipo": "Tucuman W",
         "es_equipo_jugador": false,
-        "jugadores_convocados": [
-          "Alfred Garza (41)",
-          "Arturo Ibáñez (1)",
-          "Isaac Sanz (3)",
-          "Pablo Cano (5)",
-          "Zack Sullivan (11)",
-          "Phillip Gibson (24)",
-          "Jordi Arias (22)",
-          "Allan Reid (7)",
-          "Bernardo Mayorga (18)",
-          "Tommy Coleman (17)",
-          "Silvano Santillán (28)",
-          "Guillermo Olvera (49)",
-          "Wendolin Cedillo (33)",
-          "José Carlos Manzanares (43)"
-        ]
+        "jugadores_convocados": []
       },
       "score_local": 0,
       "score_visitante": 0,

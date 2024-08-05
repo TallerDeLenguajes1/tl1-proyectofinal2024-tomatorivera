@@ -11,3 +11,9 @@ public class DineroInsuficienteException : VoleyballManagerRuntimeException
     public DineroInsuficienteException(string message) : base(message)
     {}
 }
+
+public class PlantillaLlenaException : VoleyballManagerRuntimeException
+{
+    public PlantillaLlenaException(string message) : base(message)
+    {}
+}

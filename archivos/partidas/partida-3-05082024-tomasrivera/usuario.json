@@ -1,0 +1,164 @@
+{
+  "nombre_usuario": "tomasrivera",
+  "ganancias": 0.0,
+  "equipo": {
+    "nombre_equipo": "Jesus Maria",
+    "total_jugadores": 14,
+    "jugadores": [
+      {
+        "nombre_jugador": "Jon Shaw",
+        "numero_camiseta": 31,
+        "tipo_jugador": "LIBERO",
+        "experiencia": 9.2,
+        "habilidad_saque": 3.32,
+        "habilidad_remate": 1.47,
+        "habilidad_recepcion": 6.07,
+        "habilidad_colocacion": 1.15,
+        "habilidad_bloqueo": 1.83
+      },
+      {
+        "nombre_jugador": "Federico Olvera",
+        "numero_camiseta": 25,
+        "tipo_jugador": "OPUESTO",
+        "experiencia": 9.33,
+        "habilidad_saque": 6.99,
+        "habilidad_remate": 7.34,
+        "habilidad_recepcion": 4.79,
+        "habilidad_colocacion": 2.71,
+        "habilidad_bloqueo": 4.0
+      },
+      {
+        "nombre_jugador": "Gabriel Orta",
+        "numero_camiseta": 27,
+        "tipo_jugador": "ARMADOR",
+        "experiencia": 7.21,
+        "habilidad_saque": 6.05,
+        "habilidad_remate": 4.43,
+        "habilidad_recepcion": 4.5,
+        "habilidad_colocacion": 6.98,
+        "habilidad_bloqueo": 2.59
+      },
+      {
+        "nombre_jugador": "Federico Sotelo",
+        "numero_camiseta": 15,
+        "tipo_jugador": "OPUESTO",
+        "experiencia": 1.02,
+        "habilidad_saque": 6.07,
+        "habilidad_remate": 7.31,
+        "habilidad_recepcion": 3.63,
+        "habilidad_colocacion": 3.4,
+        "habilidad_bloqueo": 4.83
+      },
+      {
+        "nombre_jugador": "Eduardo King",
+        "numero_camiseta": 5,
+        "tipo_jugador": "OPUESTO",
+        "experiencia": 5.14,
+        "habilidad_saque": 6.82,
+        "habilidad_remate": 7.63,
+        "habilidad_recepcion": 4.43,
+        "habilidad_colocacion": 3.24,
+        "habilidad_bloqueo": 3.78
+      },
+      {
+        "nombre_jugador": "Hernán Bustos",
+        "numero_camiseta": 29,
+        "tipo_jugador": "OPUESTO",
+        "experiencia": 1.86,
+        "habilidad_saque": 6.19,
+        "habilidad_remate": 6.2,
+        "habilidad_recepcion": 4.81,
+        "habilidad_colocacion": 3.78,
+        "habilidad_bloqueo": 4.93
+      },
+      {
+        "nombre_jugador": "Antonio Johnson",
+        "numero_camiseta": 42,
+        "tipo_jugador": "OPUESTO",
+        "experiencia": 5.22,
+        "habilidad_saque": 6.73,
+        "habilidad_remate": 7.58,
+        "habilidad_recepcion": 4.47,
+        "habilidad_colocacion": 2.5,
+        "habilidad_bloqueo": 3.45
+      },
+      {
+        "nombre_jugador": "Jorge Ureña",
+        "numero_camiseta": 48,
+        "tipo_jugador": "LIBERO",
+        "experiencia": 9.27,
+        "habilidad_saque": 3.24,
+        "habilidad_remate": 1.13,
+        "habilidad_recepcion": 7.05,
+        "habilidad_colocacion": 1.78,
+        "habilidad_bloqueo": 1.53
+      },
+      {
+        "nombre_jugador": "Enrique Ayala",
+        "numero_camiseta": 30,
+        "tipo_jugador": "CENTRAL",
+        "experiencia": 3.08,
+        "habilidad_saque": 5.67,
+        "habilidad_remate": 3.85,
+        "habilidad_recepcion": 5.32,
+        "habilidad_colocacion": 2.64,
+        "habilidad_bloqueo": 6.28
+      },
+      {
+        "nombre_jugador": "Jared Burton",
+        "numero_camiseta": 39,
+        "tipo_jugador": "PUNTA",
+        "experiencia": 7.23,
+        "habilidad_saque": 6.53,
+        "habilidad_remate": 5.82,
+        "habilidad_recepcion": 5.65,
+        "habilidad_colocacion": 3.73,
+        "habilidad_bloqueo": 5.23
+      },
+      {
+        "nombre_jugador": "Isaac Parker",
+        "numero_camiseta": 44,
+        "tipo_jugador": "PUNTA",
+        "experiencia": 4.46,
+        "habilidad_saque": 5.69,
+        "habilidad_remate": 5.53,
+        "habilidad_recepcion": 4.93,
+        "habilidad_colocacion": 2.31,
+        "habilidad_bloqueo": 4.28
+      },
+      {
+        "nombre_jugador": "Benjamín Lugo",
+        "numero_camiseta": 41,
+        "tipo_jugador": "ARMADOR",
+        "experiencia": 6.67,
+        "habilidad_saque": 6.21,
+        "habilidad_remate": 5.63,
+        "habilidad_recepcion": 4.68,
+        "habilidad_colocacion": 6.41,
+        "habilidad_bloqueo": 2.66
+      },
+      {
+        "nombre_jugador": "Santiago Gallego",
+        "numero_camiseta": 21,
+        "tipo_jugador": "PUNTA",
+        "experiencia": 5.51,
+        "habilidad_saque": 6.0,
+        "habilidad_remate": 6.96,
+        "habilidad_recepcion": 6.41,
+        "habilidad_colocacion": 2.9,
+        "habilidad_bloqueo": 4.51
+      },
+      {
+        "nombre_jugador": "Dwight May",
+        "numero_camiseta": 37,
+        "tipo_jugador": "OPUESTO",
+        "experiencia": 6.48,
+        "habilidad_saque": 6.13,
+        "habilidad_remate": 7.33,
+        "habilidad_recepcion": 3.73,
+        "habilidad_colocacion": 3.51,
+        "habilidad_bloqueo": 4.56
+      }
+    ]
+  }
+}

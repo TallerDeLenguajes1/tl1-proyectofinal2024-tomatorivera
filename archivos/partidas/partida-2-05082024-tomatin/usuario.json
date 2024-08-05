@@ -1,0 +1,164 @@
+{
+  "nombre_usuario": "tomatin",
+  "ganancias": 0.0,
+  "equipo": {
+    "nombre_equipo": "Ciudad",
+    "total_jugadores": 14,
+    "jugadores": [
+      {
+        "nombre_jugador": "Marco Gil",
+        "numero_camiseta": 25,
+        "tipo_jugador": "OPUESTO",
+        "experiencia": 7.95,
+        "habilidad_saque": 6.26,
+        "habilidad_remate": 6.66,
+        "habilidad_recepcion": 3.24,
+        "habilidad_colocacion": 3.94,
+        "habilidad_bloqueo": 4.95
+      },
+      {
+        "nombre_jugador": "Roy Allen",
+        "numero_camiseta": 1,
+        "tipo_jugador": "OPUESTO",
+        "experiencia": 9.91,
+        "habilidad_saque": 6.92,
+        "habilidad_remate": 6.12,
+        "habilidad_recepcion": 3.88,
+        "habilidad_colocacion": 3.62,
+        "habilidad_bloqueo": 4.52
+      },
+      {
+        "nombre_jugador": "Stephen Edwards",
+        "numero_camiseta": 45,
+        "tipo_jugador": "ARMADOR",
+        "experiencia": 2.48,
+        "habilidad_saque": 5.79,
+        "habilidad_remate": 5.35,
+        "habilidad_recepcion": 5.46,
+        "habilidad_colocacion": 6.13,
+        "habilidad_bloqueo": 3.61
+      },
+      {
+        "nombre_jugador": "Julian Torres",
+        "numero_camiseta": 49,
+        "tipo_jugador": "CENTRAL",
+        "experiencia": 4.82,
+        "habilidad_saque": 6.71,
+        "habilidad_remate": 3.08,
+        "habilidad_recepcion": 4.21,
+        "habilidad_colocacion": 2.02,
+        "habilidad_bloqueo": 5.98
+      },
+      {
+        "nombre_jugador": "Modesto Guajardo",
+        "numero_camiseta": 13,
+        "tipo_jugador": "PUNTA",
+        "experiencia": 5.81,
+        "habilidad_saque": 5.85,
+        "habilidad_remate": 7.34,
+        "habilidad_recepcion": 5.12,
+        "habilidad_colocacion": 2.68,
+        "habilidad_bloqueo": 5.4
+      },
+      {
+        "nombre_jugador": "Lorenzo Pulido",
+        "numero_camiseta": 8,
+        "tipo_jugador": "PUNTA",
+        "experiencia": 1.09,
+        "habilidad_saque": 5.83,
+        "habilidad_remate": 6.9,
+        "habilidad_recepcion": 5.92,
+        "habilidad_colocacion": 3.66,
+        "habilidad_bloqueo": 5.08
+      },
+      {
+        "nombre_jugador": "Esteban Fuentes",
+        "numero_camiseta": 41,
+        "tipo_jugador": "PUNTA",
+        "experiencia": 3.28,
+        "habilidad_saque": 6.53,
+        "habilidad_remate": 6.58,
+        "habilidad_recepcion": 5.88,
+        "habilidad_colocacion": 3.96,
+        "habilidad_bloqueo": 4.94
+      },
+      {
+        "nombre_jugador": "Ernest Wade",
+        "numero_camiseta": 29,
+        "tipo_jugador": "OPUESTO",
+        "experiencia": 7.71,
+        "habilidad_saque": 6.71,
+        "habilidad_remate": 6.49,
+        "habilidad_recepcion": 3.05,
+        "habilidad_colocacion": 2.26,
+        "habilidad_bloqueo": 4.38
+      },
+      {
+        "nombre_jugador": "Miguel Herrero",
+        "numero_camiseta": 28,
+        "tipo_jugador": "ARMADOR",
+        "experiencia": 8.98,
+        "habilidad_saque": 6.27,
+        "habilidad_remate": 4.1,
+        "habilidad_recepcion": 4.07,
+        "habilidad_colocacion": 6.13,
+        "habilidad_bloqueo": 3.02
+      },
+      {
+        "nombre_jugador": "Raúl Caballero",
+        "numero_camiseta": 26,
+        "tipo_jugador": "CENTRAL",
+        "experiencia": 1.42,
+        "habilidad_saque": 6.47,
+        "habilidad_remate": 4.64,
+        "habilidad_recepcion": 4.0,
+        "habilidad_colocacion": 2.87,
+        "habilidad_bloqueo": 6.36
+      },
+      {
+        "nombre_jugador": "Guillermo Sáez",
+        "numero_camiseta": 4,
+        "tipo_jugador": "LIBERO",
+        "experiencia": 7.14,
+        "habilidad_saque": 3.82,
+        "habilidad_remate": 0.51,
+        "habilidad_recepcion": 7.82,
+        "habilidad_colocacion": 1.33,
+        "habilidad_bloqueo": 1.99
+      },
+      {
+        "nombre_jugador": "Abraham Arellano",
+        "numero_camiseta": 34,
+        "tipo_jugador": "PUNTA",
+        "experiencia": 4.89,
+        "habilidad_saque": 5.66,
+        "habilidad_remate": 5.55,
+        "habilidad_recepcion": 5.62,
+        "habilidad_colocacion": 3.78,
+        "habilidad_bloqueo": 4.61
+      },
+      {
+        "nombre_jugador": "Leon Collins",
+        "numero_camiseta": 9,
+        "tipo_jugador": "LIBERO",
+        "experiencia": 6.39,
+        "habilidad_saque": 2.63,
+        "habilidad_remate": 1.25,
+        "habilidad_recepcion": 6.84,
+        "habilidad_colocacion": 1.56,
+        "habilidad_bloqueo": 1.34
+      },
+      {
+        "nombre_jugador": "Aitor Jiménez",
+        "numero_camiseta": 16,
+        "tipo_jugador": "OPUESTO",
+        "experiencia": 8.49,
+        "habilidad_saque": 6.22,
+        "habilidad_remate": 6.6,
+        "habilidad_recepcion": 3.35,
+        "habilidad_colocacion": 3.37,
+        "habilidad_bloqueo": 4.96
+      }
+    ]
+  }
+}

@@ -1,49 +1,49 @@
 {
-  "ultima_actualizacion": "2024-08-05T04:27:30.0452258-03:00",
+  "ultima_actualizacion": "2024-08-05T04:47:29.1129574-03:00",
   "jugadores_mercado": [
     {
-      "nombre_jugador": "Rubén Centeno",
+      "nombre_jugador": "Pedro Rubio",
       "tipo_jugador": "PUNTA",
-      "experiencia": 9.67,
-      "habilidad_saque": 5.77,
-      "habilidad_remate": 6.54,
-      "habilidad_recepcion": 6.42,
+      "experiencia": 6.24,
+      "habilidad_saque": 5.3,
+      "habilidad_remate": 6.9,
+      "habilidad_recepcion": 5.33,
       "habilidad_colocacion": 2.86,
       "habilidad_bloqueo": 4.99,
-      "precio_mercado": 25500.0
+      "precio_mercado": 33393.0
     },
     {
-      "nombre_jugador": "Nelly Casanova",
-      "tipo_jugador": "PUNTA",
-      "experiencia": 1.81,
-      "habilidad_saque": 5.76,
-      "habilidad_remate": 7.42,
-      "habilidad_recepcion": 6.39,
-      "habilidad_colocacion": 3.67,
-      "habilidad_bloqueo": 5.34,
-      "precio_mercado": 41203.0
-    },
-    {
-      "nombre_jugador": "Nicholas Barnett",
+      "nombre_jugador": "Henry Woods",
       "tipo_jugador": "CENTRAL",
-      "experiencia": 1.69,
-      "habilidad_saque": 5.27,
-      "habilidad_remate": 4.32,
-      "habilidad_recepcion": 5.35,
-      "habilidad_colocacion": 2.87,
-      "habilidad_bloqueo": 6.47,
-      "precio_mercado": 32206.0
+      "experiencia": 2.16,
+      "habilidad_saque": 5.31,
+      "habilidad_remate": 3.24,
+      "habilidad_recepcion": 3.69,
+      "habilidad_colocacion": 2.4,
+      "habilidad_bloqueo": 5.63,
+      "precio_mercado": 47072.0
     },
     {
-      "nombre_jugador": "Felipe Bravo",
-      "tipo_jugador": "OPUESTO",
-      "experiencia": 7.11,
-      "habilidad_saque": 6.63,
-      "habilidad_remate": 6.22,
-      "habilidad_recepcion": 4.28,
-      "habilidad_colocacion": 3.2,
-      "habilidad_bloqueo": 4.0,
-      "precio_mercado": 49289.0
+      "nombre_jugador": "Eduardo Duran",
+      "tipo_jugador": "CENTRAL",
+      "experiencia": 5.92,
+      "habilidad_saque": 6.16,
+      "habilidad_remate": 3.53,
+      "habilidad_recepcion": 4.63,
+      "habilidad_colocacion": 3.65,
+      "habilidad_bloqueo": 6.01,
+      "precio_mercado": 41991.0
+    },
+    {
+      "nombre_jugador": "Gonzalo Carrasco",
+      "tipo_jugador": "PUNTA",
+      "experiencia": 3.56,
+      "habilidad_saque": 5.76,
+      "habilidad_remate": 5.54,
+      "habilidad_recepcion": 5.0,
+      "habilidad_colocacion": 3.31,
+      "habilidad_bloqueo": 4.79,
+      "precio_mercado": 40408.0
     }
   ]
 }

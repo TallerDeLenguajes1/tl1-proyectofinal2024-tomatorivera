@@ -1,0 +1,28 @@
+{
+  "total_partidos_jugados": 1,
+  "historial_partidos": [
+    {
+      "tipo_de_partido": "AMISTOSO",
+      "nombre_ganador": "ABANDONADO",
+      "al_mejor_de": 1,
+      "equipo_local": {
+        "nombre_equipo": "Ciudad",
+        "es_equipo_jugador": true,
+        "jugadores_convocados": []
+      },
+      "equipo_visitante": {
+        "nombre_equipo": "Gigantes del Sur W",
+        "es_equipo_jugador": false,
+        "jugadores_convocados": []
+      },
+      "score_local": 0,
+      "score_visitante": 0,
+      "resultados_sets": {
+        "1": {
+          "PuntosLocal": 0,
+          "PuntosVisitante": 1
+        }
+      }
+    }
+  ]
+}

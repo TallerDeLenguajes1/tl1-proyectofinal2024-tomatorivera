@@ -1,0 +1,49 @@
+{
+  "ultima_actualizacion": "2024-08-05T04:52:30.8599729-03:00",
+  "jugadores_mercado": [
+    {
+      "nombre_jugador": "Javier Gallardo",
+      "tipo_jugador": "PUNTA",
+      "experiencia": 2.08,
+      "habilidad_saque": 6.43,
+      "habilidad_remate": 6.97,
+      "habilidad_recepcion": 5.0,
+      "habilidad_colocacion": 3.1,
+      "habilidad_bloqueo": 5.42,
+      "precio_mercado": 47706.0
+    },
+    {
+      "nombre_jugador": "Anthony Mccoy",
+      "tipo_jugador": "OPUESTO",
+      "experiencia": 2.35,
+      "habilidad_saque": 5.95,
+      "habilidad_remate": 7.02,
+      "habilidad_recepcion": 3.7,
+      "habilidad_colocacion": 3.02,
+      "habilidad_bloqueo": 3.88,
+      "precio_mercado": 25500.0
+    },
+    {
+      "nombre_jugador": "Dean Newman",
+      "tipo_jugador": "LIBERO",
+      "experiencia": 3.27,
+      "habilidad_saque": 3.82,
+      "habilidad_remate": 1.18,
+      "habilidad_recepcion": 6.4,
+      "habilidad_colocacion": 1.66,
+      "habilidad_bloqueo": 1.05,
+      "precio_mercado": 13484.0
+    },
+    {
+      "nombre_jugador": "Francisco Castillo",
+      "tipo_jugador": "ARMADOR",
+      "experiencia": 9.68,
+      "habilidad_saque": 6.48,
+      "habilidad_remate": 4.14,
+      "habilidad_recepcion": 5.4,
+      "habilidad_colocacion": 6.5,
+      "habilidad_bloqueo": 3.67,
+      "precio_mercado": 34687.0
+    }
+  ]
+}

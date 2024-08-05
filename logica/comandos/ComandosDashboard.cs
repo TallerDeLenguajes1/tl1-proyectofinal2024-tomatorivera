@@ -363,7 +363,7 @@ public class ComandoMercadoJugadores : IComando
             new SelectionPrompt<Jugador>()
                 .Title("[orange1 bold]Seleccione el jugador a comprar:[/]")
                 .HighlightStyle("navajowhite1")
-                .AddChoices(jugadoresMostrar)
+                .AddChoices(jugadoresMostrar.Where(j => !jugadoresUsuario.Contains(j)))
                 .UseConverter(j => string.IsNullOrWhiteSpace(j.Nombre) ? "[red3]:right_arrow_curving_left: Volver al dashboard[/]"
                                                                        : j.DescripcionMercado())
         );
