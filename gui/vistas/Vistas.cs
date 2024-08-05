@@ -1407,7 +1407,7 @@ public class PanelMercado : Vista
 [orange1]⠀⢀⡿⡄⠀⠈⠳⢤⣀⠀⠀⠉⠁⠀   |  \/  | ___ _ __ ___ __ _  __| | ___                    [/]
 [orange1]⠀ ⢗⠝⡢⣄⡀⠀⠀⠉⠓⠢⡀⠀   | |\/| |/ _ \ '__/ __/ _` |/ _` |/ _ \                   [/]
 [orange1]⠀⠀⠀⠙⠮⢔⣝⣗⠦⣄⠀⠀⠘⡆   | |  | |  __/ | | (_| (_| | (_| | (_) |                  [/]
-[orange1]    ⠀⠀⠀⠉⢳⠬⡇⠀⠀ ⡱   |_|  |_|\___|_|  \___\__,_|\__,_|\___/                   [/]
+[orange1]    ⠀⠀⠀⠉⢳⠬⡇⠀⠀ ⡱   |_|  |_|\___|_|  \___\__,_|\__,_|\___/                    [/]
 [orange1]⢀⡶⡾⠒⠢⠤⠤⠼⠟⠁⠀⢠⡇                                                           [/]
 [orange1]⠺⣍⡣⣄⣀⣀⣀⠀⠀⣠⣤⣴⡟⠁[/]   [orange1]Próxima actualización: [/][yellow]{fechaActualizacion.ToString("dd/MM/yyyy HH:mm")} hs              [/]
 [orange1]⠀⠈⠙⠲⠵⢽⡹⡇⠀⢹⠟⠉⠀⠀                                                            [/]

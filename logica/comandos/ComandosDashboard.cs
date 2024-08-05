@@ -326,11 +326,11 @@ public class ComandoMercadoJugadores : IComando
     public void Ejecutar()
     {
         var mercadoActual = mercadoServicio.ObtenerDatosMercado();
-        var controladorPanelMercado = new PanelMercadoControlador(new PanelMercado(mercadoActual, jugadoresUsuario));
-
         // Si ya pasaron 12 horas desde la última actualización del mercado, se regenera
         if (debeRenerarMercado(mercadoActual)) mercadoActual = mercadoServicio.RegenerarMercadoAsync().GetAwaiter().GetResult();
         
+        var controladorPanelMercado = new PanelMercadoControlador(new PanelMercado(mercadoActual, jugadoresUsuario));
+
         // Ejecuto el menú del mercado mientras el usuario no seleccione 'volver al dashboard'
         Jugador jugadorComprar;
         do
@@ -363,7 +363,7 @@ public class ComandoMercadoJugadores : IComando
             new SelectionPrompt<Jugador>()
                 .Title("[orange1 bold]Seleccione el jugador a comprar:[/]")
                 .HighlightStyle("navajowhite1")
-                .AddChoices(jugadoresMostrar.Where(j => !jugadoresUsuario.Contains(j)))
+                .AddChoices(jugadoresMostrar.Where(j => !esJugadorComprado(j)))
                 .UseConverter(j => string.IsNullOrWhiteSpace(j.Nombre) ? "[red3]:right_arrow_curving_left: Volver al dashboard[/]"
                                                                        : j.DescripcionMercado())
         );
@@ -392,5 +392,23 @@ public class ComandoMercadoJugadores : IComando
     private bool debeRenerarMercado(Mercado mercado)
     {
         return mercado.UltimaActualizacion.AddHours(12) < DateTime.Now;
+    }
+
+    /// <summary>
+    /// Verifica si el usuario ya posee al jugador
+    /// </summary>
+    /// <param name="jugador">Jugador a verificar</param>
+    /// <returns><c>True</c> si el usuario ya tiene un jugador con el mismo nombre, habilidades y experiencia que <paramref name="jugador"/>, <c>False</c> en caso contrario</returns>
+    private bool esJugadorComprado(Jugador jugador)
+    {
+        return jugadoresUsuario.Where(j => j.Nombre.Equals(jugador.Nombre) &&
+                                           j.HabilidadSaque == jugador.HabilidadSaque &&
+                                           j.HabilidadBloqueo == jugador.HabilidadBloqueo &&
+                                           j.HabilidadColocacion == jugador.HabilidadColocacion &&
+                                           j.HabilidadRecepcion == jugador.HabilidadRecepcion &&
+                                           j.HabilidadRemate == jugador.HabilidadRemate &&
+                                           j.Experiencia == jugador.Experiencia
+                                    )
+                                    .Any();
     }
 }

@@ -1,49 +1,49 @@
 {
-  "ultima_actualizacion": "2024-08-05T04:47:29.1129574-03:00",
+  "ultima_actualizacion": "2024-08-05T12:25:17.1930432-03:00",
   "jugadores_mercado": [
     {
-      "nombre_jugador": "Pedro Rubio",
-      "tipo_jugador": "PUNTA",
-      "experiencia": 6.24,
-      "habilidad_saque": 5.3,
-      "habilidad_remate": 6.9,
-      "habilidad_recepcion": 5.33,
-      "habilidad_colocacion": 2.86,
-      "habilidad_bloqueo": 4.99,
-      "precio_mercado": 33393.0
+      "nombre_jugador": "Glen Hudson",
+      "tipo_jugador": "OPUESTO",
+      "experiencia": 4.82,
+      "habilidad_saque": 6.42,
+      "habilidad_remate": 7.76,
+      "habilidad_recepcion": 4.35,
+      "habilidad_colocacion": 3.18,
+      "habilidad_bloqueo": 3.68,
+      "precio_mercado": 44620.0
     },
     {
-      "nombre_jugador": "Henry Woods",
-      "tipo_jugador": "CENTRAL",
-      "experiencia": 2.16,
-      "habilidad_saque": 5.31,
-      "habilidad_remate": 3.24,
-      "habilidad_recepcion": 3.69,
-      "habilidad_colocacion": 2.4,
-      "habilidad_bloqueo": 5.63,
-      "precio_mercado": 47072.0
+      "nombre_jugador": "Miguel Ángel Manzanares",
+      "tipo_jugador": "ARMADOR",
+      "experiencia": 7.3,
+      "habilidad_saque": 5.91,
+      "habilidad_remate": 5.92,
+      "habilidad_recepcion": 4.02,
+      "habilidad_colocacion": 6.42,
+      "habilidad_bloqueo": 3.47,
+      "precio_mercado": 25161.0
     },
     {
-      "nombre_jugador": "Eduardo Duran",
-      "tipo_jugador": "CENTRAL",
-      "experiencia": 5.92,
-      "habilidad_saque": 6.16,
-      "habilidad_remate": 3.53,
-      "habilidad_recepcion": 4.63,
-      "habilidad_colocacion": 3.65,
-      "habilidad_bloqueo": 6.01,
-      "precio_mercado": 41991.0
+      "nombre_jugador": "Floyd Vasquez",
+      "tipo_jugador": "OPUESTO",
+      "experiencia": 3.76,
+      "habilidad_saque": 5.56,
+      "habilidad_remate": 7.9,
+      "habilidad_recepcion": 4.41,
+      "habilidad_colocacion": 2.15,
+      "habilidad_bloqueo": 4.26,
+      "precio_mercado": 35696.0
     },
     {
-      "nombre_jugador": "Gonzalo Carrasco",
-      "tipo_jugador": "PUNTA",
-      "experiencia": 3.56,
-      "habilidad_saque": 5.76,
-      "habilidad_remate": 5.54,
-      "habilidad_recepcion": 5.0,
-      "habilidad_colocacion": 3.31,
-      "habilidad_bloqueo": 4.79,
-      "precio_mercado": 40408.0
+      "nombre_jugador": "Luis Manuel Trujillo",
+      "tipo_jugador": "OPUESTO",
+      "experiencia": 6.64,
+      "habilidad_saque": 6.28,
+      "habilidad_remate": 7.53,
+      "habilidad_recepcion": 3.79,
+      "habilidad_colocacion": 3.18,
+      "habilidad_bloqueo": 3.98,
+      "precio_mercado": 37165.0
     }
   ]
 }

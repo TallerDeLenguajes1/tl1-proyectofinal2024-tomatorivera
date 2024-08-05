@@ -1,6 +1,6 @@
 {
   "nombre_usuario": "tomato",
-  "ganancias": 22107.0,
+  "ganancias": 5529.0,
   "equipo": {
     "nombre_equipo": "BokitaJr",
     "total_jugadores": 14,
@@ -180,6 +180,39 @@
         "habilidad_recepcion": 5.33,
         "habilidad_colocacion": 2.86,
         "habilidad_bloqueo": 4.99
+      },
+      {
+        "nombre_jugador": "Henry Woods",
+        "numero_camiseta": 35,
+        "tipo_jugador": "CENTRAL",
+        "experiencia": 2.16,
+        "habilidad_saque": 5.31,
+        "habilidad_remate": 3.24,
+        "habilidad_recepcion": 3.69,
+        "habilidad_colocacion": 2.4,
+        "habilidad_bloqueo": 5.63
+      },
+      {
+        "nombre_jugador": "Eduardo Duran",
+        "numero_camiseta": 12,
+        "tipo_jugador": "CENTRAL",
+        "experiencia": 5.92,
+        "habilidad_saque": 6.16,
+        "habilidad_remate": 3.53,
+        "habilidad_recepcion": 4.63,
+        "habilidad_colocacion": 3.65,
+        "habilidad_bloqueo": 6.01
+      },
+      {
+        "nombre_jugador": "Gonzalo Carrasco",
+        "numero_camiseta": 36,
+        "tipo_jugador": "PUNTA",
+        "experiencia": 3.56,
+        "habilidad_saque": 5.76,
+        "habilidad_remate": 5.54,
+        "habilidad_recepcion": 5.0,
+        "habilidad_colocacion": 3.31,
+        "habilidad_bloqueo": 4.79
       }
     ]
   }
