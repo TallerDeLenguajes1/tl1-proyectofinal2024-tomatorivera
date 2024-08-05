@@ -232,7 +232,7 @@ public class ComandoJugarAmistoso : IComando
 
 public class ComandoConsultarPlantilla : IComando
 {
-    public string Titulo => "Consultar plantilla de jugadores";
+    public string Titulo => "Plantilla de jugadores";
 
     private List<Jugador> jugadores;
     private string nombreEquipo;
@@ -253,7 +253,7 @@ public class ComandoConsultarPlantilla : IComando
 
 public class ComandoConsultarHistorial : IComando
 {
-    public string Titulo => "Consultar historial de partidos";
+    public string Titulo => "Historial de partidos";
     private string nombreEquipoJugador;
     private IHistorialServicio servicioHistorial;
 
@@ -308,5 +308,15 @@ public class ComandoEliminarPartida : IComando
         string respuesta = Console.ReadLine() ?? string.Empty;
 
         return !string.IsNullOrWhiteSpace(respuesta) && respuesta.ToLower()[0].Equals('s');
+    }
+}
+
+public class ComandoMercadoJugadores : IComando
+{
+    public string Titulo => "Mercado de jugadores";
+
+    public void Ejecutar()
+    {
+        throw new NotImplementedException();
     }
 }

@@ -18,6 +18,7 @@ namespace Persistencia.Infraestructura
         public static string? NombreJsonPartida { get; set; }
         public static string? NombreJsonUsuario { get; set; }
         public static string? NombreJsonHistorial { get; set; }
+        public static string? NombreJsonMercado { get; set;}
         public static string? NombreImgLogo { get; set; }
 
         public static string? FuentePagga { get; set; }
@@ -59,6 +60,7 @@ namespace Persistencia.Infraestructura
             NombreJsonPartida = "partida.json";
             NombreJsonUsuario = "usuario.json";
             NombreJsonHistorial = "historial.json";
+            NombreJsonMercado = "mercado.json";
             NombreImgLogo = "logo.png";
 
             FuentePagga = "Pagga.flf";
